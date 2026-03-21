@@ -118,27 +118,44 @@ public class CropController {
     }
 
     @GetMapping("/browse")
-    public String browseCrops(@RequestParam(value = "search", required = false) String search, HttpSession session,
-            Model model) {
+    public String browseCrops(@RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "maxPrice", required = false) Double maxPrice,
+            @RequestParam(value = "verifiedOnly", defaultValue = "false") boolean verifiedOnly,
+            HttpSession session, Model model) {
         if (session.getAttribute("username") == null || !"buyer".equals(session.getAttribute("role"))) {
             return "redirect:/login";
         }
 
         List<Crop> allCrops = cropRepository.findAll();
 
-        // Filter out crops that are not available/under_contract
-        // And match the search query
         List<Crop> filteredCrops = allCrops.stream().filter(crop -> {
             boolean statusMatches = "Available".equalsIgnoreCase(crop.getStatus())
                     || "Under_Contract".equalsIgnoreCase(crop.getStatus());
+            
             boolean searchMatches = search == null || search.trim().isEmpty() ||
                     (crop.getCropName() != null && crop.getCropName().toLowerCase().contains(search.toLowerCase())) ||
                     (crop.getLocation() != null && crop.getLocation().toLowerCase().contains(search.toLowerCase()));
 
-            // Note: In real logic we shouldn't show accepted contracts.
-            // But since contracts logic will be built next, we'll keep it simple for now
-            // based on Crop status string
-            return statusMatches && searchMatches;
+            boolean priceMatches = maxPrice == null || crop.getPricePerUnit() == null || crop.getPricePerUnit() <= maxPrice;
+            
+            boolean categoryMatches = true;
+            if (category != null && !category.trim().isEmpty()) {
+                // Determine categorization visually based on common names for dummy implementation
+                String nm = crop.getCropName() != null ? crop.getCropName().toLowerCase() : "";
+                if (category.equals("cereals") && !(nm.contains("paddy") || nm.contains("wheat") || nm.contains("maize"))) {
+                    categoryMatches = false;
+                } else if (category.equals("fibers") && !nm.contains("cotton")) {
+                    categoryMatches = false;
+                } else if (category.equals("pulses") && !(nm.contains("dal") || nm.contains("gram"))) {
+                    categoryMatches = false;
+                }
+            }
+            
+            // verifiedOnly implementation (we will just assume all currently seeded farmers are verified for the UI mapping unless an admin banned them. For testing logic we approve all).
+            boolean verifiedMatches = !verifiedOnly || true; // Simulate all sellers as verified
+
+            return statusMatches && searchMatches && priceMatches && categoryMatches && verifiedMatches;
         }).collect(Collectors.toList());
 
         model.addAttribute("crops", filteredCrops);

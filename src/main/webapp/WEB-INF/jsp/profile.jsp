@@ -18,29 +18,7 @@
             <body class="bg-light pb-5 d-flex flex-column min-vh-100">
 
                 <!-- Navigation -->
-                <nav class="navbar navbar-expand-lg premium-nav py-3 sticky-top mb-5">
-                    <div class="container">
-                        <a class="navbar-brand fw-bold d-flex align-items-center" href="/dashboard">
-                            <div class="bg-success p-2 rounded-circle me-2 d-flex shadow-sm">
-                                <i class="bi bi-seedling fs-5 text-white m-0 lh-1"></i>
-                            </div>
-                            <span class="text-dark">CFS Platform</span>
-                        </a>
-                        <div class="collapse navbar-collapse">
-                            <ul class="navbar-nav ms-auto fw-semibold">
-                                <li class="nav-item">
-                                    <a class="nav-link px-3" href="/dashboard"><i
-                                            class="bi bi-house border-end border-secondary border-opacity-25 pe-2 me-2"></i>
-                                        Dashboard</a>
-                                </li>
-                                <li class="nav-item ms-lg-3">
-                                    <a class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold shadow-sm py-2 mt-1 mt-lg-0"
-                                        href="/logout"><i class="bi bi-box-arrow-right me-1"></i> Logout</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                <jsp:include page="common/header_user.jsp" />
 
                 <div class="container pb-5 flex-grow-1">
                     <div class="row justify-content-center">
@@ -278,6 +256,7 @@
                     </div>
                 </div>
 
+                <jsp:include page="common/footer.jsp" />
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
             </body>
 

@@ -142,3 +142,179 @@ body {
     color: #475569 !important;
     border: 1px solid #e2e8f0;
 }
+
+/* Ensure mobile responsiveness across global containers */
+html, body {
+    overflow-x: hidden !important; 
+    max-width: 100vw;
+}
+
+@media (max-width: 768px) {
+    .glass-card {
+        padding: 1.25rem !important; /* Override large padding on small screens */
+    }
+    .display-5, .display-6 {
+        font-size: calc(1.5rem + 1.5vw) !important;
+    }
+}
+/* ==========================================================================
+   ADMIN PANEL LAYOUT OVERRIDES 
+   ========================================================================== */
+body.admin-body {
+    background-color: #f8fafc !important; /* Premium slate 50 background */
+}
+@media (min-width: 992px) {
+    body.admin-body {
+        padding-left: 280px;
+    }
+}
+
+/* Admin Sidebar */
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    z-index: 1050;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.admin-sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.5rem;
+    margin: 0.2rem 1rem;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.admin-nav-link:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+.admin-nav-link.active {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-left: 3px solid #3b82f6;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.admin-nav-link.text-danger:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171 !important;
+}
+.admin-nav-link i {
+    margin-right: 1.2rem;
+    font-size: 1.15rem;
+}
+
+/* Admin Topbar */
+.admin-topbar {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1040;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Mobile offcanvas */
+@media (max-width: 991px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+    }
+    .admin-sidebar.show {
+        transform: translateX(0);
+    }
+    .admin-topbar {
+        padding: 1rem;
+    }
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATIONS (PHASE 2)
+   ========================================================================== */
+.cfs-toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1060;
+}
+.cfs-toast {
+    min-width: 320px;
+    background: white;
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 0.75rem;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.cfs-toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+.cfs-toast-header {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.25rem;
+    color: white;
+}
+.cfs-toast-body {
+    padding: 1.15rem 1.25rem;
+    color: #334155;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    background: #fff;
+}
+
+/* ==========================================================================
+   COMMAND CENTER POLISH (PHASE 4)
+   ========================================================================== */
+.pulse-ring {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+}
+.pulse-ring::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #22c55e;
+    border-radius: 50%;
+    animation: cfsPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes cfsPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(3.5); opacity: 0; }
+}
+
+@media print {
+    .hide-on-pdf {
+        display: none !important;
+    }
+    .glass-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+}

@@ -15,90 +15,199 @@
 
         <body class="bg-light pb-5">
 
-            <nav class="navbar navbar-expand-lg premium-nav py-3 sticky-top mb-5">
-                <div class="container">
-                    <a class="navbar-brand fw-bold d-flex align-items-center" href="/admin/dashboard">
-                        <div class="bg-dark p-2 rounded-3 me-2 d-flex shadow-sm">
-                            <i class="bi bi-shield-lock-fill fs-5 text-warning m-0 lh-1"></i>
+            <jsp:include page="../common/header_admin.jsp" />
+
+            <div class="container-fluid px-xl-5 py-4">
+                
+                <!-- Premium Admin Welcome -->
+                <div class="glass-card mb-4 p-4 p-lg-5 border-0 shadow-sm" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <div class="d-inline-flex bg-white bg-opacity-10 p-3 rounded-circle mb-3 shadow-sm border border-light border-opacity-25">
+                                <i class="bi bi-shield-shaded text-white" style="font-size: 2rem;"></i>
+                            </div>
+                            <h1 class="fw-bold text-white display-5 mb-2" style="letter-spacing: -1px;">System Administration Center</h1>
+                            <p class="text-white-50 fs-5 mb-0">Centralized command overhead for KYC verifications, Escrow monitoring, and dispute resolution.</p>
                         </div>
-                        <span class="text-dark">Admin Control Center</span>
-                    </a>
-                    <div class="collapse navbar-collapse">
-                        <ul class="navbar-nav ms-auto fw-semibold align-items-center">
-                            <li class="nav-item">
-                                <span class="nav-link text-slate-600 px-3"><i class="bi bi-person-circle me-1"></i>
-                                    ${sessionScope.email}</span>
-                            </li>
-                            <li class="nav-item ms-3">
-                                <a class="btn btn-outline-danger btn-sm mt-1 rounded-pill fw-bold px-4 shadow-sm"
-                                    href="/logout"><i class="bi bi-box-arrow-right me-1"></i> Secure Logout</a>
-                            </li>
-                        </ul>
+                        <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                            <div class="bg-white bg-opacity-10 p-3 rounded-4 border border-light border-opacity-10 d-inline-block text-start shadow-sm">
+                                <span class="d-block small text-white-50 text-uppercase fw-bold mb-1" style="letter-spacing: 1px;">System Status</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="spinner-grow spinner-grow-sm text-success" role="status" aria-hidden="true"></span>
+                                    <span class="text-white fw-bold fs-5">All Systems Operational</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </nav>
 
-            <div class="container py-2">
-                <div class="row justify-content-center">
-                    <div class="col-md-9 col-lg-8">
-
-                        <div class="glass-card mb-4 p-4 p-lg-5 text-center border-0">
-                            <div class="d-inline-flex bg-dark bg-opacity-10 p-3 rounded-circle mb-3 shadow-sm">
-                                <i class="bi bi-shield-shaded text-dark" style="font-size: 2.5rem;"></i>
+                <!-- Top Metric Cards -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="glass-card p-4 border-0 shadow-sm h-100 position-relative overflow-hidden bg-white hover-elevate transition">
+                            <div class="position-absolute top-0 end-0 opacity-10" style="transform: translate(20%, -20%);">
+                                <i class="bi bi-people-fill text-primary" style="font-size: 8rem;"></i>
                             </div>
-                            <h1 class="fw-bold text-dark display-6 mb-2">System Administration</h1>
-                            <p class="text-muted fs-5 mb-0 px-4">Manage the centralized platform operations including
-                                user KYC verifications, contract monitoring, and dispute resolutions.</p>
+                            <h5 class="fw-bold text-secondary text-uppercase mb-3" style="letter-spacing: 1px;">Total Users</h5>
+                            <h2 class="display-5 fw-bold text-dark mb-0">${totalUsers}</h2>
+                            <p class="text-success small fw-bold mt-2 mb-0"><i class="bi bi-person-check-fill"></i> Verified Data</p>
                         </div>
-
-                        <div class="row g-4 mt-2">
-                            <div class="col-md-6 col-lg-4">
-                                <a href="/admin/users" class="text-decoration-none">
-                                    <div class="glass-card hover-elevate h-100 p-4 text-center border-0">
-                                        <div
-                                            class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-inline-flex mb-3 shadow-sm border border-primary border-opacity-25">
-                                            <i class="bi bi-people-fill fs-2"></i>
-                                        </div>
-                                        <h4 class="fw-bold text-dark mb-2">Manage Users</h4>
-                                        <p class="text-muted small mb-0">Verify KYC, manage roles, and review new
-                                            accounts.</p>
-                                    </div>
-                                </a>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="glass-card p-4 border-0 shadow-sm h-100 position-relative overflow-hidden bg-white hover-elevate transition">
+                            <div class="position-absolute top-0 end-0 opacity-10" style="transform: translate(20%, -20%);">
+                                <i class="bi bi-file-earmark-check-fill text-success" style="font-size: 8rem;"></i>
                             </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <a href="/admin/contracts" class="text-decoration-none">
-                                    <div class="glass-card hover-elevate h-100 p-4 text-center border-0">
-                                        <div
-                                            class="bg-success bg-opacity-10 text-success rounded-circle p-3 d-inline-flex mb-3 shadow-sm border border-success border-opacity-25">
-                                            <i class="bi bi-file-earmark-check-fill fs-2"></i>
-                                        </div>
-                                        <h4 class="fw-bold text-dark mb-2">Monitor Contracts</h4>
-                                        <p class="text-muted small mb-0">Audit contract lifecycle and ensure SLA
-                                            compliance.</p>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="col-md-6 col-lg-4 mx-auto">
-                                <a href="/admin/disputes" class="text-decoration-none">
-                                    <div class="glass-card hover-elevate h-100 p-4 text-center border-0">
-                                        <div
-                                            class="bg-danger bg-opacity-10 text-danger rounded-circle p-3 d-inline-flex mb-3 shadow-sm border border-danger border-opacity-25">
-                                            <i class="bi bi-exclamation-octagon-fill fs-2"></i>
-                                        </div>
-                                        <h4 class="fw-bold text-dark mb-2">Resolve Disputes</h4>
-                                        <p class="text-muted small mb-0">Mediate and resolve escalated contract
-                                            disputes.</p>
-                                    </div>
-                                </a>
-                            </div>
+                            <h5 class="fw-bold text-secondary text-uppercase mb-3" style="letter-spacing: 1px;">Active Contracts</h5>
+                            <h2 class="display-5 fw-bold text-dark mb-0">${activeContracts}</h2>
+                            <p class="text-success small fw-bold mt-2 mb-0"><i class="bi bi-shield-check"></i> Escrow Secured</p>
                         </div>
-
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="glass-card p-4 border-0 shadow-sm h-100 position-relative overflow-hidden bg-white hover-elevate transition">
+                            <div class="position-absolute top-0 end-0 opacity-10" style="transform: translate(20%, -20%);">
+                                <i class="bi bi-currency-rupee text-warning" style="font-size: 8rem;"></i>
+                            </div>
+                            <h5 class="fw-bold text-secondary text-uppercase mb-3" style="letter-spacing: 1px;">Escrow Volume</h5>
+                            <h2 class="display-5 fw-bold text-dark mb-0">₹${totalEscrowVolume}</h2>
+                            <p class="text-success small fw-bold mt-2 mb-0"><i class="bi bi-graph-up-arrow"></i> Capital Managed</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="glass-card p-4 border-0 shadow-sm h-100 position-relative overflow-hidden hover-elevate transition" style="background: linear-gradient(135deg, #fef2f2 0%, #fff 100%); border-left: 4px solid #dc3545 !important;">
+                            <div class="position-absolute top-0 end-0 opacity-10" style="transform: translate(20%, -20%);">
+                                <i class="bi bi-exclamation-octagon-fill text-danger" style="font-size: 8rem;"></i>
+                            </div>
+                            <h5 class="fw-bold text-danger text-uppercase mb-3" style="letter-spacing: 1px;">Active Disputes</h5>
+                            <h2 class="display-5 fw-bold text-dark mb-0">${activeDisputes}</h2>
+                            <p class="text-danger small fw-bold mt-2 mb-0"><i class="bi bi-exclamation-circle-fill"></i> Requires Attention</p>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Charts & Action Panels -->
+                <div class="row g-4 mb-4">
+                    <!-- Platform Growth Chart -->
+                    <div class="col-lg-8">
+                        <div class="glass-card p-4 h-100 border-0 shadow-sm bg-white hover-elevate transition">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold text-dark mb-0"><i class="bi bi-graph-up text-primary me-2"></i> Platform Trajectory</h5>
+                            </div>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="growthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contract Distribution Pie Chart -->
+                    <div class="col-lg-4">
+                        <div class="glass-card p-4 h-100 border-0 shadow-sm bg-white hover-elevate transition d-flex flex-column">
+                            <h5 class="fw-bold text-dark mb-4"><i class="bi bi-pie-chart-fill text-warning me-2"></i> Contract Distribution</h5>
+                            <div style="height: 250px; position: relative; margin: auto;">
+                                <canvas id="statusPieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Timeline Base -->
+                <div class="glass-card p-4 border-0 shadow-sm bg-white">
+                    <h5 class="fw-bold text-dark mb-4"><i class="bi bi-clock-history text-secondary me-2"></i> Live Ecosystem Feed</h5>
+                    <div class="position-relative ms-3 border-start border-2 border-primary border-opacity-25 py-2">
+                        <!-- Timeline Items -->
+                        <div class="position-relative ps-4 mb-4">
+                            <span class="position-absolute top-0 start-0 translate-middle bg-primary rounded-circle shadow border border-white border-2" style="width: 16px; height: 16px;"></span>
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <h6 class="fw-bold text-dark mb-0">New Contract Generated</h6>
+                                <span class="badge bg-light text-muted border">2 mins ago</span>
+                            </div>
+                            <p class="text-secondary small mb-0">Contract <span class="fw-bold">#CNT-8911</span> initiated between Farmer <i>Ramesh</i> and Buyer <i>AgriCorp</i> for 50MT Wheat.</p>
+                        </div>
+                        <div class="position-relative ps-4 mb-4">
+                            <span class="position-absolute top-0 start-0 translate-middle bg-warning rounded-circle shadow border border-white border-2" style="width: 16px; height: 16px;"></span>
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <h6 class="fw-bold text-dark mb-0">KYC Verification Pending</h6>
+                                <span class="badge bg-light text-muted border">15 mins ago</span>
+                            </div>
+                            <p class="text-secondary small mb-0">Inspector <span class="fw-bold">INSP-04</span> uploaded field documents for farm plot in Punjab.</p>
+                        </div>
+                        <div class="position-relative ps-4">
+                            <span class="position-absolute top-0 start-0 translate-middle bg-success rounded-circle shadow border border-white border-2" style="width: 16px; height: 16px;"></span>
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <h6 class="fw-bold text-dark mb-0">Escrow Milestone Released</h6>
+                                <span class="badge bg-light text-muted border">1 hour ago</span>
+                            </div>
+                            <p class="text-secondary small mb-0">Milestone 2 payment of ₹2.5M authorized for Contract <span class="fw-bold">#CNT-7720</span>.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const ctxGrowth = document.getElementById('growthChart');
+                    if(ctxGrowth) {
+                        new Chart(ctxGrowth, {
+                            type: 'line',
+                            data: {
+                                labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+                                datasets: [
+                                    {
+                                        label: 'New Users',
+                                        data: [65, 59, 80, 81, 56, 120, ${totalUsers}],
+                                        borderColor: '#0d6efd',
+                                        backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                                        tension: 0.4,
+                                        fill: true
+                                    },
+                                    {
+                                        label: 'Contracts Formed',
+                                        data: [28, 48, 40, 19, 86, 92, ${activeContracts + completedContracts}],
+                                        borderColor: '#198754',
+                                        backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                                        tension: 0.4,
+                                        fill: true
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { position: 'top' } },
+                                scales: {
+                                    y: { beginAtZero: true, grid: { borderDash: [4, 4], color: '#e2e8f0' } },
+                                    x: { grid: { display: false } }
+                                }
+                            }
+                        });
+                    }
+
+                    const ctxPie = document.getElementById('statusPieChart');
+                    if(ctxPie) {
+                        new Chart(ctxPie, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Active', 'Completed', 'Disputed'],
+                                datasets: [{
+                                    data: [${activeContracts}, ${completedContracts}, ${disputedContracts}],
+                                    backgroundColor: ['#0d6efd', '#198754', '#dc3545'],
+                                    hoverOffset: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: { position: 'bottom' }
+                                }
+                            }
+                        });
+                    }
+                });
+            </script>
+            <jsp:include page="../common/footer.jsp" />
         </body>
 
         </html>

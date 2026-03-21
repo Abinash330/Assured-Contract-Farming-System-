@@ -40,10 +40,35 @@ public class AdminController {
     }
 
     @GetMapping("/admin/dashboard")
-    public String adminDashboard(HttpSession session) {
+    public String adminDashboard(HttpSession session, Model model) {
         if (!isAdmin(session)) {
             return "redirect:/login";
         }
+        long totalUsers = userRepository.count();
+        long activeContracts = contractRepository.findAll().stream()
+                .filter(c -> "Active".equalsIgnoreCase(c.getContractStatus()))
+                .count();
+        long completedContracts = contractRepository.findAll().stream()
+                .filter(c -> "Completed".equalsIgnoreCase(c.getContractStatus()))
+                .count();
+        long disputedContracts = contractRepository.findAll().stream()
+                .filter(c -> "Disputed".equalsIgnoreCase(c.getContractStatus()))
+                .count();                
+        long totalEscrowVolume = contractRepository.findAll().stream()
+                .filter(c -> !"Cancelled".equalsIgnoreCase(c.getContractStatus()))
+                .mapToLong(c -> c.getFinalPrice() != null ? c.getFinalPrice().longValue() : 0)
+                .sum();
+        long activeDisputes = disputeRepository.findAll().stream()
+                .filter(d -> "OPEN".equalsIgnoreCase(d.getStatus()))
+                .count();
+
+        model.addAttribute("totalUsers", totalUsers);
+        model.addAttribute("activeContracts", activeContracts);
+        model.addAttribute("completedContracts", completedContracts);
+        model.addAttribute("disputedContracts", disputedContracts);
+        model.addAttribute("totalEscrowVolume", totalEscrowVolume);
+        model.addAttribute("activeDisputes", activeDisputes);
+        
         return "admin/admin_dashboard";
     }
 
@@ -124,5 +149,14 @@ public class AdminController {
         List<Dispute> disputes = disputeRepository.findAll();
         model.addAttribute("disputes", disputes);
         return "admin/manage_disputes";
+    }
+
+    @GetMapping("/admin/settings")
+    public String systemSettings(HttpSession session, Model model) {
+        if (!isAdmin(session)) {
+            return "redirect:/login";
+        }
+        // Serve the static platform settings view
+        return "admin/system_settings";
     }
 }

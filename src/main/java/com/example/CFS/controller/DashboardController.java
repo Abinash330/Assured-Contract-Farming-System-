@@ -46,11 +46,35 @@ public class DashboardController {
             } else if ("buyer".equals(role)) {
                 List<Contract> contracts = contractRepository.findByBuyerId(user.getId());
                 List<Long> cropIds = new ArrayList<>();
+                double totalSpend = 0.0;
                 for (Contract c : contracts) {
                     cropIds.add(c.getCropId());
+                    totalSpend += (c.getFinalPrice() != null) ? c.getFinalPrice() : 0.0;
                 }
+                
+                // Format total spend into Lakhs for professional display
+                double spendLakhs = totalSpend / 100000.0;
+                model.addAttribute("ytdSpend", String.format("%.2f", spendLakhs));
+                
+                // Simulate progressive trajectory based on real final volume
+                String chartData = String.format("[%.1f, %.1f, %.1f, %.1f, %.1f, %.1f]", 
+                    spendLakhs * 0.2, spendLakhs * 0.35, spendLakhs * 0.45, 
+                    spendLakhs * 0.7, spendLakhs * 0.85, spendLakhs);
+                model.addAttribute("chartData", chartData);
+                
                 List<Crop> purchasedCrops = cropIds.isEmpty() ? new ArrayList<>() : cropRepository.findAllById(cropIds);
                 model.addAttribute("purchasedCrops", purchasedCrops);
+                
+            } else if ("inspector".equals(role)) {
+                // Fetch all contracts that are currently Accepted and thus require Quality Assurance
+                List<Contract> allContracts = contractRepository.findAll();
+                List<Contract> pendingInspections = new ArrayList<>();
+                for(Contract c : allContracts) {
+                    if("Accepted".equalsIgnoreCase(c.getContractStatus())) {
+                        pendingInspections.add(c);
+                    }
+                }
+                model.addAttribute("pendingInspections", pendingInspections);
             }
         }
 

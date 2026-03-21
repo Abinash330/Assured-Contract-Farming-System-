@@ -14,125 +14,90 @@
     <body class="pb-5">
 
         <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg premium-nav py-3 sticky-top mb-5">
-            <div class="container">
-                <a class="navbar-brand fw-bold d-flex align-items-center" href="/dashboard">
-                    <div class="bg-success py-1 px-2 rounded-3 me-2 d-flex shadow-sm">
-                        <i class="bi bi-seedling fs-5 text-white m-0 lh-1"></i>
-                    </div>
-                    <span class="text-dark">CFS Platform</span>
-                </a>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav ms-auto fw-semibold">
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="/dashboard"><i
-                                    class="bi bi-house border-end border-secondary border-opacity-25 pe-2 me-2"></i>
-                                Dashboard</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <jsp:include page="common/header_user.jsp" />
 
         <div class="container py-2">
             <div class="row justify-content-center">
                 <div class="col-md-9 col-lg-7">
                     <div class="glass-card border-0 hover-elevate">
 
-                        <div class="bg-white bg-opacity-50 border-bottom pt-5 pb-4 text-center rounded-top-4">
-                            <div class="d-inline-flex bg-success bg-opacity-10 p-3 rounded-circle mb-3 shadow-sm">
-                                <i class="bi bi-clipboard-data text-success" style="font-size: 2.5rem;"></i>
+                        <div class="bg-success text-white pt-5 pb-4 text-center rounded-top-4 position-relative overflow-hidden" style="background: linear-gradient(135deg, var(--primary-green) 0%, #064e3b 100%);">
+                            <!-- Background blobs -->
+                            <div class="position-absolute bg-white rounded-circle opacity-10" style="width: 200px; height: 200px; top: -50px; left: -50px; filter: blur(30px);"></div>
+                            <div class="position-absolute bg-warning rounded-circle opacity-25" style="width: 200px; height: 200px; bottom: -50px; right: -50px; filter: blur(40px);"></div>
+                            
+                            <div class="d-inline-flex bg-white bg-opacity-10 p-3 rounded-circle mb-3 shadow-sm border border-white border-opacity-25 position-relative z-1">
+                                <i class="bi bi-clipboard-data-fill text-white" style="font-size: 2.5rem;"></i>
                             </div>
-                            <h2 class="fw-bold text-dark mb-1">Create Listing</h2>
-                            <p class="text-muted small w-75 mx-auto">Publish your upcoming harvest to the marketplace to
-                                attract formal contracts from verified corporate buyers.</p>
+                            <h2 class="fw-bold mb-1 position-relative z-1">Create Exchange Listing</h2>
+                            <p class="text-white opacity-75 small w-75 mx-auto position-relative z-1">Publish your upcoming harvest to the master exchange to attract formal contracts from verified corporate entities.</p>
                         </div>
 
-                        <div class="p-4 p-md-5 bg-white bg-opacity-25 rounded-bottom-4">
+                        <div class="p-4 p-md-5 bg-white rounded-bottom-4 shadow-sm">
                             <form action="/crop/add" method="post">
-                                <div class="mb-4">
-                                    <label
-                                        class="form-label fw-bold small text-muted ms-1 text-uppercase tracking-wider">Crop
-                                        Commodity</label>
-                                    <select class="form-select form-select-lg px-4 border shadow-sm" name="crop_name"
-                                        required style="border-radius: 1rem;">
-                                        <option value="" disabled selected>Select Commodity Type...</option>
-                                        <option value="Chickpea(Shanagalu)">Chickpea (Shanagalu)</option>
-                                        <option value="Cotton">Cotton</option>
-                                        <option value="Maize(Mokkajonna)">Maize (Mokkajonna)</option>
-                                        <option value="Mustard(Avalu)">Mustard (Avalu)</option>
-                                        <option value="Onion">Onion</option>
-                                        <option value="Paddy">Paddy</option>
-                                        <option value="Pigeon Pea(Kandulu)">Pigeon Pea (Kandulu)</option>
-                                        <option value="Potato">Potato</option>
-                                        <option value="Red Chilly">Red Chilly</option>
-                                        <option value="Sugarcane">Sugarcane</option>
-                                        <option value="Wheat(Godhumalu)">Wheat (Godhumalu)</option>
-                                    </select>
-                                </div>
-
-                                <div class="row g-4 mb-4">
-                                    <div class="col-sm-6">
-                                        <label
-                                            class="form-label fw-bold small text-muted ms-1 text-uppercase tracking-wider">Total
-                                            Quantity</label>
-                                        <div class="input-group shadow-sm"
-                                            style="border-radius: 1rem; overflow:hidden;">
-                                            <span class="input-group-text bg-light border-0 px-4 text-primary"><i
-                                                    class="bi bi-boxes"></i></span>
-                                            <input type="number" class="form-control form-control-lg border-0 bg-white"
-                                                name="quantity" min="1" placeholder="Metric Tons" required>
-                                        </div>
-                                        <div class="form-text small mt-2 ms-1 text-muted">Volume in Metric Tons</div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label
-                                            class="form-label fw-bold small text-muted ms-1 text-uppercase tracking-wider">Target
-                                            Price</label>
-                                        <div class="input-group shadow-sm"
-                                            style="border-radius: 1rem; overflow:hidden;">
-                                            <span
-                                                class="input-group-text bg-light border-0 px-4 text-success fw-bold">₹</span>
-                                            <input type="number" step="0.01" min="1"
-                                                class="form-control form-control-lg border-0 bg-white"
-                                                name="price_per_unit" placeholder="Price per Ton" required>
-                                        </div>
-                                        <div class="form-text small mt-2 ms-1 text-muted">Fixed price per Metric Ton
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label
-                                        class="form-label fw-bold small text-muted ms-1 text-uppercase tracking-wider">Origin
-                                        Farm Location</label>
+                                <div class="mb-5">
+                                    <label class="form-label fw-bold small text-muted ms-1 text-uppercase tracking-wider">Crop Commodity Specification</label>
                                     <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
-                                        <span class="input-group-text bg-light border-0 px-4 text-danger"><i
-                                                class="bi bi-geo-alt-fill"></i></span>
-                                        <input type="text" class="form-control form-control-lg border-0 bg-white"
-                                            name="location" placeholder="Sub-district, District, State" required>
+                                        <span class="input-group-text bg-light border-0 px-4 text-success"><i class="bi bi-diagram-3-fill"></i></span>
+                                        <select class="form-select form-select-lg border-0 bg-light focus-ring-success py-3 px-3 fw-bold text-dark" name="crop_name" required>
+                                            <option value="" disabled selected>Select Master Commodity Type...</option>
+                                            <option value="Chickpea(Shanagalu)">Chickpea (Shanagalu) - Grade A</option>
+                                            <option value="Cotton">Cotton - Long Staple</option>
+                                            <option value="Maize(Mokkajonna)">Maize (Mokkajonna) - Feed Grade</option>
+                                            <option value="Mustard(Avalu)">Mustard (Avalu) - Oil Yield</option>
+                                            <option value="Onion">Onion - Export Quality</option>
+                                            <option value="Paddy">Paddy - Milling Type</option>
+                                            <option value="Pigeon Pea(Kandulu)">Pigeon Pea (Kandulu)</option>
+                                            <option value="Potato">Potato - Cold Store</option>
+                                            <option value="Red Chilly">Red Chilly - High Pungency</option>
+                                            <option value="Sugarcane">Sugarcane - Mill Grade</option>
+                                            <option value="Wheat(Godhumalu)">Wheat (Godhumalu) - Sharbati</option>
+                                        </select>
                                     </div>
                                 </div>
 
-                                <div class="mb-5 pb-3 border-bottom">
-                                    <label
-                                        class="form-label fw-bold small text-primary ms-1 text-uppercase tracking-wider">Expected
-                                        Harvest Date</label>
-                                    <div class="input-group shadow-sm border border-primary border-opacity-25"
-                                        style="border-radius: 1rem; overflow:hidden;">
-                                        <span
-                                            class="input-group-text bg-primary bg-opacity-10 border-0 px-4 text-primary"><i
-                                                class="bi bi-calendar-check-fill"></i></span>
-                                        <input type="date" class="form-control form-control-lg border-0 bg-white"
-                                            name="harvest_date" required>
+                                <div class="row g-4 mb-5">
+                                    <div class="col-sm-6">
+                                        <label class="form-label fw-bold small text-muted ms-1 text-uppercase tracking-wider">Aggregated Volume</label>
+                                        <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
+                                            <span class="input-group-text bg-light border-0 px-4 text-primary"><i class="bi bi-boxes"></i></span>
+                                            <input type="number" class="form-control form-control-lg border-0 bg-light focus-ring-primary py-3 fw-bold text-dark font-monospace" name="quantity" min="1" placeholder="00.00" required>
+                                            <span class="input-group-text bg-light border-0 px-4 text-muted fw-bold">MT</span>
+                                        </div>
+                                        <div class="form-text small mt-2 ms-1 text-muted">Total Volume measured in Metric Tons</div>
                                     </div>
-                                    <div class="form-text mt-2 ms-1 fw-medium text-warning"><i
-                                            class="bi bi-info-circle me-1 text-warning"></i> Dictates contract delivery
-                                        SLA deadlines.</div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label fw-bold small text-muted ms-1 text-uppercase tracking-wider">Target Settlement Price</label>
+                                        <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
+                                            <span class="input-group-text bg-light border-0 px-4 text-success fw-bold">₹</span>
+                                            <input type="number" step="0.01" min="1" class="form-control form-control-lg border-0 bg-light focus-ring-success py-3 fw-bold text-dark font-monospace" name="price_per_unit" placeholder="0.00" required>
+                                        </div>
+                                        <div class="form-text small mt-2 ms-1 text-muted">Fixed contractual price per Metric Ton</div>
+                                    </div>
                                 </div>
 
-                                <button class="btn btn-premium w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm mb-4"
-                                    type="submit">Publish to Marketplace</button>
+                                <div class="mb-5 border-top pt-4 border-light">
+                                    <label class="form-label fw-bold small text-muted ms-1 text-uppercase tracking-wider">Origin Geolocational Node</label>
+                                    <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
+                                        <span class="input-group-text bg-light border-0 px-4 text-danger"><i class="bi bi-geo-alt-fill"></i></span>
+                                        <input type="text" class="form-control form-control-lg border-0 bg-light focus-ring-danger py-3 fw-bold text-dark" name="location" placeholder="e.g. Sub-district, District, State" required>
+                                    </div>
+                                </div>
+
+                                <div class="mb-5 bg-primary bg-opacity-10 p-4 rounded-4 border border-primary border-opacity-25">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-primary text-white p-2 rounded-circle me-3"><i class="bi bi-calendar-check-fill fs-5"></i></div>
+                                        <label class="form-label mb-0 fw-bold fs-6 text-primary text-uppercase tracking-wider">Projected Delivery Schedule</label>
+                                    </div>
+                                    <div class="input-group shadow-sm bg-white" style="border-radius: 1rem; overflow:hidden;">
+                                        <input type="date" class="form-control form-control-lg border-0 py-3 fw-bold text-primary focus-ring-primary px-4 bg-transparent" name="harvest_date" required>
+                                    </div>
+                                    <div class="form-text mt-3 ms-1 fw-bold text-dark opacity-75"><i class="bi bi-info-circle-fill text-primary me-2"></i>This timeline dictates the rigid SLAs applied to any resulting contractual agreement. Accuracy is mandatory.</div>
+                                </div>
+
+                                <button class="btn btn-premium w-100 py-3 rounded-pill fw-bold fs-5 shadow-lg group hover-elevate transition mb-4" type="submit">
+                                    Transmit to Marketplace <i class="bi bi-cloud-arrow-up-fill ms-2 transition pt-1 group-hover-translate-y fs-5 vertical-align-middle"></i>
+                                </button>
                                 <div class="text-center">
                                     <a href="/dashboard"
                                         class="text-decoration-none text-muted fw-bold d-inline-flex align-items-center hover-success transition"><i
@@ -145,6 +110,7 @@
             </div>
         </div>
 
+        <jsp:include page="common/footer.jsp" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 

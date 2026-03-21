@@ -10,9 +10,9 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <title>Manage Contracts - Admin Control Center</title>
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
                 <link rel="stylesheet" href="/global-theme.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
                 <style>
                     .table-custom-header th {
                         background-color: transparent;
@@ -60,13 +60,11 @@
 
                     <div class="glass-card mb-4 p-4 p-lg-5 border-0">
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <div class="d-flex align-items-center gap-3">
+                            <div class="input-group shadow-sm" style="max-width: 250px; width: 100%;">
                                 <div
                                     class="bg-success bg-opacity-10 text-success p-3 rounded-circle border border-success border-opacity-25">
                                     <i class="bi bi-file-earmark-check-fill fs-2"></i>
                                 </div>
-                                <div>
-                                    <h1 class="fw-bold text-dark display-6 mb-1">System Contracts Overview</h1>
                                     <p class="text-muted fs-5 mb-0">Global audit view of all pipeline agreements across
                                         the platform.</p>
                                 </div>
@@ -74,7 +72,18 @@
                         </div>
                     </div>
 
-                    <div class="glass-card border-0 shadow-sm overflow-hidden">
+                    <div class="glass-card border-0 shadow-sm overflow-hidden bg-white">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center p-4 border-bottom bg-light bg-opacity-50 gap-3">
+                            <h5 class="fw-bold text-dark mb-0 m-0"><i class="bi bi-file-earmark-text text-success me-2"></i> Contract Ledger</h5>
+                            <div class="d-flex gap-2 align-items-center ms-auto">
+                                <div class="input-group shadow-sm" style="max-width: 250px;">
+                                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                                    <input type="text" id="datagridSearch" class="form-control border-start-0 ps-0" placeholder="Search contracts..." onkeyup="filterDatagrid()">
+                                </div>
+                                <button class="btn btn-outline-danger shadow-sm hover-elevate transition hide-on-pdf text-nowrap me-2" onclick="exportTableToPDF('Active Contract Ledger')"><i class="bi bi-file-earmark-pdf me-1"></i> Export PDF</button>
+                                <button class="btn btn-outline-secondary shadow-sm hover-elevate transition hide-on-pdf text-nowrap" onclick="exportTableToCSV('cfs_contracts.csv')"><i class="bi bi-download me-1"></i> Export CSV</button>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-custom align-middle mb-0 text-nowrap">
                                 <thead class="table-custom-header">
@@ -87,7 +96,7 @@
                                         <th class="py-4 px-4 pe-5 text-center">Lifecycle Status</th>
                                     </tr>
                                 </thead>
-                                <tbody class="border-top-0 bg-white bg-opacity-50">
+                                <tbody class="border-top-0 bg-white bg-opacity-50" id="datagridBody">
                                     <c:choose>
                                         <c:when test="${not empty contractDetailsList}">
                                             <c:forEach var="detail" items="${contractDetailsList}">
@@ -180,6 +189,73 @@
                 </div>
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                <script>
+                    function filterDatagrid() {
+                        let filter = document.getElementById("datagridSearch").value.toLowerCase();
+                        let rows = document.querySelectorAll("#datagridBody tr");
+                        rows.forEach(row => {
+                            let text = row.innerText.toLowerCase();
+                            row.style.display = text.includes(filter) ? "" : "none";
+                        });
+                    }
+                    
+                    function downloadCSV(csv, filename) {
+                        let csvFile = new Blob([csv], {type: "text/csv"});
+                        let downloadLink = document.createElement("a");
+                        downloadLink.download = filename;
+                        downloadLink.href = window.URL.createObjectURL(csvFile);
+                        downloadLink.style.display = "none";
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                    }
+                    function exportTableToCSV(filename) {
+                        let csv = [];
+                        let rows = document.querySelectorAll("table tr");
+                        for (let i = 0; i < rows.length; i++) {
+                            if(rows[i].style.display === "none") continue;
+                            let row = [], cols = rows[i].querySelectorAll("td, th");
+                            for (let j = 0; j < cols.length; j++) { 
+                                row.push('"' + cols[j].innerText.trim().replace(/"/g, '""') + '"');
+                            }
+                            csv.push(row.join(","));
+                        }
+                        downloadCSV(csv.join("\n"), filename);
+                        if(typeof showToast === 'function') {
+                            showToast('Export Successful', `Ledger accurately exported to ${filename}`, 'success');
+                        }
+                    }
+
+                    function exportTableToPDF(title) {
+                        if(typeof showToast === 'function') {
+                            showToast('Generating Report', 'Please wait while the PDF is compiled and encrypted.', 'primary');
+                        }
+                        const element = document.querySelector('.table-responsive');
+                        const opt = {
+                            margin:       10,
+                            filename:     `${title.replace(/ /g, '_')}.pdf`,
+                            image:        { type: 'jpeg', quality: 0.98 },
+                            html2canvas:  { scale: 2 },
+                            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+                        };
+                        
+                        const titleEl = document.createElement('h3');
+                        titleEl.innerText = title;
+                        titleEl.style.marginBottom = '20px';
+                        element.insertBefore(titleEl, element.firstChild);
+
+                        try {
+                            html2pdf().set(opt).from(element).save().then(() => {
+                                titleEl.remove();
+                                if(typeof showToast === 'function') {
+                                    showToast('Export Successful', `PDF Report successfully exported to your device`, 'success');
+                                }
+                            });
+                        } catch(e) {
+                            titleEl.remove();
+                            console.error(e);
+                        }
+                    }
+                </script>
             </body>
 
             </html>

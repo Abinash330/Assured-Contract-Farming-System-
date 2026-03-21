@@ -16,160 +16,105 @@
 
         <body class="bg-light pb-5 d-flex flex-column min-vh-100">
 
-            <nav class="navbar navbar-expand-lg premium-nav py-3 sticky-top mb-5">
-                <div class="container">
-                    <a class="navbar-brand fw-bold d-flex align-items-center" href="/dashboard">
-                        <div class="bg-success p-2 rounded-circle me-2 d-flex shadow-sm">
-                            <i class="bi bi-seedling fs-5 text-white m-0 lh-1"></i>
-                        </div>
-                        <span class="text-dark">CFS Platform</span>
-                    </a>
-                    <div class="collapse navbar-collapse">
-                        <ul class="navbar-nav ms-auto fw-semibold">
-                            <li class="nav-item">
-                                <a class="nav-link px-3" href="/dashboard"><i
-                                        class="bi bi-house border-end border-secondary border-opacity-25 pe-2 me-2"></i>
-                                    Dashboard</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <jsp:include page="common/header_user.jsp" />
 
             <div class="container py-2 flex-grow-1">
                 <div class="row justify-content-center">
-                    <div class="col-md-8 col-lg-6">
+                    <div class="col-md-9 col-lg-7 col-xl-6">
 
-                        <div class="glass-card mb-4 p-4 p-lg-5 border-0 hover-elevate">
-                            <div class="text-center mb-4">
-                                <div
-                                    class="bg-primary bg-opacity-10 d-inline-flex p-3 rounded-circle text-primary border border-primary border-opacity-25 mb-3 shadow-sm">
-                                    <i class="bi bi-bank2 fs-2"></i>
+                        <div class="glass-card rounded-4 border-0 hover-elevate overflow-hidden shadow-lg mb-5">
+                            
+                            <!-- Premium Header Area -->
+                            <div class="bg-primary text-white pt-5 pb-4 px-4 text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+                                <div class="position-absolute bg-white rounded-circle opacity-10" style="width: 200px; height: 200px; top: -50px; left: -50px; filter: blur(30px);"></div>
+                                <div class="position-absolute bg-info rounded-circle opacity-25" style="width: 250px; height: 250px; bottom: -80px; right: -80px; filter: blur(40px);"></div>
+                                
+                                <div class="d-inline-flex bg-white bg-opacity-10 p-3 rounded-circle border border-white border-opacity-25 mb-3 shadow-sm position-relative z-1">
+                                    <i class="bi bi-bank2 text-white" style="font-size: 2.5rem;"></i>
                                 </div>
-                                <h2 class="fw-bold text-dark mb-1">Bank routing details</h2>
-                                <p class="text-muted small">Manage your settlement account parameters to receive
-                                    automated escrow payouts.</p>
+                                <h2 class="fw-bold mb-1 position-relative z-1 let-spacing-tight">Financial Routing</h2>
+                                <p class="text-white opacity-75 small w-75 mx-auto position-relative z-1 lh-base">Configure your settlement parameters to ensure rapid, automated dispersion of escrowed contract funds.</p>
                             </div>
 
-                            <c:if test="${not empty message}">
-                                <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 bg-success bg-opacity-10 text-success fw-bold px-4 py-3 rounded-4"
-                                    role="alert">
-                                    <i class="bi bi-check-circle-fill me-2 fs-5 pt-1"></i> ${message}
-                                    <button type="button" class="btn-close pb-1 pt-3" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </div>
-                            </c:if>
-
-                            <c:choose>
-                                <c:when test="${hasDetails && not isEditing}">
-                                    <div class="p-4 bg-white bg-opacity-50 rounded-4 border shadow-sm mb-4">
-                                        <h4 class="fw-bold text-dark mb-4 border-bottom pb-3"><i
-                                                class="bi bi-wallet2 text-success me-2"></i> Active Settlement Route
-                                        </h4>
-
-                                        <div class="row mb-3">
-                                            <div class="col-5 fw-bold text-muted small text-uppercase tracking-wider">
-                                                UPI Identity</div>
-                                            <div
-                                                class="col-7 fw-bold text-dark font-monospace bg-light rounded px-2 py-1">
-                                                ${user.upi_id != null ? user.upi_id : '<span
-                                                    class="text-secondary fst-italic fw-normal">Null</span>'}</div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-5 fw-bold text-muted small text-uppercase tracking-wider">
-                                                Account #</div>
-                                            <div
-                                                class="col-7 fw-bold text-dark font-monospace bg-light rounded px-2 py-1">
-                                                ${user.account_number != null ? user.account_number : '<span
-                                                    class="text-secondary fst-italic fw-normal">Null</span>'}</div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-5 fw-bold text-muted small text-uppercase tracking-wider">
-                                                IFSC Routing Note</div>
-                                            <div
-                                                class="col-7 fw-bold text-dark font-monospace bg-light rounded px-2 py-1">
-                                                ${user.ifsc_code != null ? user.ifsc_code : '<span
-                                                    class="text-secondary fst-italic fw-normal">Null</span>'}</div>
-                                        </div>
+                            <div class="p-4 p-lg-5 bg-white bg-opacity-75">
+                                <c:if test="${not empty message}">
+                                    <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 bg-success bg-opacity-10 text-success fw-bold px-4 py-3 rounded-4 mb-4" role="alert">
+                                        <i class="bi bi-check-circle-fill me-2 fs-5 pt-1 vertical-align-middle d-inline-block"></i> ${message}
+                                        <button type="button" class="btn-close pb-1 pt-3" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
+                                </c:if>
 
-                                    <form action="/payment/add-details" method="get" class="mb-3">
-                                        <input type="hidden" name="edit" value="true">
-                                        <button type="submit"
-                                            class="btn btn-outline-primary w-100 rounded-pill fw-bold py-3 shadow-sm bg-white hover-elevate text-primary"><i
-                                                class="bi bi-pencil-square me-2"></i> Edit Payout Configuration</button>
-                                    </form>
-                                </c:when>
+                                <c:choose>
+                                    <c:when test="${hasDetails && not isEditing}">
+                                        <div class="p-4 bg-white rounded-4 border shadow-sm mb-4">
+                                            <h4 class="fw-bold text-dark mb-4 border-bottom pb-3 d-flex align-items-center"><i class="bi bi-shield-check text-success fs-3 me-2"></i> Active Settlement Node</h4>
 
-                                <c:otherwise>
-                                    <form action="/payment/add-details" method="post"
-                                        class="p-4 bg-white bg-opacity-50 rounded-4 border shadow-sm mb-4">
-                                        <h4 class="fw-bold text-dark mb-4 border-bottom pb-3">
-                                            <i
-                                                class="bi bi-${hasDetails ? 'pencil-square text-primary' : 'plus-circle text-success'} me-2"></i>
-                                            ${hasDetails ? 'Edit Settlement Route' : 'Configure New Route'}
-                                        </h4>
-
-                                        <div class="mb-3">
-                                            <label
-                                                class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">UPI
-                                                Identity string</label>
-                                            <div class="input-group shadow-sm"
-                                                style="border-radius: 1rem; overflow:hidden;">
-                                                <span class="input-group-text bg-light border-0 px-3 text-secondary"><i
-                                                        class="bi bi-upc-scan"></i></span>
-                                                <input type="text" name="upi_id"
-                                                    class="form-control form-control-lg border-0 bg-white"
-                                                    placeholder="e.g. validname@upi" value="${user.upi_id}" required>
+                                            <div class="row align-items-center mb-3 p-2 bg-light rounded-3">
+                                                <div class="col-sm-5 fw-bold text-muted small text-uppercase tracking-wider">UPI Identity</div>
+                                                <div class="col-sm-7 fw-bold text-primary font-monospace fs-6 text-end text-sm-start">${user.upi_id != null ? user.upi_id : '<span class="text-secondary fst-italic fw-normal">Null</span>'}</div>
+                                            </div>
+                                            <div class="row align-items-center mb-3 p-2 border-bottom border-light">
+                                                <div class="col-sm-5 fw-bold text-muted small text-uppercase tracking-wider">Account Node</div>
+                                                <div class="col-sm-7 fw-bold text-dark font-monospace fs-6 text-end text-sm-start">${user.account_number != null ? user.account_number : '<span class="text-secondary fst-italic fw-normal">Null</span>'}</div>
+                                            </div>
+                                            <div class="row align-items-center p-2 mb-2">
+                                                <div class="col-sm-5 fw-bold text-muted small text-uppercase tracking-wider">IFSC Routing</div>
+                                                <div class="col-sm-7 fw-bold text-dark font-monospace fs-6 text-end text-sm-start">${user.ifsc_code != null ? user.ifsc_code : '<span class="text-secondary fst-italic fw-normal">Null</span>'}</div>
                                             </div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label
-                                                class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Bank
-                                                Account Node</label>
-                                            <div class="input-group shadow-sm"
-                                                style="border-radius: 1rem; overflow:hidden;">
-                                                <span class="input-group-text bg-light border-0 px-3 text-secondary"><i
-                                                        class="bi bi-hash"></i></span>
-                                                <input type="text" name="account_number"
-                                                    class="form-control form-control-lg border-0 bg-white font-monospace"
-                                                    placeholder="Primary Account #" value="${user.account_number}"
-                                                    required>
+                                        <form action="/payment/add-details" method="get" class="mb-3 mt-4">
+                                            <input type="hidden" name="edit" value="true">
+                                            <button type="submit" class="btn btn-outline-primary w-100 rounded-pill fw-bold py-3 shadow-sm bg-white hover-elevate transition"><i class="bi bi-sliders me-2"></i> Reconfigure Node Parameters</button>
+                                        </form>
+                                    </c:when>
+
+                                    <c:otherwise>
+                                        <form action="/payment/add-details" method="post" class="p-4 bg-white rounded-4 border shadow-sm mb-4">
+                                            <h4 class="fw-bold text-dark mb-4 border-bottom pb-3 d-flex align-items-center">
+                                                <i class="bi bi-${hasDetails ? 'pencil-square text-primary' : 'plug-fill text-success'} fs-3 me-2"></i> 
+                                                ${hasDetails ? 'Edit Settlement Route' : 'Initialize Routing Link'}
+                                            </h4>
+
+                                            <div class="mb-4">
+                                                <label class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Virtual Payment Address (UPI)</label>
+                                                <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
+                                                    <span class="input-group-text bg-light border-0 px-3 text-secondary"><i class="bi bi-upc-scan"></i></span>
+                                                    <input type="text" name="upi_id" class="form-control form-control-lg border-0 bg-light focus-ring-success py-3 text-dark fw-bold" placeholder="e.g. business@upi" value="${user.upi_id}" required>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="mb-4">
-                                            <label
-                                                class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">IFSC
-                                                Routing ID</label>
-                                            <div class="input-group shadow-sm"
-                                                style="border-radius: 1rem; overflow:hidden;">
-                                                <span class="input-group-text bg-light border-0 px-3 text-secondary"><i
-                                                        class="bi bi-building"></i></span>
-                                                <input type="text" name="ifsc_code"
-                                                    class="form-control form-control-lg border-0 bg-white font-monospace text-uppercase"
-                                                    placeholder="e.g. SBIN0001234" value="${user.ifsc_code}" required>
+                                            <div class="mb-4">
+                                                <label class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Bank Account Identifier</label>
+                                                <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
+                                                    <span class="input-group-text bg-light border-0 px-3 text-secondary"><i class="bi bi-hash"></i></span>
+                                                    <input type="text" name="account_number" class="form-control form-control-lg border-0 bg-light focus-ring-success py-3 font-monospace text-dark fw-bold" placeholder="Primary Account #" value="${user.account_number}" required>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <button type="submit"
-                                            class="btn btn-premium w-100 rounded-pill fw-bold py-3 shadow-sm text-white fs-5"><i
-                                                class="bi bi-cloud-arrow-up-fill me-2"></i> Save Configuration</button>
-                                    </form>
-                                </c:otherwise>
-                            </c:choose>
+                                            <div class="mb-5">
+                                                <label class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Institution IFSC Code</label>
+                                                <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
+                                                    <span class="input-group-text bg-light border-0 px-3 text-secondary"><i class="bi bi-building-check"></i></span>
+                                                    <input type="text" name="ifsc_code" class="form-control form-control-lg border-0 bg-light focus-ring-success py-3 font-monospace text-uppercase text-dark fw-bold" placeholder="e.g. SBIN0001234" value="${user.ifsc_code}" required>
+                                                </div>
+                                            </div>
 
-                            <div class="text-center mt-3">
-                                <a href="/dashboard"
-                                    class="text-decoration-none text-secondary fw-bold hover-success transition"><i
-                                        class="bi bi-arrow-left-circle me-1"></i> Return to Dashboard</a>
+                                            <button type="submit" class="btn btn-premium w-100 rounded-pill fw-bold py-3 shadow-lg text-white fs-5 group hover-elevate transition"><i class="bi bi-cloud-arrow-up-fill me-2 transition group-hover-translate-y d-inline-block"></i> Commit Secure Configuration</button>
+                                        </form>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <div class="text-center mt-4 border-top pt-4">
+                                    <a href="/dashboard" class="text-decoration-none text-muted fw-bold hover-dark transition"><i class="bi bi-arrow-left me-2"></i> Cancel & Return Home</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <jsp:include page="common/footer.jsp" />
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         </body>
 

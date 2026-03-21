@@ -13,38 +13,19 @@
 
     <body class="pb-5">
 
-        <nav class="navbar navbar-expand-lg premium-nav py-3 sticky-top mb-5">
-            <div class="container">
-                <a class="navbar-brand fw-bold d-flex align-items-center" href="/dashboard">
-                    <div class="bg-success py-1 px-2 rounded-3 me-2 d-flex shadow-sm">
-                        <i class="bi bi-seedling fs-5 text-white m-0 lh-1"></i>
-                    </div>
-                    <span class="text-dark">CFS Platform</span>
-                </a>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav ms-auto fw-semibold">
-                        <li class="nav-item">
-                            <a class="nav-link px-3" href="/dashboard"><i
-                                    class="bi bi-house border-end border-secondary border-opacity-25 pe-2 me-2"></i>
-                                Dashboard</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <jsp:include page="common/header_user.jsp" />
 
         <div class="container py-2">
             <div class="row justify-content-center">
                 <div class="col-md-9 col-lg-7">
                     <div class="glass-card border-0 hover-elevate">
 
-                        <div class="bg-white bg-opacity-50 border-bottom pt-5 pb-4 text-center rounded-top-4">
-                            <div class="d-inline-flex bg-primary bg-opacity-10 p-3 rounded-circle mb-3 shadow-sm">
-                                <i class="bi bi-pencil-square text-primary" style="font-size: 2.5rem;"></i>
+                        <div class="bg-success bg-opacity-10 border-bottom border-success border-opacity-10 pt-5 pb-4 text-center rounded-top-4" style="background: linear-gradient(135deg, rgba(22, 163, 74, 0.05) 0%, rgba(22, 163, 74, 0.15) 100%);">
+                            <div class="d-inline-flex bg-success bg-opacity-25 p-3 rounded-circle mb-3 shadow-sm transform hover-elevate transition">
+                                <i class="bi bi-pencil-square text-success" style="font-size: 2.5rem;"></i>
                             </div>
-                            <h2 class="fw-bold text-dark mb-1">Update Listing Info</h2>
-                            <p class="text-muted small w-75 mx-auto">Modify the details of your active commodity listing
-                                to reflect the latest market conditions.</p>
+                            <h2 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">Update Harvest Listing</h2>
+                            <p class="text-success text-opacity-75 fw-semibold small w-75 mx-auto">Keep your agricultural portfolio accurate and competitive.</p>
                         </div>
 
                         <div class="p-4 p-md-5 bg-white bg-opacity-25 rounded-bottom-4">
@@ -69,7 +50,7 @@
                                             Quantity</label>
                                         <div class="input-group shadow-sm"
                                             style="border-radius: 1rem; overflow:hidden;">
-                                            <span class="input-group-text bg-light border-0 px-4 text-primary"><i
+                                            <span class="input-group-text bg-light border-0 px-4 text-success"><i
                                                     class="bi bi-boxes"></i></span>
                                             <input type="number" class="form-control form-control-lg border-0 bg-white"
                                                 name="quantity" value="${crop.quantity}" required>
@@ -105,14 +86,14 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-5 pb-3 border-bottom">
+                                <div class="mb-5 pb-3 border-bottom border-success border-opacity-10">
                                     <label
-                                        class="form-label fw-bold small text-primary ms-1 text-uppercase tracking-wider">Expected
+                                        class="form-label fw-bold small text-success ms-1 text-uppercase tracking-wider">Expected
                                         Harvest Date</label>
-                                    <div class="input-group shadow-sm border border-primary border-opacity-25"
+                                    <div class="input-group shadow-sm border border-success border-opacity-25"
                                         style="border-radius: 1rem; overflow:hidden;">
                                         <span
-                                            class="input-group-text bg-primary bg-opacity-10 border-0 px-4 text-primary"><i
+                                            class="input-group-text bg-success bg-opacity-10 border-0 px-4 text-success"><i
                                                 class="bi bi-calendar-event"></i></span>
                                         <input type="date" class="form-control form-control-lg border-0 bg-white"
                                             name="harvest_date" value="${crop.harvestDate}" required>
@@ -121,8 +102,8 @@
 
                                 <div class="d-flex flex-column flex-sm-row gap-3">
                                     <button type="submit"
-                                        class="btn btn-premium w-100 rounded-pill fw-bold py-3 shadow-sm text-white flex-grow-1"><i
-                                            class="bi bi-save2 me-2"></i> Apply Updates</button>
+                                        class="btn btn-success w-100 rounded-pill fw-bold py-3 shadow-lg text-white flex-grow-1 hover-elevate transition"><i
+                                            class="bi bi-save2 me-2"></i> Save Harvest Adjustments</button>
                                     <a href="/dashboard"
                                         class="btn btn-outline-secondary w-100 rounded-pill fw-bold py-3 bg-white flex-grow-1 d-inline-flex justify-content-center align-items-center"><i
                                             class="bi bi-x-circle me-2"></i> Cancel</a>
@@ -133,6 +114,7 @@
                 </div>
             </div>
         </div>
+        <jsp:include page="common/footer.jsp" />
     </body>
 
     </html>

@@ -35,131 +35,117 @@
 
         <body class="bg-light pb-5 d-flex flex-column min-vh-100">
 
-            <nav class="navbar navbar-expand-lg premium-nav py-3 sticky-top mb-5">
-                <div class="container">
-                    <a class="navbar-brand fw-bold d-flex align-items-center" href="/dashboard">
-                        <div class="bg-primary p-2 rounded-circle me-2 d-flex shadow-sm">
-                            <i class="bi bi-shield-lock-fill fs-5 text-white m-0 lh-1"></i>
-                        </div>
-                        <span class="text-dark">CFS Escrow Gateway</span>
-                    </a>
-                    <div class="collapse navbar-collapse">
-                        <ul class="navbar-nav ms-auto fw-semibold">
-                            <li class="nav-item">
-                                <a class="nav-link px-3" href="/contracts"><i
-                                        class="bi bi-file-earmark-text border-end border-secondary border-opacity-25 pe-2 me-2"></i>
-                                    All Contracts</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <jsp:include page="common/header_user.jsp" />
 
-            <div class="container py-2 flex-grow-1">
+            <div class="container py-4 flex-grow-1">
                 <div class="row justify-content-center">
-                    <div class="col-md-9 col-lg-7">
-
-                        <div
-                            class="glass-card mb-4 p-4 p-lg-5 border-0 hover-elevate border-top border-4 border-primary">
-                            <div class="text-center mb-4">
-                                <div
-                                    class="bg-primary bg-opacity-10 d-inline-flex p-3 rounded-circle text-primary border border-primary border-opacity-25 mb-3 shadow-sm">
-                                    <i class="bi bi-lock-fill fs-1"></i>
+                    <div class="col-lg-10 col-xl-9">
+                        <div class="row g-0 glass-card border-0 overflow-hidden shadow-lg" style="border-radius: 1.5rem;">
+                            
+                            <!-- Left: Invoice Summary -->
+                            <div class="col-md-5 bg-gradient-premium p-4 p-md-5 text-white d-flex flex-column justify-content-between position-relative overflow-hidden" style="background: linear-gradient(135deg, var(--primary-green) 0%, #047857 100%);">
+                                <div class="position-absolute bg-white rounded-circle opacity-10" style="width: 300px; height: 300px; top: -100px; left: -100px; pointer-events: none; filter: blur(40px);"></div>
+                                
+                                <div class="position-relative z-1 mb-5">
+                                    <div class="d-inline-flex bg-white bg-opacity-25 p-3 rounded-circle text-white mb-4 shadow-sm border border-white border-opacity-25">
+                                        <i class="bi bi-receipt-cutoff fs-2"></i>
+                                    </div>
+                                    <h2 class="fw-bold mb-2 text-white">Escrow Invoice</h2>
+                                    <p class="text-white text-opacity-75 small lh-lg">Secure your contract by funding the platform escrow. Assets are crypto-locked until delivery is verified.</p>
                                 </div>
-                                <h2 class="fw-bold text-dark mb-1">Fund Contract Escrow</h2>
-                                <p class="text-muted small w-75 mx-auto">Digitally lock financial tokens against the
-                                    target contract. Assets will only be cleared upon physical delivery milestone
-                                    verification.</p>
-                            </div>
-
-                            <form action="/payment/process" method="post"
-                                class="p-4 bg-white bg-opacity-50 rounded-4 border shadow-sm">
-
-                                <div class="mb-4">
-                                    <label for="contract"
-                                        class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Target
-                                        Contract Identification</label>
-                                    <select id="contract" name="contract_id"
-                                        class="form-select form-select-lg shadow-sm border" required
-                                        style="border-radius: 1rem;">
-                                        <option value="">-- Choose verified contract payload --</option>
-                                        <c:forEach var="c" items="${contractsToPay}">
-                                            <option value="${c.contractId}" ${c.contractId==selectedContractId
-                                                ? 'selected' : '' } data-upi="${c.upiId}" data-ifsc="${c.ifscCode}"
-                                                data-account="${c.accountNumber}">
-                                                [REF #${c.contractId}] : ${c.cropName} - Escrow Requirement
-                                                ₹${c.totalPrice}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="payment_method"
-                                        class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Transmission
-                                        Pipeline</label>
-                                    <select id="payment_method" name="payment_method"
-                                        class="form-select form-select-lg shadow-sm border" required
-                                        onchange="displayPaymentDetails()" style="border-radius: 1rem;">
-                                        <option value="">-- Choose settlement mechanism --</option>
-                                        <option value="UPI">UPI Protocol</option>
-                                        <option value="Net Banking">Legacy Bank Wire</option>
-                                    </select>
-                                </div>
-
-                                <!-- Data Cards -->
-                                <div id="upi-details" style="display: none;" class="mb-4">
-                                    <div
-                                        class="bg-light border rounded-4 p-3 ps-4 shadow-sm border-start border-4 border-success">
-                                        <h6 class="fw-bold text-success mb-2 text-uppercase small tracking-wider"><i
-                                                class="bi bi-upc-scan me-1"></i> Dest. UPI Identity</h6>
-                                        <p class="mb-0 fs-5 font-monospace text-dark fw-bold" id="upi-id">Null</p>
+                                
+                                <div class="position-relative z-1 border-top border-white border-opacity-25 pt-4 mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="text-white text-opacity-75 small text-uppercase tracking-wider">Platform Fee</span>
+                                        <span class="fw-bold fs-6 text-white">₹0.00</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="text-white text-opacity-75 small text-uppercase tracking-wider">Escrow Protection</span>
+                                        <span class="badge bg-white bg-opacity-25 text-white border border-white border-opacity-50"><i class="bi bi-shield-check me-1"></i> Covered</span>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <i class="bi bi-shield-lock text-white opacity-50 fs-1"></i>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div id="bank-details" style="display: none;" class="mb-4">
-                                    <div
-                                        class="bg-light border rounded-4 p-3 ps-4 shadow-sm border-start border-4 border-primary">
-                                        <h6 class="fw-bold text-primary mb-2 text-uppercase small tracking-wider"><i
-                                                class="bi bi-bank2 me-1"></i> Bank Node Resolution</h6>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <p class="mb-0 small text-muted">Account Route</p>
-                                                <p class="mb-0 font-monospace text-dark fw-bold" id="account-number">
-                                                    Null</p>
+                            <!-- Right: Payment Interface -->
+                            <div class="col-md-7 p-4 p-md-5 bg-white position-relative">
+                                <div class="text-center d-md-none mb-4">
+                                    <h2 class="fw-bold text-dark mb-1">Fund Contract Escrow</h2>
+                                    <p class="text-muted small">Digitally lock financial tokens against the target contract.</p>
+                                </div>
+                                <h3 class="fw-bold text-dark mb-4 d-none d-md-block">Payment <span class="text-success">Initialization</span></h3>
+
+                                <form action="/payment/process" method="post">
+                                    <div class="mb-4">
+                                        <label for="contract" class="form-label fw-bold small text-muted text-uppercase letter-spacing-wide ms-1">Target Contract</label>
+                                        <select id="contract" name="contract_id" class="form-select form-select-lg shadow-sm border focus-ring-success bg-light text-dark fw-bold" required style="border-radius: 0.75rem;">
+                                            <option value="" class="text-muted fw-normal">-- Select Verified Payload --</option>
+                                            <c:forEach var="c" items="${contractsToPay}">
+                                                <option value="${c.contractId}" ${c.contractId==selectedContractId ? 'selected' : '' } data-upi="${c.upiId}" data-ifsc="${c.ifscCode}" data-account="${c.accountNumber}">
+                                                    [REF #${c.contractId}] : ${c.cropName} — ₹${c.totalPrice}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label for="payment_method" class="form-label fw-bold small text-muted text-uppercase letter-spacing-wide ms-1">Transmission Mode</label>
+                                        <select id="payment_method" name="payment_method" class="form-select form-select-lg shadow-sm border focus-ring-success bg-light" required onchange="displayPaymentDetails()" style="border-radius: 0.75rem;">
+                                            <option value="">-- Choose settlement mechanism --</option>
+                                            <option value="UPI">UPI Protocol (Instant)</option>
+                                            <option value="Net Banking">Legacy Bank Wire (NEFT/RTGS)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Data Cards -->
+                                    <div id="upi-details" style="display: none;" class="mb-4 slide-down">
+                                        <div class="bg-success bg-opacity-10 border border-success border-opacity-25 rounded-4 p-3 ps-4 shadow-sm position-relative overflow-hidden">
+                                            <div class="position-absolute top-0 end-0 p-2 opacity-25">
+                                                <i class="bi bi-qr-code-scan fs-1 text-success"></i>
                                             </div>
-                                            <div class="col-6">
-                                                <p class="mb-0 small text-muted">IFSC Code</p>
-                                                <p class="mb-0 font-monospace text-dark fw-bold" id="ifsc-code">Null</p>
+                                            <h6 class="fw-bold text-success mb-2 text-uppercase small letter-spacing-wide"><i class="bi bi-upc-scan me-1"></i> Dest. UPI Identity</h6>
+                                            <p class="mb-0 fs-5 font-monospace text-dark fw-bold position-relative z-1" id="upi-id">Null</p>
+                                        </div>
+                                    </div>
+
+                                    <div id="bank-details" style="display: none;" class="mb-4 slide-down">
+                                        <div class="bg-primary bg-opacity-10 border border-primary border-opacity-25 rounded-4 p-3 ps-4 shadow-sm position-relative overflow-hidden">
+                                            <div class="position-absolute top-0 end-0 p-2 opacity-25">
+                                                <i class="bi bi-bank2 fs-1 text-primary"></i>
+                                            </div>
+                                            <h6 class="fw-bold text-primary mb-3 text-uppercase small letter-spacing-wide position-relative z-1"><i class="bi bi-bank2 me-1"></i> Bank Node Resolution</h6>
+                                            <div class="row position-relative z-1">
+                                                <div class="col-6 border-end border-primary border-opacity-25">
+                                                    <p class="mb-0 small text-primary opacity-75">Account Route</p>
+                                                    <p class="mb-0 font-monospace text-dark fw-bold fs-6" id="account-number">Null</p>
+                                                </div>
+                                                <div class="col-6 ps-3">
+                                                    <p class="mb-0 small text-primary opacity-75">IFSC Code</p>
+                                                    <p class="mb-0 font-monospace text-dark fw-bold fs-6" id="ifsc-code">Null</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="mb-5 pb-3 border-bottom border-light">
-                                    <label for="transaction_id"
-                                        class="form-label fw-bold small text-primary text-uppercase tracking-wider ms-1">Immutable
-                                        Verification Hash (TxID)</label>
-                                    <div class="input-group shadow-sm border border-primary border-opacity-25"
-                                        style="border-radius: 1rem; overflow:hidden;">
-                                        <span
-                                            class="input-group-text bg-primary bg-opacity-10 border-0 px-4 text-primary"><i
-                                                class="bi bi-hash"></i></span>
-                                        <input type="text" id="transaction_id" name="transaction_id"
-                                            class="form-control form-control-lg border-0 bg-white font-monospace"
-                                            placeholder="Enter bank tx string..." required>
+                                    <div class="mb-5 border-top border-light pt-4 mt-2">
+                                        <label for="transaction_id" class="form-label fw-bold small text-dark text-uppercase letter-spacing-wide ms-1">Immutable Verification Hash (TxID)</label>
+                                        <div class="input-group shadow-sm border" style="border-radius: 0.75rem; overflow:hidden;">
+                                            <span class="input-group-text bg-light border-0 px-4 text-muted"><i class="bi bi-hash fs-5"></i></span>
+                                            <input type="text" id="transaction_id" name="transaction_id" class="form-control form-control-lg border-0 bg-white font-monospace focus-ring-success" placeholder="Paste bank transaction hash..." required>
+                                        </div>
+                                        <div class="form-text small mt-2 ms-1 text-muted"><i class="bi bi-info-circle me-1"></i> Required for cryptographic reconciliation.</div>
                                     </div>
-                                </div>
 
-                                <button type="submit"
-                                    class="btn btn-premium w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm text-white"><i
-                                        class="bi bi-shield-lock-fill me-2"></i> Lock Funds In Escrow</button>
-                            </form>
-
-                            <div class="text-center mt-4">
-                                <a href="/contracts"
-                                    class="text-decoration-none text-muted fw-bold hover-primary transition"><i
-                                        class="bi bi-arrow-left-circle me-1"></i> Return to Audit Dashboard</a>
+                                    <button type="submit" class="btn btn-premium w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm text-white group hover-elevate transition mb-3">
+                                        <i class="bi bi-shield-lock-fill me-2 transition group-hover-translate-x"></i> Lock Funds In Escrow
+                                    </button>
+                                    
+                                    <div class="text-center">
+                                        <a href="/contracts" class="text-decoration-none text-muted small fw-bold hover-dark transition"><i class="bi bi-arrow-left me-1"></i> Audit Dashboard</a>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -187,6 +173,7 @@
                 // Initialize on load
                 updateDetails();
             </script>
+            <jsp:include page="common/footer.jsp" />
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         </body>
 

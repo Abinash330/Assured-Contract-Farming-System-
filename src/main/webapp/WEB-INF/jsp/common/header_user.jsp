@@ -1,0 +1,19 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<c:choose>
+    <c:when test="${sessionScope.role == 'farmer'}">
+        <jsp:include page="/WEB-INF/jsp/common/header_farmer.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.role == 'buyer'}">
+        <jsp:include page="/WEB-INF/jsp/common/header_buyer.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.role == 'inspector'}">
+        <jsp:include page="/WEB-INF/jsp/common/header_inspector.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.role == 'admin'}">
+        <jsp:include page="/WEB-INF/jsp/common/header_admin.jsp" />
+    </c:when>
+    <c:otherwise>
+        <jsp:include page="/WEB-INF/jsp/common/header_public.jsp" />
+    </c:otherwise>
+</c:choose>

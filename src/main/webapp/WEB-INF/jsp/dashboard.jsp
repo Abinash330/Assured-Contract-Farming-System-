@@ -19,68 +19,41 @@
             <body>
 
                 <!-- Navigation -->
-                <nav class="navbar navbar-expand-lg premium-nav py-3 sticky-top">
-                    <div class="container">
-                        <a class="navbar-brand fw-bold d-flex align-items-center" href="/dashboard">
-                            <div class="bg-success p-2 rounded-circle me-2 d-flex shadow-sm">
-                                <i class="bi bi-seedling fs-5 text-white m-0 lh-1"></i>
-                            </div>
-                            <span class="text-dark">CFS Dashboard</span>
-                        </a>
-                        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarNav">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-semibold align-items-center">
-                                <li class="nav-item">
-                                    <a class="nav-link px-3" href="/profile"><i class="bi bi-person-circle me-1"></i>
-                                        Profile</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link px-3" href="/contracts"><i
-                                            class="bi bi-file-earmark-text me-1"></i> Contracts</a>
-                                </li>
-                                <c:if test="${sessionScope.role == 'farmer'}">
-                                    <li class="nav-item">
-                                        <a class="nav-link px-3" href="/payment/add-details"><i
-                                                class="bi bi-bank me-1"></i> Add Bank</a>
-                                    </li>
-                                </c:if>
-                                <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
-                                    <a class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold shadow-sm py-2"
-                                        href="/logout"><i class="bi bi-box-arrow-right me-1"></i> Logout</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+                <jsp:include page="common/header_user.jsp" />
 
                 <!-- Main Content -->
                 <main class="container py-5">
-                    <div class="glass-card mb-5 p-4 p-md-5">
-                        <div class="row align-items-center">
-                            <div class="col-lg-8 mb-4 mb-lg-0">
-                                <span
-                                    class="badge bg-success bg-opacity-10 text-success border-success px-3 py-2 rounded-pill mb-3 fw-semibold">
-                                    <i class="bi bi-shield-check me-1"></i> Verified
-                                    ${fn:toUpperCase(fn:substring(sessionScope.role, 0,
-                                    1))}${fn:substring(sessionScope.role, 1, fn:length(sessionScope.role))} Account
-                                </span>
-                                <h1 class="fw-bold text-dark display-5 mb-2">Welcome back, ${sessionScope.username}! 👋
-                                </h1>
-                                <p class="text-muted fs-5 mb-0">Manage your ${sessionScope.role == 'farmer' ? 'live
-                                    listings and sales pipeline' : 'procured crops and active purchases'}.</p>
+                    <div class="glass-card mb-5 p-0 overflow-hidden border-0 shadow-sm" style="background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-8 p-4 p-md-5">
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill fw-bold" style="letter-spacing: 0.5px;">
+                                        <i class="bi bi-shield-check me-1"></i> VERIFIED ${fn:toUpperCase(fn:substring(sessionScope.role, 0, 1))}${fn:substring(sessionScope.role, 1, fn:length(sessionScope.role))}
+                                    </span>
+                                    <span class="text-muted small fw-semibold"><i class="bi bi-geo-alt-fill text-danger opacity-75 me-1"></i> Registered Partner</span>
+                                </div>
+                                <h1 class="fw-bold text-dark display-5 mb-3" style="letter-spacing: -1px;">Welcome back, <span class="text-success">${sessionScope.username}</span>! 👋</h1>
+                                <p class="text-secondary fs-5 mb-0" style="max-width: 600px;">
+                                    ${sessionScope.role == 'farmer' ? 'Manage your live crop listings, track incoming contracts, and optimize your sales pipeline.' : (sessionScope.role == 'buyer' ? 'Oversee your procured inventory and track active agricultural purchases.' : 'Monitor global contract parameters and execute mandatory quality control certifications.')}
+                                </p>
                             </div>
-                            <div class="col-lg-4 text-lg-end">
+                            <div class="col-lg-4 p-4 p-md-5 bg-success bg-opacity-10 h-100 d-flex flex-column justify-content-center align-items-lg-end border-start border-success border-opacity-10" style="min-height: 100%;">
                                 <c:if test="${sessionScope.role == 'farmer'}">
-                                    <a href="/crop/add" class="btn btn-premium rounded-pill fs-5 shadow px-4 py-3">
-                                        <i class="bi bi-plus-circle me-2"></i> List New Crop
+                                    <p class="text-success fw-bold mb-3 small text-uppercase" style="letter-spacing: 1px;">Quick Actions</p>
+                                    <a href="/crop/add" class="btn btn-success rounded-pill fs-6 shadow-sm px-4 py-3 fw-bold d-inline-flex align-items-center gap-2 transition hover-elevate w-100 justify-content-center">
+                                        <i class="bi bi-plus-circle-fill fs-5"></i> New Crop Listing
                                     </a>
                                 </c:if>
                                 <c:if test="${sessionScope.role == 'buyer'}">
-                                    <a href="/crop/browse" class="btn btn-premium rounded-pill fs-5 shadow px-4 py-3">
-                                        <i class="bi bi-search me-2"></i> Browse Market
+                                    <p class="text-primary fw-bold mb-3 small text-uppercase" style="letter-spacing: 1px;">Quick Actions</p>
+                                    <a href="/crop/browse" class="btn btn-primary rounded-pill fs-6 shadow-sm px-4 py-3 fw-bold d-inline-flex align-items-center gap-2 transition hover-elevate w-100 justify-content-center">
+                                        <i class="bi bi-search fs-5"></i> Browse Market
+                                    </a>
+                                </c:if>
+                                <c:if test="${sessionScope.role == 'inspector'}">
+                                    <p class="text-info fw-bold mb-3 small text-uppercase" style="letter-spacing: 1px;">Quick Actions</p>
+                                    <a href="/contracts" class="btn btn-info rounded-pill fs-6 shadow-sm text-white px-4 py-3 fw-bold d-inline-flex align-items-center gap-2 transition hover-elevate w-100 justify-content-center">
+                                        <i class="bi bi-clipboard-check fs-5"></i> Audit Contracts
                                     </a>
                                 </c:if>
                             </div>
@@ -88,11 +61,50 @@
                     </div>
 
                     <c:if test="${sessionScope.role == 'farmer'}">
-                        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
-                            <h3 class="fw-bold text-dark mb-0"><i class="bi bi-graph-up-arrow text-success me-2"></i>
-                                Your Active Listings</h3>
-                            <span class="badge bg-primary rounded-pill px-3 py-2">${fn:length(listedCrops)}
-                                Active</span>
+                        <!-- Language Translator -->
+                        <div class="glass-card mb-4 p-3 d-flex flex-wrap align-items-center justify-content-between border-0 shadow-sm" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);">
+                            <div class="d-flex align-items-center gap-3 mb-2 mb-md-0">
+                                <div class="bg-primary bg-opacity-10 p-2 rounded-circle text-primary">
+                                    <i class="bi bi-translate fs-4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-dark">Page Language</h6>
+                                    <small class="text-muted">Translate the dashboard into your preferred language.</small>
+                                </div>
+                            </div>
+                            <div id="google_translate_element" class="mt-1"></div>
+                        </div>
+                        <style>
+                            /* Tweak Google Translate widget to fit the premium design */
+                            .goog-te-gadget-simple {
+                                background-color: #f8fafc !important;
+                                border: 1px solid #e2e8f0 !important;
+                                border-radius: 50rem !important;
+                                padding: 6px 12px !important;
+                                font-family: inherit !important;
+                                font-size: 0.9rem !important;
+                            }
+                            .goog-te-gadget-icon { display: none; }
+                            .goog-te-menu-value span { color: #1e293b !important; font-weight: 500; }
+                            body { top: 0 !important; } /* override google translate bar pushing body down */
+                            .skiptranslate iframe { display: none !important; }
+                        </style>
+                        <script type="text/javascript">
+                            function googleTranslateElementInit() {
+                              new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'en,hi,mr,gu,ta,te,kn,ml,pa,bn,or', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+                            }
+                        </script>
+                        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
+                            <div>
+                                <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;"><i class="bi bi-graph-up-arrow text-success me-2"></i> Your Harvest Portfolio</h3>
+                                <p class="text-muted small mb-0">Active listings currently available to buyers on the market.</p>
+                            </div>
+                            <div class="bg-success bg-opacity-10 border border-success border-opacity-25 rounded-pill px-4 py-2 text-success fw-bold shadow-sm d-flex align-items-center gap-2">
+                                <span class="fs-5">${fn:length(listedCrops)}</span>
+                                <span class="small text-uppercase" style="letter-spacing: 0.5px;">Active Items</span>
+                            </div>
                         </div>
 
                         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -128,39 +140,53 @@
                                     value="${fn:toLowerCase(crop.status) == 'sold' ? 'bg-secondary' : 'bg-success'}" />
 
                                 <div class="col">
-                                    <div class="glass-card h-100 ${soldClass} position-relative">
-                                        <span
-                                            class="badge ${badgeClass} position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill shadow-sm">${crop.status}</span>
-                                        <img src="${imagePath}" class="card-img-top border-bottom"
-                                            alt="${crop.cropName}" style="height: 220px; object-fit: cover;">
+                                    <div class="card h-100 border-0 shadow-sm transition hover-elevate rounded-4 overflow-hidden ${soldClass}" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);">
+                                        <div class="position-relative">
+                                            <span class="badge ${badgeClass} position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill shadow fw-bold text-uppercase" style="letter-spacing: 0.5px; z-index: 2;">${crop.status}</span>
+                                            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-10 transition hover-opacity-0" style="z-index: 1; opacity: 0;"></div>
+                                            <img src="${imagePath}" class="card-img-top" alt="${crop.cropName}" style="height: 240px; object-fit: cover;">
+                                        </div>
 
-                                        <div class="card-body p-4">
-                                            <h4 class="card-title fw-bold text-dark mb-3">${crop.cropName}</h4>
-                                            <div class="d-flex text-secondary mb-2">
-                                                <i class="bi bi-boxes me-2 text-primary"></i>
-                                                <span class="fw-semibold">${crop.quantity} Metric Tons</span>
+                                        <div class="card-body p-4 d-flex flex-column">
+                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                <h4 class="card-title fw-bold text-dark mb-0" style="letter-spacing: -0.5px;">${crop.cropName}</h4>
+                                                <div class="bg-light rounded p-2 text-center border">
+                                                    <span class="d-block text-success fw-bold fs-5 lh-1">₹${crop.pricePerUnit}</span>
+                                                    <span class="text-muted small" style="font-size: 0.65rem; letter-spacing: 0.5px;">PER TON</span>
+                                                </div>
                                             </div>
-                                            <div class="d-flex text-secondary mb-2">
-                                                <i class="bi bi-tag me-2 text-success"></i>
-                                                <span class="fw-bold text-dark">₹${crop.pricePerUnit}</span> <span
-                                                    class="ms-1 small">/ Ton</span>
-                                            </div>
-                                            <div class="d-flex text-secondary mb-4">
-                                                <i class="bi bi-geo-alt-fill me-2 text-danger"></i>
-                                                <span class="small text-truncate">${crop.location}</span>
+                                            
+                                            <div class="d-flex flex-column gap-2 mb-4 bg-light bg-opacity-50 p-3 rounded-3 border">
+                                                <div class="d-flex align-items-center text-secondary">
+                                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3 text-primary"><i class="bi bi-boxes"></i></div>
+                                                    <div>
+                                                        <span class="d-block small text-muted text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 1px;">Available Volume</span>
+                                                        <span class="fw-bold text-dark">${crop.quantity} Metric Tons</span>
+                                                    </div>
+                                                </div>
+                                                <hr class="my-1 opacity-10">
+                                                <div class="d-flex align-items-center text-secondary">
+                                                    <div class="bg-danger bg-opacity-10 p-2 rounded me-3 text-danger"><i class="bi bi-geo-alt-fill"></i></div>
+                                                    <div class="text-truncate">
+                                                        <span class="d-block small text-muted text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 1px;">Harvest Location</span>
+                                                        <span class="fw-bold text-dark text-truncate d-block" title="${crop.location}">${crop.location}</span>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <c:if test="${fn:toLowerCase(crop.status) != 'sold'}">
-                                                <div class="d-flex gap-2 mt-auto border-top pt-3">
+                                                <div class="d-flex gap-2 mt-auto">
                                                     <form action="/crop/update" method="get" class="w-50">
                                                         <input type="hidden" name="crop_id" value="${crop.id}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-premium w-100 btn-sm">Update</button>
+                                                        <button type="submit" class="btn btn-light border-success border-opacity-25 text-success w-100 py-2 fw-bold transition align-items-center d-flex justify-content-center gap-1" onmouseover="this.classList.add('bg-success', 'text-white');" onmouseout="this.classList.remove('bg-success', 'text-white');">
+                                                            <i class="bi bi-pencil-square"></i> Edit
+                                                        </button>
                                                     </form>
                                                     <form action="/crop/delete" method="post" class="w-50">
                                                         <input type="hidden" name="crop_id" value="${crop.id}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-danger w-100 rounded-pill btn-sm fw-bold">Delete</button>
+                                                        <button type="submit" class="btn btn-light border-danger border-opacity-25 text-danger w-100 py-2 fw-bold transition align-items-center d-flex justify-content-center gap-1" onmouseover="this.classList.add('bg-danger', 'text-white');" onmouseout="this.classList.remove('bg-danger', 'text-white');">
+                                                            <i class="bi bi-trash3"></i> Remove
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </c:if>
@@ -187,9 +213,37 @@
                     </c:if>
 
                     <c:if test="${sessionScope.role == 'buyer'}">
+                        <!-- Procurement Analytics Chart Section -->
+                        <div class="row mb-5 g-4">
+                            <div class="col-lg-8">
+                                <div class="glass-card p-4 h-100 border-0 shadow-sm" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);">
+                                    <h4 class="fw-bold text-dark mb-4" style="letter-spacing: -0.5px;"><i class="bi bi-bar-chart-fill text-primary me-2"></i> Procurement Analytics</h4>
+                                    <div style="height: 300px; position: relative;">
+                                        <canvas id="procurementChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="glass-card p-4 h-100 border-0 shadow-sm bg-primary bg-opacity-10 d-flex flex-column justify-content-center">
+                                    <h5 class="text-primary fw-bold mb-3 text-uppercase" style="letter-spacing: 1px;">YTD Investment</h5>
+                                    <h1 class="display-4 fw-bold text-dark mb-1">₹${ytdSpend} <span class="fs-5 text-muted">Lakhs</span></h1>
+                                    <p class="text-secondary small mb-4">Total capital deployed across ${fn:length(purchasedCrops)} active contracts.</p>
+                                    
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <span class="small fw-semibold text-secondary">Fulfillment Goal</span>
+                                        <span class="small fw-bold text-primary">78%</span>
+                                    </div>
+                                    <div class="progress mb-4" style="height: 8px;">
+                                        <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    
+                                    <a href="/crop/browse" class="btn btn-primary rounded-pill fw-bold py-2 shadow-sm mt-auto"><i class="bi bi-search me-1"></i> Expand Portfolio</a>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
-                            <h3 class="fw-bold text-dark mb-0"><i class="bi bi-box-seam text-primary me-2"></i> Procured
-                                Inventory</h3>
+                            <h3 class="fw-bold text-dark mb-0" style="letter-spacing: -0.5px;"><i class="bi bi-box-seam-fill text-primary me-2"></i> Procured Assets Inventory</h3>
                         </div>
 
                         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -219,26 +273,37 @@
                                 </c:choose>
 
                                 <div class="col">
-                                    <div class="glass-card hover-elevate h-100 position-relative">
-                                        <span
-                                            class="badge bg-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill shadow-sm">Procured</span>
-                                        <img src="${imagePath}" class="card-img-top border-bottom"
-                                            alt="${crop.cropName}" style="height: 220px; object-fit: cover;">
+                                    <div class="card border-0 shadow-sm transition hover-elevate rounded-4 overflow-hidden h-100" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);">
+                                        <div class="position-relative">
+                                            <span class="badge bg-primary bg-opacity-75 position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill shadow-sm fw-bold border border-white" style="letter-spacing: 0.5px; z-index: 2;"><i class="bi bi-check-circle-fill me-1"></i> SECURED</span>
+                                            <img src="${imagePath}" class="card-img-top" alt="${crop.cropName}" style="height: 200px; object-fit: cover;">
+                                        </div>
 
-                                        <div class="card-body p-4">
-                                            <h4 class="card-title fw-bold text-dark mb-3">${crop.cropName}</h4>
-                                            <div class="d-flex text-secondary mb-2">
-                                                <i class="bi bi-boxes me-2 text-primary"></i>
-                                                <span class="fw-semibold">${crop.quantity} Metric Tons</span>
+                                        <div class="card-body p-4 d-flex flex-column">
+                                            <h4 class="card-title fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">${crop.cropName}</h4>
+                                            <p class="small text-muted mb-3"><i class="bi bi-geo-alt-fill text-danger opacity-75 me-1"></i> ${crop.location}</p>
+                                            
+                                            <div class="bg-light bg-opacity-50 p-3 rounded-3 border mb-4">
+                                                <div class="row text-center g-2">
+                                                    <div class="col-6 border-end">
+                                                        <span class="d-block small text-muted text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 1px;">Volume</span>
+                                                        <span class="fw-bold text-dark fs-5">${crop.quantity} <span class="fs-6 text-muted fw-normal">MT</span></span>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <span class="d-block small text-muted text-uppercase fw-semibold" style="font-size: 0.65rem; letter-spacing: 1px;">Price/MT</span>
+                                                        <span class="fw-bold text-success fs-5">₹${crop.pricePerUnit}</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="d-flex text-secondary mb-2">
-                                                <i class="bi bi-tag me-2 text-success"></i>
-                                                <span class="fw-bold text-dark">₹${crop.pricePerUnit}</span> <span
-                                                    class="ms-1 small">/ Ton</span>
-                                            </div>
-                                            <div class="d-flex text-secondary mb-0 border-top pt-3 mt-3">
-                                                <i class="bi bi-geo-alt-fill me-2 text-danger mt-1"></i>
-                                                <span class="small text-muted lh-sm">${crop.location}</span>
+
+                                            <div class="mt-auto">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span class="small fw-semibold text-secondary">Contract Fulfillment</span>
+                                                    <span class="small fw-bold text-primary">In Progress</span>
+                                                </div>
+                                                <div class="progress" style="height: 6px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 45%"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -247,15 +312,114 @@
 
                             <c:if test="${empty purchasedCrops}">
                                 <div class="col-12">
-                                    <div class="glass-card py-5 text-center">
-                                        <div class="bg-primary bg-opacity-10 d-inline-flex p-4 rounded-circle mb-4">
+                                    <div class="glass-card py-5 text-center border-0 shadow-sm" style="background: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);">
+                                        <div class="bg-primary bg-opacity-10 d-inline-flex p-4 rounded-circle mb-4 shadow-sm hover-elevate transition">
                                             <i class="bi bi-cart-x text-primary" style="font-size: 3rem;"></i>
                                         </div>
-                                        <h3 class="fw-bold text-dark mb-2">Inventory Pipeline Empty</h3>
-                                        <p class="text-secondary mb-4 fs-5">Head to the marketplace to secure your raw
-                                            materials.</p>
-                                        <a href="/crop/browse" class="btn btn-premium rounded-pill shadow px-4 py-2"><i
-                                                class="bi bi-search text-white me-1"></i> Browse Marketplace</a>
+                                        <h3 class="fw-bold text-dark mb-2" style="letter-spacing: -0.5px;">Inventory Pipeline Empty</h3>
+                                        <p class="text-secondary mb-4 fs-5 w-75 mx-auto">You have not secured any forward contracts yet. Head to the marketplace to begin procuring premium agricultural raw materials.</p>
+                                        <a href="/crop/browse" class="btn btn-primary rounded-pill shadow-lg px-5 py-3 fw-bold hover-elevate transition"><i class="bi bi-search text-white me-2"></i> Access Global Market</a>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </div>
+                        
+                        <!-- Chart.js Injection for Buyer Analytics -->
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const ctx = document.getElementById('procurementChart');
+                                if(ctx) {
+                                    new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                                            datasets: [{
+                                                label: 'Procurement Spend (₹ Lakhs)',
+                                                data: ${chartData != null ? chartData : '[0,0,0,0,0,0]'},
+                                                borderColor: '#0d6efd',
+                                                backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                                                borderWidth: 3,
+                                                tension: 0.4,
+                                                fill: true,
+                                                pointBackgroundColor: '#ffffff',
+                                                pointBorderColor: '#0d6efd',
+                                                pointRadius: 4,
+                                                pointHoverRadius: 6
+                                            }]
+                                        },
+                                        options: {
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            plugins: {
+                                                legend: { display: false }
+                                            },
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true,
+                                                    grid: { borderDash: [4, 4], color: '#e2e8f0' },
+                                                    border: { display: false }
+                                                },
+                                                x: {
+                                                    grid: { display: false },
+                                                    border: { display: false }
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+                    </c:if>
+
+                    <c:if test="${sessionScope.role == 'inspector'}">
+                        <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
+                            <div>
+                                <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;"><i class="bi bi-clipboard2-check-fill text-info me-2"></i> Quality Assurance Queue</h3>
+                                <p class="text-muted small mb-0">High-priority contracts pending your official certification before final escrow release.</p>
+                            </div>
+                            <div class="bg-info bg-opacity-10 border border-info border-opacity-25 rounded-pill px-4 py-2 text-info fw-bold shadow-sm d-flex align-items-center gap-2">
+                                <span class="fs-5">${fn:length(pendingInspections)}</span>
+                                <span class="small text-uppercase text-dark" style="letter-spacing: 0.5px;">Pending Checks</span>
+                            </div>
+                        </div>
+
+                        <div class="row row-cols-1 row-cols-lg-2 g-4">
+                            <c:forEach var="ins" items="${pendingInspections}">
+                                <div class="col">
+                                    <div class="glass-card h-100 p-4 border-0 shadow-sm transition hover-elevate">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div class="bg-info bg-opacity-10 p-3 rounded-circle text-info fs-3 lh-1">
+                                                    <i class="bi bi-box-seam"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="fw-bold text-dark mb-1">Active Transport</h5>
+                                                    <span class="badge bg-light text-dark border font-monospace px-2">CNT-${ins.id}</span>
+                                                </div>
+                                            </div>
+                                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill shadow-sm"><i class="bi bi-hourglass-split me-1"></i> Awaiting Audit</span>
+                                        </div>
+                                        <hr class="opacity-10 my-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <p class="small text-muted mb-1 fw-semibold text-uppercase" style="letter-spacing: 1px;">Deadline</p>
+                                                <p class="fw-bold text-danger mb-0"><i class="bi bi-calendar-x-fill me-1"></i> ${ins.deliveryDeadline}</p>
+                                            </div>
+                                            <a href="/contracts" class="btn btn-outline-info rounded-pill px-4 fw-bold hover-elevate shadow-sm"><i class="bi bi-arrow-right-circle-fill me-2"></i> Process File</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                            <c:if test="${empty pendingInspections}">
+                                <div class="col-12 w-100">
+                                    <div class="glass-card py-5 text-center px-4">
+                                        <div class="bg-success bg-opacity-10 d-inline-flex p-4 rounded-circle mb-4 shadow-sm text-success transition hover-elevate">
+                                            <i class="bi bi-check-all" style="font-size: 3rem;"></i>
+                                        </div>
+                                        <h3 class="fw-bold text-dark mb-2">Zero Pending Operations</h3>
+                                        <p class="text-secondary mb-4 fs-5 mx-auto w-75">All locked contracts have been formally inspected and certified. The pipeline is fully clear.</p>
+                                        <a href="/contracts" class="btn btn-info text-white rounded-pill px-5 py-3 fw-bold shadow-lg hover-elevate transition">Review Master Ledger</a>
                                     </div>
                                 </div>
                             </c:if>
@@ -263,6 +427,7 @@
                     </c:if>
                 </main>
 
+                <jsp:include page="common/footer.jsp" />
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
             </body>
 

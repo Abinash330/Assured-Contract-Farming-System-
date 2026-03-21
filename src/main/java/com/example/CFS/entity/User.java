@@ -20,7 +20,7 @@ public class User {
     private String kycStatus = "PENDING";
 
     @Column(name = "is_verified")
-    private boolean isVerified = false;
+    private Boolean isVerified = false;
 
     @Column(name = "aadhaar_number")
     private String aadhaarNumber;
@@ -29,7 +29,7 @@ public class User {
     private String panNumber;
 
     @Column(name = "credit_score")
-    private int creditScore = 500;
+    private Integer creditScore = 500;
 
     // For farmer payments
     private String upi_id;
@@ -118,11 +118,11 @@ public class User {
         this.kycStatus = kycStatus;
     }
 
-    public boolean isVerified() {
+    public Boolean isVerified() {
         return isVerified;
     }
 
-    public void setVerified(boolean verified) {
+    public void setVerified(Boolean verified) {
         isVerified = verified;
     }
 
@@ -142,11 +142,11 @@ public class User {
         this.panNumber = panNumber;
     }
 
-    public int getCreditScore() {
+    public Integer getCreditScore() {
         return creditScore;
     }
 
-    public void setCreditScore(int creditScore) {
+    public void setCreditScore(Integer creditScore) {
         this.creditScore = creditScore;
     }
 }

@@ -15,29 +15,7 @@
     <body class="d-flex flex-column min-vh-100 bg-light">
 
         <!-- Header -->
-        <nav class="navbar navbar-expand-lg premium-nav py-3 sticky-top">
-            <div class="container">
-                <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
-                    <div class="bg-success p-2 rounded-circle me-2 d-flex shadow-sm">
-                        <i class="bi bi-seedling fs-5 text-white m-0 lh-1"></i>
-                    </div>
-                    <span class="text-dark">CFS</span>
-                </a>
-                <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navPrivacy">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navPrivacy">
-                    <ul class="navbar-nav ms-auto fw-semibold">
-                        <li class="nav-item"><a class="nav-link px-3" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link px-3" href="/about">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link px-3 active text-success" href="/privacy">Privacy
-                                Policy</a></li>
-                        <li class="nav-item"><a class="nav-link px-3" href="/contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <jsp:include page="common/header_public.jsp" />
 
         <!-- Main Content -->
         <main class="container py-5 flex-grow-1">
@@ -129,12 +107,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-white border-top py-4 mt-auto">
-            <div class="container text-center">
-                <p class="mb-0 text-muted fw-semibold">&copy; 2024 Assured Contract Farming System. All rights reserved.
-                </p>
-            </div>
-        </footer>
+        <jsp:include page="common/footer.jsp" />
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
