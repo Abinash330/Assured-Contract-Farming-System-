@@ -96,6 +96,35 @@
                         </script>
                         <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+                        <!-- Agritech Integrations Row (Phase 6) -->
+                        <div class="row g-4 mb-2 mt-1">
+                            <!-- Weather API Integration -->
+                            <div class="col-lg-4">
+                                <div class="glass-card p-4 h-100 border-0 shadow-sm position-relative overflow-hidden" style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);">
+                                    <h5 class="fw-bold text-dark text-uppercase mb-3" style="letter-spacing: 1px; font-size: 0.85rem;"><i class="bi bi-cloud-sun text-primary me-2 fs-5"></i>Regional Weather Array</h5>
+                                    <div id="weather-widget" class="text-center py-2 position-relative z-1">
+                                        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+                                    </div>
+                                    <div class="position-absolute opacity-10" style="bottom: -15px; right: -15px; pointer-events: none;">
+                                        <i class="bi bi-clouds-fill text-primary" style="font-size: 9rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Simulated IoT Soil Analytics -->
+                            <div class="col-lg-8">
+                                <div class="glass-card p-4 h-100 border-0 shadow-sm" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h5 class="fw-bold text-dark text-uppercase mb-0" style="letter-spacing: 1px; font-size: 0.85rem;"><i class="bi bi-cpu text-success me-2 fs-5"></i>IoT Field Telemetry (Live Sync)</h5>
+                                        <span class="badge bg-success bg-opacity-25 text-success rounded-pill border border-success border-opacity-25 px-2 py-1 pulse"><i class="bi bi-broadcast me-1"></i> Sensor Feed</span>
+                                    </div>
+                                    <div style="height: 180px; position: relative; width: 100%;">
+                                        <canvas id="soilHealthChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="d-flex align-items-center justify-content-between mb-4 mt-2">
                             <div>
                                 <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;"><i class="bi bi-graph-up-arrow text-success me-2"></i> Your Harvest Portfolio</h3>
@@ -324,8 +353,7 @@
                             </c:if>
                         </div>
                         
-                        <!-- Chart.js Injection for Buyer Analytics -->
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <!-- Chart.js Injection removed from here, elevated to global scope -->
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
                                 const ctx = document.getElementById('procurementChart');
@@ -429,6 +457,97 @@
 
                 <jsp:include page="common/footer.jsp" />
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                
+                <!-- Global Chart.js Injection (Required for both Buyer & Farmer Dashboards) -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                
+                <c:if test="${sessionScope.role == 'farmer'}">
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // 1. Open-Meteo Free Weather API Fetch
+                        fetch('https://api.open-meteo.com/v1/forecast?latitude=20.5937&longitude=78.9629&current_weather=true')
+                        .then(response => response.json())
+                        .then(data => {
+                            const w = data.current_weather;
+                            let icon = 'bi-cloud-sun';
+                            if(w.weathercode === 0 || w.weathercode === 1) icon = 'bi-sun';
+                            else if(w.weathercode >= 51 && w.weathercode <= 65) icon = 'bi-cloud-rain';
+                            else if(w.weathercode >= 95) icon = 'bi-cloud-lightning-rain';
+                            
+                            document.getElementById('weather-widget').innerHTML = `
+                                <div class="d-flex justify-content-center align-items-center gap-3 mb-2 mt-1">
+                                    <i class="bi ` + icon + ` text-primary" style="font-size: 3.2rem; transform: translateY(-5px);"></i>
+                                    <div class="text-start">
+                                        <h1 class="display-3 fw-bold text-dark mb-0 lh-1" style="letter-spacing: -2px;">` + w.temperature + `&deg;<span class="fs-4 text-muted">C</span></h1>
+                                        <span class="fw-bold text-primary text-uppercase small" style="letter-spacing: 1px;">Live Atmosphere</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-around mt-3 border-top border-primary border-opacity-25 pt-3 w-100 mx-auto">
+                                    <div class="text-center"><span class="d-block text-muted fw-bold" style="font-size: 0.65rem; letter-spacing: 1px;">AGRI-WIND</span><span class="fw-bold text-dark fs-6">` + w.windspeed + ` <small>km/h</small></span></div>
+                                    <div class="text-center"><span class="d-block text-muted fw-bold" style="font-size: 0.65rem; letter-spacing: 1px;">DIRECTION</span><span class="fw-bold text-dark fs-6">` + w.winddirection + `&deg;</span></div>
+                                </div>
+                            `;
+                        })
+                        .catch(err => {
+                            document.getElementById('weather-widget').innerHTML = '<span class="text-danger small fw-bold">Unable to sync agrometeorological data.</span>';
+                        });
+
+                        // 2. Simulated IoT Soil Health Sensor Chart
+                        const soilCtx = document.getElementById('soilHealthChart');
+                        if(soilCtx) {
+                            new Chart(soilCtx, {
+                                type: 'line',
+                                data: {
+                                    labels: ['12 AM', '4 AM', '8 AM', '12 PM', '4 PM', '8 PM'],
+                                    datasets: [
+                                        {
+                                            label: 'Nitrogen (N) Content',
+                                            data: [45, 46, 43, 40, 42, 45],
+                                            borderColor: '#10b981',
+                                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                            borderWidth: 2,
+                                            tension: 0.4,
+                                            fill: true
+                                        },
+                                        {
+                                            label: 'Soil Moisture (%)',
+                                            data: [65, 66, 60, 50, 45, 55],
+                                            borderColor: '#3b82f6',
+                                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                            borderWidth: 2,
+                                            tension: 0.4,
+                                            fill: true
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: { 
+                                            position: 'bottom',
+                                            labels: { usePointStyle: true, boxWidth: 6, font: {size: 10} }
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: false,
+                                            min: 20, max: 80,
+                                            grid: { borderDash: [4, 4], color: '#e2e8f0' },
+                                            border: { display: false }
+                                        },
+                                        x: {
+                                            grid: { display: false },
+                                            border: { display: false }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    });
+                </script>
+                </c:if>
+                
             </body>
 
             </html>

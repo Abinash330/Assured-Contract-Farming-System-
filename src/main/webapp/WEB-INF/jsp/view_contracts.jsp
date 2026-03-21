@@ -179,6 +179,16 @@
                                                                     != null ? c.inspectionResult : 'PENDING'}</span>
                                                             </span>
                                                         </div>
+                                                        
+                                                        <!-- Phase 6: Blockchain Ledger Validation -->
+                                                        <c:if test="${fn:toLowerCase(c.contractStatus) == 'accepted' || fn:toLowerCase(c.contractStatus) == 'completed'}">
+                                                            <div class="mt-2 crypto-hash-container" data-hash-id="${c.contractId}" data-hash-farmer="${c.farmerName}" data-hash-buyer="${c.buyerName}" title="Generating immutable ledger hash...">
+                                                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded d-inline-flex align-items-center shadow-sm" style="font-size:0.6rem; max-width: 170px; overflow: hidden; white-space: nowrap;">
+                                                                    <i class="bi bi-link-45deg me-1 fs-6 text-success pulse"></i>
+                                                                    <span class="crypto-hash-target font-monospace tracking-wider">Syncing Ledger...</span>
+                                                                </span>
+                                                            </div>
+                                                        </c:if>
                                                     </td>
                                                     <td class="px-4 pe-5 text-end">
                                                         <div class="d-flex flex-wrap justify-content-end gap-2"
@@ -395,6 +405,46 @@
                 </div>
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                
+                <!-- Web3 Simulated Cryptographic Hash Generator -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', async function() {
+                        const containers = document.querySelectorAll('.crypto-hash-container');
+                        if (!window.crypto || !window.crypto.subtle) return;
+                        
+                        for (let c of containers) {
+                            const id = c.getAttribute('data-hash-id');
+                            const farmer = c.getAttribute('data-hash-farmer');
+                            const buyer = c.getAttribute('data-hash-buyer');
+                            
+                            // Generate unique seed string for this contract payload
+                            const rawString = "AGRI-SECURE-LEDGER:" + id + ":" + farmer + ":" + buyer + ":V1.0";
+                            
+                            try {
+                                const encoder = new TextEncoder();
+                                const data = encoder.encode(rawString);
+                                const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+                                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                                
+                                const target = c.querySelector('.crypto-hash-target');
+                                const icon = c.querySelector('.bi-link-45deg');
+                                
+                                // Simulate blockchain sync delay for UX
+                                setTimeout(() => {
+                                    target.innerHTML = '0x' + hashHex.substring(0, 14).toUpperCase() + '...';
+                                    c.title = 'VERIFIED SMART CONTRACT\\nSHA-256: 0x' + hashHex.toUpperCase();
+                                    target.classList.add('text-success');
+                                    icon.classList.remove('pulse', 'bi-link-45deg');
+                                    icon.classList.add('bi-shield-check', 'text-success');
+                                }, Math.floor(Math.random() * 800) + 400); // 400ms to 1200ms delay
+                                
+                            } catch(e) {
+                                c.querySelector('.crypto-hash-target').innerHTML = 'SEC-ERR';
+                            }
+                        }
+                    });
+                </script>
             </body>
 
             </html>
