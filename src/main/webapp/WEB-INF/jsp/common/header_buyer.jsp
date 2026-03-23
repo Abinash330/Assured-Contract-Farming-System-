@@ -106,6 +106,12 @@
                     <a class="nav-link" href="/contracts"><i class="bi bi-file-earmark-lock-fill me-1 opacity-75"></i> Active Procurements</a>
                 </li>
                 
+                <!-- Native Translator -->
+                <li class="nav-item d-flex align-items-center ms-lg-2 mt-3 mt-lg-0 border px-3 py-1 rounded-pill bg-white shadow-sm" style="border-color: rgba(13,110,253,0.1) !important;">
+                    <i class="bi bi-translate text-primary me-2"></i>
+                    <div id="google_translate_element" class="fw-bold" style="transform: scale(0.9); transform-origin: left center;"></div>
+                </li>
+                
                 <!-- Profile Dropdown -->
                 <li class="nav-item dropdown ms-lg-2 mt-3 mt-lg-0">
                     <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 p-1 pe-3 border rounded-pill bg-white shadow-sm hover-elevate transition text-dark fw-bold" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-color: rgba(13,110,253,0.2) !important;">
@@ -124,3 +130,15 @@
         </div>
     </div>
 </nav>
+
+<!-- Global Context Translator Script -->
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'hi,mr,bn,te,ta,gu,kn,ml,pa,or',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

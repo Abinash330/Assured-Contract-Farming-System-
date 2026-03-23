@@ -79,6 +79,12 @@
                     <a class="nav-link text-dark fw-bold" href="/profile"><i class="bi bi-person-badge-fill text-info me-1"></i> Inspector Portal</a>
                 </li>
                 
+                <!-- Native Translator -->
+                <li class="nav-item d-flex align-items-center ms-lg-2 mt-3 mt-lg-0 border px-3 py-1 rounded-pill bg-white shadow-sm" style="border-color: rgba(13,202,240,0.1) !important;">
+                    <i class="bi bi-translate text-info me-2"></i>
+                    <div id="google_translate_element" class="fw-bold" style="transform: scale(0.9); transform-origin: left center;"></div>
+                </li>
+                
                 <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
                     <a class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold shadow-sm py-2 transition hover-elevate" href="/logout"><i class="bi bi-shield-lock me-1"></i> Terminate Shift</a>
                 </li>
@@ -86,3 +92,15 @@
         </div>
     </div>
 </nav>
+
+<!-- Global Context Translator Script -->
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'hi,mr,bn,te,ta,gu,kn,ml,pa,or',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

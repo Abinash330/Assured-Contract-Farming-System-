@@ -58,6 +58,12 @@
     </div>
     
     <div class="d-flex align-items-center gap-4">
+        <!-- Native Translator -->
+        <div class="d-none d-lg-flex align-items-center bg-white px-2 py-1 rounded shadow-sm border" style="transform: scale(0.9);">
+            <i class="bi bi-translate text-primary me-2 ms-1"></i>
+            <div id="google_translate_element" class="fw-bold" style="transform: scale(0.9); transform-origin: left center;"></div>
+        </div>
+        
         <!-- Mock Notifications -->
         <div class="position-relative hover-elevate transition" style="cursor: pointer;">
             <i class="bi bi-bell-fill fs-5 text-secondary"></i>
@@ -126,3 +132,15 @@
         }, 4500);
     }
 </script>
+
+<!-- Global Context Translator Script -->
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'hi,mr,bn,te,ta,gu,kn,ml,pa,or',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

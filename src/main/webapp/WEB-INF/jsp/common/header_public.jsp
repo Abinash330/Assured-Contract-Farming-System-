@@ -72,6 +72,12 @@
                 <li class="nav-item nav-item-premium"><a class="nav-link" href="/privacy">Security</a></li>
                 <li class="nav-item nav-item-premium"><a class="nav-link" href="/contact">Support</a></li>
                 
+                <!-- Native Translator -->
+                <li class="nav-item d-flex align-items-center ms-lg-2 mt-3 mt-lg-0 border px-3 py-1 rounded-pill bg-white shadow-sm" style="border-color: rgba(22,163,74,0.1) !important;">
+                    <i class="bi bi-translate text-success me-2"></i>
+                    <div id="google_translate_element" class="fw-bold" style="transform: scale(0.9); transform-origin: left center;"></div>
+                </li>
+                
                 <li class="nav-item ms-lg-3 mt-3 mt-lg-0 d-flex gap-2">
                     <a class="btn btn-outline-success rounded-pill px-4 fw-bold shadow-sm py-2 transition hover-elevate" href="/login"><i class="bi bi-box-arrow-in-right me-1"></i> Portal Access</a>
                     <a class="btn btn-premium rounded-pill px-4 fw-bold shadow-lg py-2 transition hover-elevate text-white" href="/register"><i class="bi bi-person-plus-fill me-1"></i> Join Network</a>
@@ -80,3 +86,15 @@
         </div>
     </div>
 </nav>
+
+<!-- Global Context Translator Script -->
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'hi,mr,bn,te,ta,gu,kn,ml,pa,or',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
