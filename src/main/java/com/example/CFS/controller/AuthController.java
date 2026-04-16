@@ -27,7 +27,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login";
+        return "public/login";
     }
 
     @PostMapping("/login")
@@ -53,10 +53,23 @@ public class AuthController {
             }
 
             if (passwordMatch) {
+                // Set explicit HttpSession values (Legacy Support)
                 session.setAttribute("userId", user.getId());
                 session.setAttribute("username", user.getUsername());
+                session.setAttribute("email", user.getEmail());
                 session.setAttribute("role", user.getRole());
-                if ("admin".equals(user.getRole())) {
+                
+                // Inject into Spring Security Context (New Standard Protocol)
+                com.example.CFS.security.CustomUserDetails userDetails = new com.example.CFS.security.CustomUserDetails(user);
+                org.springframework.security.authentication.UsernamePasswordAuthenticationToken auth = 
+                    new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities()
+                    );
+                org.springframework.security.core.context.SecurityContextHolder.getContext().setAuthentication(auth);
+                // Important: Spring Security needs the context properly persisted into the session explicitly when using manual injections in Spring Boot 3+ filter chains
+                session.setAttribute(org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, org.springframework.security.core.context.SecurityContextHolder.getContext());
+
+                if ("admin".equalsIgnoreCase(user.getRole())) {
                     return "redirect:/admin/dashboard";
                 }
                 return "redirect:/dashboard";
@@ -64,12 +77,12 @@ public class AuthController {
         }
 
         model.addAttribute("error", "Invalid credentials.");
-        return "login";
+        return "public/login";
     }
 
     @GetMapping("/register")
     public String showRegisterForm() {
-        return "register";
+        return "public/register";
     }
 
     @PostMapping("/register")
@@ -84,7 +97,7 @@ public class AuthController {
 
         if (userRepository.findByEmail(email).isPresent()) {
             model.addAttribute("error", "This email is already registered. Please log in or use another email.");
-            return "register";
+            return "public/register";
         }
 
         User newUser = new User();
@@ -102,7 +115,7 @@ public class AuthController {
         walletService.createWalletForUser(newUser.getId());
 
         model.addAttribute("message", "Registration successful! You can now log in.");
-        return "login";
+        return "public/login";
     }
 
     @GetMapping("/logout")
@@ -113,7 +126,7 @@ public class AuthController {
 
     @GetMapping("/forgot_password")
     public String showForgotPasswordForm() {
-        return "forgot_password";
+        return "public/forgot_password";
     }
 
     @PostMapping("/forgot_password")
@@ -143,6 +156,6 @@ public class AuthController {
             model.addAttribute("message", "No account found with this email.");
         }
 
-        return "forgot_password";
+        return "public/forgot_password";
     }
 }

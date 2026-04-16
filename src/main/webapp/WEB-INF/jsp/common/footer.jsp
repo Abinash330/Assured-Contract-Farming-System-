@@ -14,10 +14,6 @@
         <jsp:include page="/WEB-INF/jsp/common/footer_admin.jsp" />
     </c:when>
     <c:otherwise>
-        <footer class="bg-white border-top py-4 mt-auto">
-            <div class="container text-center">
-                <p class="mb-0 text-muted fw-semibold">&copy; 2024 Assured Contract Farming System. All rights reserved.</p>
-            </div>
-        </footer>
+        <jsp:include page="/WEB-INF/jsp/common/footer_public.jsp" />
     </c:otherwise>
 </c:choose>

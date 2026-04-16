@@ -75,6 +75,10 @@
                     <a class="nav-link" href="/contracts"><i class="bi bi-clipboard-check-fill me-1 opacity-75"></i> Active Case Files</a>
                 </li>
                 
+                <li class="nav-item nav-item-premium pe-3 border-end border-info border-opacity-25 d-none d-lg-block">
+                    <a class="nav-link" href="/inspection/logs"><i class="bi bi-journal-medical me-1 opacity-75"></i> Certification Logs</a>
+                </li>
+                
                 <li class="nav-item pe-2 ps-3 border-end border-info border-opacity-25 d-none d-lg-block">
                     <a class="nav-link text-dark fw-bold" href="/profile"><i class="bi bi-person-badge-fill text-info me-1"></i> Inspector Portal</a>
                 </li>

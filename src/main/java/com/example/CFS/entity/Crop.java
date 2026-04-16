@@ -28,6 +28,18 @@ public class Crop {
     @Column(name = "harvest_date")
     private String harvestDate;
 
+    @Column(name = "product_category")
+    private String productCategory = "Primary Crop"; // e.g. Primary Crop, Wastage/Byproduct, Dairy, Feed
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(columnDefinition = "TEXT")
+    private String facilities; // e.g., "Transportation Provided", "Cold Storage"
+
+    @Column(name = "product_description", columnDefinition = "TEXT")
+    private String productDescription;
+
     // Getters and Setters
 
     public Long getId() {
@@ -92,5 +104,37 @@ public class Crop {
 
     public void setHarvestDate(String harvestDate) {
         this.harvestDate = harvestDate;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(String facilities) {
+        this.facilities = facilities;
+    }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 }

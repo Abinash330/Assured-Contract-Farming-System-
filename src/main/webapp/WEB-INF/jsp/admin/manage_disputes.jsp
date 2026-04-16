@@ -133,37 +133,25 @@
                                                             <c:when test="${d.status == 'OPEN'}">
                                                                 <div class="d-flex justify-content-end gap-2 flex-wrap"
                                                                     style="max-width: 240px; float: right;">
-                                                                    <form action="/dispute/resolve" method="post"
-                                                                        class="w-100 mb-1">
-                                                                        <input type="hidden" name="dispute_id"
+                                                                    <button class="btn btn-sm btn-primary rounded-pill shadow-sm w-100 fw-bold py-2 mb-1" onclick="openEditDisputeModal(${d.id}, '${d.status}', 'Force close or update reason...')"><i class="bi bi-pencil me-1"></i> Edit Dispute</button>
+                                                                    <form action="/admin/disputes/delete" method="post"
+                                                                        class="w-100" onsubmit="return confirm('Permanently delete this dispute record?');">
+                                                                        <input type="hidden" name="disputeId"
                                                                             value="${d.id}">
-                                                                        <input type="hidden" name="resolution"
-                                                                            value="PAY_FARMER">
                                                                         <button type="submit"
-                                                                            class="btn btn-success btn-sm w-100 rounded-pill fw-bold shadow-sm py-2"
-                                                                            title="Favor Farmer & Release Escrow"><i
-                                                                                class="bi bi-cash-stack me-1"></i>
-                                                                            Release to Farmer</button>
-                                                                    </form>
-                                                                    <form action="/dispute/resolve" method="post"
-                                                                        class="w-100">
-                                                                        <input type="hidden" name="dispute_id"
-                                                                            value="${d.id}">
-                                                                        <input type="hidden" name="resolution"
-                                                                            value="REFUND_BUYER">
-                                                                        <button type="submit"
-                                                                            class="btn btn-danger btn-sm w-100 rounded-pill fw-bold shadow-sm py-2"
-                                                                            title="Favor Buyer & Refund Escrow"><i
-                                                                                class="bi bi-arrow-return-left me-1"></i>
-                                                                            Refund Buyer</button>
+                                                                            class="btn btn-outline-danger btn-sm w-100 rounded-pill fw-bold shadow-sm py-2"><i
+                                                                                class="bi bi-trash me-1"></i> Delete</button>
                                                                     </form>
                                                                 </div>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <span
-                                                                    class="text-success fw-bold d-inline-flex align-items-center bg-success bg-opacity-10 px-3 py-2 border border-success shadow-sm rounded-pill"><i
-                                                                        class="bi bi-bookmark-check-fill me-2 fs-5"></i>
-                                                                    Case Closed</span>
+                                                                <div class="d-flex flex-column gap-2 align-items-end">
+                                                                    <span
+                                                                        class="text-success fw-bold d-inline-flex align-items-center bg-success bg-opacity-10 px-3 py-2 border border-success shadow-sm rounded-pill"><i
+                                                                            class="bi bi-bookmark-check-fill me-2 fs-5"></i>
+                                                                        Case Closed</span>
+                                                                    <button class="btn btn-sm btn-outline-primary rounded-pill shadow-sm fw-bold" onclick="openEditDisputeModal(${d.id}, '${d.status}', '')"><i class="bi bi-pencil"></i> Edit Status</button>
+                                                                </div>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
@@ -193,8 +181,51 @@
                     </div>
                 </div>
 
+                <!-- Edit Dispute Modal -->
+                <div class="modal fade" id="editDisputeModal" tabindex="-1" aria-labelledby="editDisputeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg" style="border-radius: 1rem; overflow: hidden;">
+                            <div class="modal-header bg-danger bg-opacity-10 border-0">
+                                <h5 class="modal-title fw-bold text-danger" id="editDisputeModalLabel"><i class="bi bi-gavel me-2"></i> Dispute Case Override</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="/admin/disputes/update" method="post">
+                                <div class="modal-body p-4 bg-light">
+                                    <input type="hidden" name="disputeId" id="editDisputeId">
+                                    <p class="text-danger small fw-bold">Modifying dispute records directly may obfuscate judicial audit logs.</p>
+                                    
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select border-light shadow-sm fw-bold" id="editDisputeStatus" name="status" required>
+                                            <option value="OPEN">Open / Escalated</option>
+                                            <option value="RESOLVED">Resolved / Closed</option>
+                                            <option value="DISMISSED">Dismissed / Invalid</option>
+                                        </select>
+                                        <label for="editDisputeStatus">Dispute Status</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control border-light shadow-sm" id="editDisputeResolution" name="resolution" style="height: 100px" placeholder="Force Resolution Notes"></textarea>
+                                        <label for="editDisputeResolution">Append Resolution Notes</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-0 p-4 bg-white">
+                                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm hover-elevate transition"><i class="bi bi-hammer me-2"></i> Adjudicate</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
                 <script>
+                    function openEditDisputeModal(id, status, placeholder) {
+                        document.getElementById('editDisputeId').value = id;
+                        document.getElementById('editDisputeStatus').value = status;
+                        document.getElementById('editDisputeResolution').value = '';
+                        document.getElementById('editDisputeResolution').placeholder = placeholder;
+                        new bootstrap.Modal(document.getElementById('editDisputeModal')).show();
+                    }
+
                     function filterDatagrid() {
                         let filter = document.getElementById("datagridSearch").value.toLowerCase();
                         let rows = document.querySelectorAll("#datagridBody tr");
@@ -237,7 +268,7 @@
                         const element = document.querySelector('.table-responsive');
                         const opt = {
                             margin:       10,
-                            filename:     `${title.replace(/ /g, '_')}.pdf`,
+                            filename:     title.replace(/ /g, '_') + '.pdf',
                             image:        { type: 'jpeg', quality: 0.98 },
                             html2canvas:  { scale: 2 },
                             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }

@@ -13,6 +13,7 @@ public class ContractViewDto {
     private String deliveryDeadline;
     private String inspectionResult;
     private String deliveryStatus;
+    private String terms;
 
     // Getters and Setters
     public Long getContractId() {
@@ -21,6 +22,14 @@ public class ContractViewDto {
 
     public void setContractId(Long contractId) {
         this.contractId = contractId;
+    }
+
+    public String getTerms() {
+        return terms;
+    }
+
+    public void setTerms(String terms) {
+        this.terms = terms;
     }
 
     public String getFarmerName() {

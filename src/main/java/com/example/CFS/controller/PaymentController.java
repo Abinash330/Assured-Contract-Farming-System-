@@ -51,7 +51,7 @@ public class PaymentController {
             model.addAttribute("hasDetails", hasDetails);
             model.addAttribute("isEditing", "true".equals(edit));
         }
-        return "add_payment_details";
+        return "farmer/add_payment_details";
     }
 
     @PostMapping("/add-details")
@@ -77,7 +77,7 @@ public class PaymentController {
             model.addAttribute("hasDetails", true);
             model.addAttribute("isEditing", false);
         }
-        return "add_payment_details";
+        return "farmer/add_payment_details";
     }
 
     @PostMapping("/form")
@@ -116,7 +116,7 @@ public class PaymentController {
 
         model.addAttribute("contractsToPay", contractDtos);
         model.addAttribute("selectedContractId", contractId);
-        return "payment_form";
+        return "buyer/payment_form";
     }
 
     @Transactional

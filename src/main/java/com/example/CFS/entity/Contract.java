@@ -30,6 +30,15 @@ public class Contract {
 
     private String terms;
 
+    @Column(name = "actual_delivery_date")
+    private String actualDeliveryDate;
+
+    @Column(name = "quality_rating")
+    private Integer qualityRating;
+
+    @Column(name = "penalty_amount")
+    private Double penaltyAmount = 0.0;
+
     // Getters and Setters
 
     public Long getId() {
@@ -95,4 +104,29 @@ public class Contract {
     public void setTerms(String terms) {
         this.terms = terms;
     }
+
+    public String getActualDeliveryDate() {
+        return actualDeliveryDate;
+    }
+
+    public void setActualDeliveryDate(String actualDeliveryDate) {
+        this.actualDeliveryDate = actualDeliveryDate;
+    }
+
+    public Integer getQualityRating() {
+        return qualityRating;
+    }
+
+    public void setQualityRating(Integer qualityRating) {
+        this.qualityRating = qualityRating;
+    }
+
+    public Double getPenaltyAmount() {
+        return penaltyAmount;
+    }
+
+    public void setPenaltyAmount(Double penaltyAmount) {
+        this.penaltyAmount = penaltyAmount;
+    }
 }
+

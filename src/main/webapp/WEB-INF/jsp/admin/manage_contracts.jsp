@@ -92,9 +92,10 @@
                                         <th class="py-4 px-4">Farmer</th>
                                         <th class="py-4 px-4">Buyer</th>
                                         <th class="py-4 px-4">Asset Details</th>
-                                        <th class="py-4 px-4 text-end">Escrow Value</th>
                                         <th class="py-4 px-4 pe-5 text-center">Lifecycle Status</th>
+                                        <th class="py-4 px-4 text-end">Traceability & Actions</th>
                                     </tr>
+
                                 </thead>
                                 <tbody class="border-top-0 bg-white bg-opacity-50" id="datagridBody">
                                     <c:choose>
@@ -162,7 +163,19 @@
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
+                                                    <td class="px-4 text-end">
+                                                        <a href="/traceability/contract/${detail.contract.id}" class="btn btn-sm btn-outline-dark rounded-pill shadow-sm mb-1 w-100"><i class="bi bi-upc-scan me-1"></i> View Trace</a>
+                                                        <div class="d-flex gap-2">
+                                                            <button class="btn btn-sm btn-primary rounded-pill shadow-sm w-100 fw-bold" onclick="openEditContractModal(${detail.contract.id}, '${detail.contract.contractStatus}', '${detail.contract.paymentStatus}')"><i class="bi bi-pencil me-1"></i> Edit</button>
+                                                            <form action="/admin/contracts/delete" method="post" class="m-0 w-100" onsubmit="return confirm('WARNING: Force deleting a contract bypasses all escrow safety checks. Proceed?');">
+                                                                <input type="hidden" name="contractId" value="${detail.contract.id}">
+                                                                <button type="submit" class="btn btn-sm btn-danger rounded-pill shadow-sm w-100 fw-bold"><i class="bi bi-trash"></i></button>
+                                                            </form>
+                                                        </div>
+
+                                                    </td>
                                                 </tr>
+
                                             </c:forEach>
                                         </c:when>
                                         <c:otherwise>
@@ -187,9 +200,61 @@
                         </div>
                     </div>
                 </div>
+                </div>
+
+                <!-- Edit Contract Modal -->
+                <div class="modal fade" id="editContractModal" tabindex="-1" aria-labelledby="editContractModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg" style="border-radius: 1rem; overflow: hidden;">
+                            <div class="modal-header bg-danger bg-opacity-10 border-0">
+                                <h5 class="modal-title fw-bold text-danger" id="editContractModalLabel"><i class="bi bi-exclamation-triangle-fill me-2"></i> Override Contract State</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="/admin/contracts/update" method="post">
+                                <div class="modal-body p-4 bg-light">
+                                    <input type="hidden" name="contractId" id="editContractId">
+                                    <p class="text-danger small fw-bold">Manual override circumvents escrow validations. Use only to fix deadlocked agreements.</p>
+                                    
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select border-light shadow-sm fw-bold" id="editContractStatus" name="contractStatus" required>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Accepted">Accepted / Locked</option>
+                                            <option value="Completed">Completed</option>
+                                            <option value="Disputed">Disputed</option>
+                                            <option value="Cancelled">Cancelled</option>
+                                        </select>
+                                        <label for="editContractStatus">Lifecycle Status</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select border-light shadow-sm fw-bold" id="editPaymentStatus" name="paymentStatus" required>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Escrow Locked">Escrow Locked</option>
+                                            <option value="Paid">Paid Out</option>
+                                            <option value="Escrow Frozen">Escrow Frozen</option>
+                                            <option value="Refunded">Refunded to Buyer</option>
+                                        </select>
+                                        <label for="editPaymentStatus">Escrow / Payment State</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-0 p-4 bg-white">
+                                    <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm hover-elevate transition"><i class="bi bi-shield-lock-fill me-2"></i> Force Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
                 <script>
+                    function openEditContractModal(id, contractStatus, paymentStatus) {
+                        document.getElementById('editContractId').value = id;
+                        document.getElementById('editContractStatus').value = contractStatus || 'Pending';
+                        document.getElementById('editPaymentStatus').value = paymentStatus || 'Pending';
+                        new bootstrap.Modal(document.getElementById('editContractModal')).show();
+                    }
+
                     function filterDatagrid() {
                         let filter = document.getElementById("datagridSearch").value.toLowerCase();
                         let rows = document.querySelectorAll("#datagridBody tr");
@@ -232,7 +297,7 @@
                         const element = document.querySelector('.table-responsive');
                         const opt = {
                             margin:       10,
-                            filename:     `${title.replace(/ /g, '_')}.pdf`,
+                            filename:     title.replace(/ /g, '_') + '.pdf',
                             image:        { type: 'jpeg', quality: 0.98 },
                             html2canvas:  { scale: 2 },
                             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }

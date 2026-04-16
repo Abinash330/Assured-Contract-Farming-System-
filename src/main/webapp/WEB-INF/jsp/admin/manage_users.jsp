@@ -133,6 +133,7 @@
                                                     </form>
                                                 </c:if>
                                                 <c:if test="${user.role != 'admin'}">
+                                                    <button type="button" class="btn btn-light text-primary btn-sm rounded-circle shadow-sm border ms-1 hover-elevate transition" title="Edit User" style="width:34px; height:34px;" onclick="openEditUserModal(${user.id}, '${user.username}', '${user.email}', '${user.role}', '${user.kycStatus}')"><i class="bi bi-pencil"></i></button>
                                                     <form action="/admin/users/delete" method="post" class="mb-0" onsubmit="return confirm('Permanently delete this user?');">
                                                         <input type="hidden" name="userId" value="${user.id}">
                                                         <button type="submit" class="btn btn-light text-danger btn-sm rounded-circle shadow-sm border ms-1 hover-elevate transition" title="Delete User" style="width:34px; height:34px;"><i class="bi bi-trash"></i></button>
@@ -154,9 +155,84 @@
                 </div>
             </div>
 
+            <!-- Edit User Modal -->
+            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg" style="border-radius: 1rem; overflow: hidden;">
+                        <div class="modal-header bg-primary bg-opacity-10 border-0">
+                            <h5 class="modal-title fw-bold text-primary" id="editUserModalLabel"><i class="bi bi-person-gear me-2"></i> Edit User Record</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="/admin/users/update" method="post">
+                            <div class="modal-body p-4 bg-light">
+                                <input type="hidden" name="userId" id="editUserId">
+                                
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control fw-bold border-light shadow-sm" id="editUsername" name="username" required>
+                                    <label for="editUsername">Full Name / Entity Name</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control fw-bold border-light shadow-sm" id="editEmail" name="email" required>
+                                    <label for="editEmail">Email Address</label>
+                                </div>
+                                
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select border-light shadow-sm fw-bold" id="editRole" name="role" required>
+                                                <option value="farmer">Farmer</option>
+                                                <option value="buyer">Buyer</option>
+                                                <option value="inspector">Inspector</option>
+                                                <option value="admin">Administrator</option>
+                                            </select>
+                                            <label for="editRole">System Role</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <select class="form-select border-light shadow-sm fw-bold" id="editKycStatus" name="kycStatus" required>
+                                                <option value="PENDING">Pending</option>
+                                                <option value="APPROVED">Approved</option>
+                                                <option value="REJECTED">Rejected</option>
+                                            </select>
+                                            <label for="editKycStatus">KYC Status</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-warning border-0 mt-4 d-flex align-items-center mb-0" role="alert">
+                                    <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                                    <div>
+                                        <h6 class="alert-heading fw-bold mb-1">Administrative Override</h6>
+                                        <p class="mb-0 small">Modifying a user's role or KYC status forcefully overrides system protocols.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 p-4 bg-white">
+                                <button type="button" class="btn btn-light rounded-pill px-4 fw-bold" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm hover-elevate transition"><i class="bi bi-cloud-arrow-up me-2"></i> Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <jsp:include page="../common/footer.jsp" />
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
             <script>
+                function openEditUserModal(id, username, email, role, kycStatus) {
+                    document.getElementById('editUserId').value = id;
+                    document.getElementById('editUsername').value = username;
+                    document.getElementById('editEmail').value = email;
+                    document.getElementById('editRole').value = role;
+                    
+                    // Handle empty or null status
+                    const status = kycStatus && kycStatus !== '' ? kycStatus : 'PENDING';
+                    document.getElementById('editKycStatus').value = status;
+                    
+                    var editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+                    editModal.show();
+                }
+
                 function filterDatagrid() {
                     let filter = document.getElementById("datagridSearch").value.toLowerCase();
                     let rows = document.querySelectorAll("#datagridBody tr");
@@ -200,7 +276,7 @@
                     const element = document.querySelector('.table-responsive');
                     const opt = {
                         margin:       10,
-                        filename:     `${title.replace(/ /g, '_')}.pdf`,
+                        filename:     title.replace(/ /g, '_') + '.pdf',
                         image:        { type: 'jpeg', quality: 0.98 },
                         html2canvas:  { scale: 2 },
                         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }

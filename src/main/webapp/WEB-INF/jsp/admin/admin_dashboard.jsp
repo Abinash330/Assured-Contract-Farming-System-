@@ -85,6 +85,26 @@
                     </div>
                 </div>
 
+                <!-- Quick Admin Controls -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <div class="glass-card p-4 border-0 shadow-sm bg-white d-flex flex-wrap gap-3 align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="bi bi-lightning-charge-fill text-warning fs-3"></i>
+                                <div>
+                                    <h5 class="fw-bold mb-0">Command Interface</h5>
+                                    <span class="text-muted small">Execute administrative overrides manually.</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a href="/admin/users" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold hover-elevate"><i class="bi bi-people-fill me-2"></i> Manage Users</a>
+                                <a href="/admin/contracts" class="btn btn-success rounded-pill px-4 shadow-sm fw-bold hover-elevate"><i class="bi bi-file-earmark-text-fill me-2"></i> Contracts DB</a>
+                                <a href="/admin/disputes" class="btn btn-danger rounded-pill px-4 shadow-sm fw-bold hover-elevate"><i class="bi bi-exclamation-triangle-fill me-2"></i> Dispute Queue</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Charts & Action Panels -->
                 <div class="row g-4 mb-4">
                     <!-- Platform Growth Chart -->

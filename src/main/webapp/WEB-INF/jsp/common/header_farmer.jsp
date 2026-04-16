@@ -129,7 +129,7 @@
                 <!-- Profile Dropdown -->
                 <li class="nav-item dropdown ms-lg-2 mt-3 mt-lg-0">
                     <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 p-1 pe-3 border rounded-pill bg-white shadow-sm hover-elevate transition text-dark fw-bold" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-color: rgba(22,163,74,0.2) !important;">
-                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=Farmer&backgroundColor=16a34a&textColor=ffffff" alt="Avatar" class="rounded-circle" width="32" height="32">
+                        <img src="/images/avatar_farmer.svg" alt="Avatar" class="rounded-circle" width="32" height="32">
                         My Account
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-glass mt-2 animate__animated animate__fadeIn animate__faster" aria-labelledby="profileDropdown">

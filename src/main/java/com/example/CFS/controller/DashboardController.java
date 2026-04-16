@@ -78,6 +78,48 @@ public class DashboardController {
             }
         }
 
+        if ("farmer".equals(role)) return "farmer/dashboard";
+        if ("buyer".equals(role)) return "buyer/dashboard";
+        if ("inspector".equals(role)) return "inspector/dashboard";
+
         return "dashboard";
+    }
+    @GetMapping("/buyer/insights")
+    public String showBuyerInsights(HttpSession session, Model model) {
+        String role = (String) session.getAttribute("role");
+        if (role == null || !"buyer".equals(role)) {
+            return "redirect:/login";
+        }
+        
+        List<Crop> allCrops = cropRepository.findAll();
+        
+        // Calculate aggregations
+        long totalCereals = allCrops.stream().filter(c -> {
+            String nm = (c.getCropName() != null) ? c.getCropName().toLowerCase() : "";
+            return nm.contains("paddy") || nm.contains("wheat") || nm.contains("maize");
+        }).count();
+        
+        long totalPulses = allCrops.stream().filter(c -> {
+            String nm = (c.getCropName() != null) ? c.getCropName().toLowerCase() : "";
+            return nm.contains("dal") || nm.contains("gram");
+        }).count();
+        
+        long totalBiomass = allCrops.stream().filter(c -> "Wastage/Byproduct".equalsIgnoreCase(c.getProductCategory())).count();
+        
+        double avgPrice = allCrops.stream().filter(c -> c.getPricePerUnit() != null)
+                                   .mapToDouble(Crop::getPricePerUnit).average().orElse(0.0);
+                                   
+        long totalAvailableVolume = allCrops.stream()
+                                     .filter(c -> "Available".equalsIgnoreCase(c.getStatus()))
+                                     .mapToLong(c -> c.getQuantity() != null ? c.getQuantity() : 0)
+                                     .sum();
+        
+        model.addAttribute("totalCereals", totalCereals);
+        model.addAttribute("totalPulses", totalPulses);
+        model.addAttribute("totalBiomass", totalBiomass);
+        model.addAttribute("avgPrice", Math.round(avgPrice));
+        model.addAttribute("totalVolume", totalAvailableVolume);
+        
+        return "buyer/insights";
     }
 }

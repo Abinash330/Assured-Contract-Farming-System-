@@ -100,7 +100,10 @@
                     <a class="nav-link" href="/dashboard"><i class="bi bi-pie-chart-fill me-1 opacity-75"></i> Reporting</a>
                 </li>
                 <li class="nav-item nav-item-premium">
-                    <a class="nav-link" href="/browse_crops"><i class="bi bi-basket3-fill me-1 opacity-75"></i> Exchange</a>
+                    <a class="nav-link" href="/crop/browse"><i class="bi bi-basket3-fill me-1 opacity-75"></i> Exchange</a>
+                </li>
+                <li class="nav-item nav-item-premium">
+                    <a class="nav-link" href="/buyer/insights"><i class="bi bi-graph-up-arrow me-1 opacity-75"></i> Market Analytics</a>
                 </li>
                 <li class="nav-item nav-item-premium pe-3 border-end border-primary border-opacity-10 d-none d-lg-block">
                     <a class="nav-link" href="/contracts"><i class="bi bi-file-earmark-lock-fill me-1 opacity-75"></i> Active Procurements</a>
@@ -115,7 +118,7 @@
                 <!-- Profile Dropdown -->
                 <li class="nav-item dropdown ms-lg-2 mt-3 mt-lg-0">
                     <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 p-1 pe-3 border rounded-pill bg-white shadow-sm hover-elevate transition text-dark fw-bold" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="border-color: rgba(13,110,253,0.2) !important;">
-                        <img src="https://api.dicebear.com/7.x/initials/svg?seed=Buyer&backgroundColor=0d6efd&textColor=ffffff" alt="Avatar" class="rounded-circle" width="32" height="32">
+                        <img src="/images/avatar_buyer.svg" alt="Avatar" class="rounded-circle" width="32" height="32">
                         My Enterprise
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-glass mt-2 animate__animated animate__fadeIn animate__faster" aria-labelledby="profileDropdown">

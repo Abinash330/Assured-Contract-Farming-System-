@@ -1,3 +1,12 @@
+:root {
+    --primary-green: #10b981;
+    --primary-blue: #0ea5e9;
+    --dark-slate: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --gradient-primary: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
 body {
     font-family: Arial, sans-serif;
     background: url('images/agricultural.jpg') no-repeat;
@@ -51,3 +60,97 @@ h1, h2 {
     margin: 0 0 20px 0;
 }
 
+/* Landing Page Utilities */
+.bg-soft-green { background-color: rgba(16, 185, 129, 0.05); }
+.bg-soft-blue { background-color: rgba(14, 165, 233, 0.05); }
+
+.hover-elevate {
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+}
+.hover-elevate:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--dark-slate);
+    letter-spacing: -1px;
+    margin-bottom: 1.5rem;
+}
+
+.step-card {
+    padding: 2.5rem;
+    border-radius: 24px;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+}
+
+.btn-premium {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-premium:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+    transform: scale(1.02);
+}
+
+.stat-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    border-bottom: 4px solid var(--primary-green);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.testimonial-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+.testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    font-size: 8rem;
+    color: rgba(16, 185, 129, 0.05);
+    font-family: serif;
+}
+
+/* Footer Premium Styles */
+.footer-link {
+    color: #64748b;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+.footer-link:hover {
+    color: var(--primary-green);
+    padding-left: 5px;
+}

@@ -98,7 +98,11 @@ public class ContractController {
 
         model.addAttribute("contracts", dtos);
         model.addAttribute("role", role);
-        return "view_contracts";
+        if ("farmer".equals(role)) return "farmer/view_contracts";
+        if ("buyer".equals(role)) return "buyer/view_contracts";
+        if ("inspector".equals(role)) return "inspector/view_contracts";
+
+        return "redirect:/login";
     }
 
     @PostMapping("/contract/create")

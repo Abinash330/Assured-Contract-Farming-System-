@@ -41,7 +41,7 @@ public class UserController {
             model.addAttribute("wallet", wallet);
         }
 
-        return "profile";
+        return "public/profile";
     }
 
     @PostMapping
@@ -68,7 +68,7 @@ public class UserController {
             model.addAttribute("isEditing", false);
         }
 
-        return "profile";
+        return "public/profile";
     }
 
     @PostMapping("/add-funds")

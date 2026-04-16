@@ -13,6 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/crop")
@@ -29,7 +35,7 @@ public class CropController {
         if (session.getAttribute("username") == null || !"farmer".equals(session.getAttribute("role"))) {
             return "redirect:/login";
         }
-        return "list_crops";
+        return "farmer/list_crops";
     }
 
     @PostMapping("/add")
@@ -38,6 +44,10 @@ public class CropController {
             @RequestParam Double price_per_unit,
             @RequestParam String location,
             @RequestParam String harvest_date,
+            @RequestParam(required = false) String productCategory,
+            @RequestParam(required = false) String facilities,
+            @RequestParam(required = false) String productDescription,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile,
             HttpSession session,
             Model model) {
         Long userId = (Long) session.getAttribute("userId");
@@ -51,6 +61,36 @@ public class CropController {
         crop.setPricePerUnit(price_per_unit);
         crop.setLocation(location);
         crop.setHarvestDate(harvest_date);
+        crop.setProductCategory(productCategory != null ? productCategory : "Primary Crop");
+        crop.setFacilities(facilities);
+        crop.setProductDescription(productDescription);
+        
+        // Handle File Upload
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String uploadDir = "src/main/resources/static/uploads/crops/";
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                String filename = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+                Path filePath = uploadPath.resolve(filename);
+                Files.copy(imageFile.getInputStream(), filePath);
+                crop.setImageUrl("/uploads/crops/" + filename);
+            } catch (IOException e) {
+                System.out.println("Image upload failed: " + e.getMessage());
+            }
+        } else {
+            // Default images per category if image isn't uploaded
+            if ("Wastage/Byproduct".equalsIgnoreCase(productCategory)) {
+                crop.setImageUrl("https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=500&auto=format&fit=crop"); // Compost / Wastage visual
+            } else if ("Fertilizer".equalsIgnoreCase(productCategory)) {
+                crop.setImageUrl("https://images.unsplash.com/photo-1590682680695-43b964a3ae17?w=500&auto=format&fit=crop"); // Soil / Fertilizer visual
+            } else {
+                crop.setImageUrl("/images/agricultural.jpg"); // Existing default
+            }
+        }
+
         crop.setFarmerId(userId);
         crop.setStatus("Available");
 
@@ -66,7 +106,7 @@ public class CropController {
         Optional<Crop> cropOpt = cropRepository.findById(cropId);
         if (cropOpt.isPresent()) {
             model.addAttribute("crop", cropOpt.get());
-            return "update_crop";
+            return "farmer/update_crop";
         }
         return "redirect:/dashboard";
     }
@@ -161,6 +201,6 @@ public class CropController {
         model.addAttribute("crops", filteredCrops);
         model.addAttribute("search", search);
 
-        return "browse_crops";
+        return "buyer/browse_crops";
     }
 }

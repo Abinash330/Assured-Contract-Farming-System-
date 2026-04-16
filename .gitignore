@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Custom Logs and Tmp files
+*.log
+output.html
+tomcat-tmp/
+

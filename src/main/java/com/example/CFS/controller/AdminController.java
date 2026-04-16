@@ -128,11 +128,17 @@ public class AdminController {
             Map<String, Object> details = new HashMap<>();
             details.put("contract", contract);
 
-            cropRepository.findById(contract.getCropId()).ifPresent(crop -> {
-                details.put("crop", crop);
-                userRepository.findById(crop.getFarmerId()).ifPresent(farmer -> details.put("farmer", farmer));
-            });
-            userRepository.findById(contract.getBuyerId()).ifPresent(buyer -> details.put("buyer", buyer));
+            if (contract.getCropId() != null) {
+                cropRepository.findById(contract.getCropId()).ifPresent(crop -> {
+                    details.put("crop", crop);
+                    if (crop.getFarmerId() != null) {
+                        userRepository.findById(crop.getFarmerId()).ifPresent(farmer -> details.put("farmer", farmer));
+                    }
+                });
+            }
+            if (contract.getBuyerId() != null) {
+                userRepository.findById(contract.getBuyerId()).ifPresent(buyer -> details.put("buyer", buyer));
+            }
 
             contractDetailsList.add(details);
         }
@@ -158,5 +164,61 @@ public class AdminController {
         }
         // Serve the static platform settings view
         return "admin/system_settings";
+    }
+
+    // --- NEW ADMINISTRATIVE CRUD ENDPOINTS ---
+
+    @PostMapping("/admin/users/update")
+    public String updateUser(@RequestParam Long userId, @RequestParam String username, @RequestParam String email, @RequestParam String role, @RequestParam String kycStatus, HttpSession session) {
+        if (!isAdmin(session)) return "redirect:/login";
+        userRepository.findById(userId).ifPresent(user -> {
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setRole(role);
+            user.setKycStatus(kycStatus);
+            if("APPROVED".equals(kycStatus)) user.setVerified(true);
+            else if("REJECTED".equals(kycStatus)) user.setVerified(false);
+            userRepository.save(user);
+        });
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/admin/contracts/update")
+    public String updateContract(@RequestParam Long contractId, @RequestParam String contractStatus, @RequestParam String paymentStatus, HttpSession session) {
+        if (!isAdmin(session)) return "redirect:/login";
+        contractRepository.findById(contractId).ifPresent(contract -> {
+            contract.setContractStatus(contractStatus);
+            contract.setPaymentStatus(paymentStatus);
+            contractRepository.save(contract);
+        });
+        return "redirect:/admin/contracts";
+    }
+
+    @PostMapping("/admin/contracts/delete")
+    public String deleteContract(@RequestParam Long contractId, HttpSession session) {
+        if (!isAdmin(session)) return "redirect:/login";
+        contractRepository.deleteById(contractId);
+        return "redirect:/admin/contracts";
+    }
+
+    @PostMapping("/admin/disputes/update")
+    public String updateDispute(@RequestParam Long disputeId, @RequestParam String status, @RequestParam String resolution, HttpSession session) {
+        if (!isAdmin(session)) return "redirect:/login";
+        disputeRepository.findById(disputeId).ifPresent(dispute -> {
+            dispute.setStatus(status);
+            // Assuming we append admin resolution notes to the existing reason for now to keep schema simple
+            if(resolution != null && !resolution.trim().isEmpty()) {
+               dispute.setReason(dispute.getReason() + " | ADMIN RESOLUTION: " + resolution);
+            }
+            disputeRepository.save(dispute);
+        });
+        return "redirect:/admin/disputes";
+    }
+
+    @PostMapping("/admin/disputes/delete")
+    public String deleteDispute(@RequestParam Long disputeId, HttpSession session) {
+        if (!isAdmin(session)) return "redirect:/login";
+        disputeRepository.deleteById(disputeId);
+        return "redirect:/admin/disputes";
     }
 }
