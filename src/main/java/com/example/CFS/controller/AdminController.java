@@ -19,6 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+import java.io.IOException;
 
 @Controller
 public class AdminController {
@@ -220,5 +226,115 @@ public class AdminController {
         if (!isAdmin(session)) return "redirect:/login";
         disputeRepository.deleteById(disputeId);
         return "redirect:/admin/disputes";
+    }
+
+    // --- CROP MANAGEMENT FOR ADMIN ---
+
+    @GetMapping("/admin/crops")
+    public String manageCrops(HttpSession session, Model model) {
+        if (!isAdmin(session)) {
+            return "redirect:/login";
+        }
+        
+        List<com.example.CFS.entity.Crop> allCrops = cropRepository.findAll();
+        List<Map<String, Object>> cropDetailsList = new ArrayList<>();
+        
+        for (com.example.CFS.entity.Crop crop : allCrops) {
+            Map<String, Object> details = new HashMap<>();
+            details.put("crop", crop);
+            if(crop.getFarmerId() != null) {
+                userRepository.findById(crop.getFarmerId()).ifPresent(farmer -> details.put("farmer", farmer));
+            }
+            cropDetailsList.add(details);
+        }
+        
+        model.addAttribute("cropDetailsList", cropDetailsList);
+        List<User> farmers = userRepository.findAll().stream().filter(u -> "farmer".equals(u.getRole())).toList();
+        model.addAttribute("farmers", farmers);
+        
+        return "admin/manage_crops";
+    }
+
+    @PostMapping("/admin/crops/add")
+    public String adminAddCrop(@RequestParam Long farmerId,
+            @RequestParam String crop_name,
+            @RequestParam Integer quantity,
+            @RequestParam Double price_per_unit,
+            @RequestParam String location,
+            @RequestParam String harvest_date,
+            @RequestParam(required = false) String productCategory,
+            @RequestParam(required = false) String facilities,
+            @RequestParam(required = false) String productDescription,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile,
+            HttpSession session) {
+            
+        if (!isAdmin(session)) return "redirect:/login";
+
+        com.example.CFS.entity.Crop crop = new com.example.CFS.entity.Crop();
+        crop.setCropName(crop_name);
+        crop.setQuantity(quantity);
+        crop.setPricePerUnit(price_per_unit);
+        crop.setLocation(location);
+        crop.setHarvestDate(harvest_date);
+        crop.setProductCategory(productCategory != null ? productCategory : "Primary Crop");
+        crop.setFacilities(facilities);
+        crop.setProductDescription(productDescription);
+        
+        // Handle File Upload
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String uploadDir = "src/main/resources/static/uploads/crops/";
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                String filename = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+                Path filePath = uploadPath.resolve(filename);
+                Files.copy(imageFile.getInputStream(), filePath);
+                crop.setImageUrl("/uploads/crops/" + filename);
+            } catch (IOException e) {
+                System.out.println("Image upload failed: " + e.getMessage());
+            }
+        }
+        
+        crop.setFarmerId(farmerId);
+        crop.setStatus("Available");
+        cropRepository.save(crop);
+        
+        return "redirect:/admin/crops";
+    }
+
+    @PostMapping("/admin/crops/update")
+    public String adminUpdateCrop(
+            @RequestParam Long cropId,
+            @RequestParam String crop_name,
+            @RequestParam Integer quantity,
+            @RequestParam Double price_per_unit,
+            @RequestParam String location,
+            @RequestParam String status,
+            HttpSession session) {
+            
+        if (!isAdmin(session)) return "redirect:/login";
+        
+        cropRepository.findById(cropId).ifPresent(crop -> {
+            crop.setCropName(crop_name);
+            crop.setQuantity(quantity);
+            crop.setPricePerUnit(price_per_unit);
+            crop.setLocation(location);
+            crop.setStatus(status);
+            cropRepository.save(crop);
+        });
+        
+        return "redirect:/admin/crops";
+    }
+
+    @PostMapping("/admin/crops/delete")
+    public String adminDeleteCrop(@RequestParam Long cropId, HttpSession session) {
+        if (!isAdmin(session)) return "redirect:/login";
+        
+        contractRepository.deleteByCropId(cropId);
+        cropRepository.deleteById(cropId);
+        
+        return "redirect:/admin/crops";
     }
 }

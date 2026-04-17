@@ -57,14 +57,14 @@
             <div class="col-md-4">
                 <div class="glass-card p-4 text-center hover-elevate">
                     <div class="text-primary mb-3"><i class="bi bi-file-earmark-check stats-icon"></i></div>
-                    <h3 class="fw-bold">0</h3>
+                    <h3 class="fw-bold">${pendingContractsCount != null ? pendingContractsCount : 0}</h3>
                     <p class="text-secondary text-uppercase small fw-bold">Pending Contracts</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="glass-card p-4 text-center hover-elevate">
                     <div class="text-warning mb-3"><i class="bi bi-wallet2 stats-icon"></i></div>
-                    <h3 class="fw-bold">₹0.00</h3>
+                    <h3 class="fw-bold">₹${walletBalance != null ? walletBalance : '0.00'}</h3>
                     <p class="text-secondary text-uppercase small fw-bold">Wallet Balance</p>
                 </div>
             </div>
@@ -127,6 +127,9 @@
                             <div class="d-flex justify-content-between border-top pt-3 mt-3">
                                 <div><span class="d-block small text-muted">Quantity</span><span class="fw-bold">${crop.quantity} MT</span></div>
                                 <div><span class="d-block small text-muted">Price/MT</span><span class="fw-bold text-success">₹${crop.pricePerUnit}</span></div>
+                            </div>
+                            <div class="mt-3">
+                                <a href="${not empty crop.imageUrl ? crop.imageUrl : '/images/wheat.jpg'}" download="crop_image_${crop.id}.jpg" class="btn btn-outline-primary btn-sm w-100 rounded-pill"><i class="bi bi-download me-1"></i> Download Product Image</a>
                             </div>
                         </div>
                     </div>

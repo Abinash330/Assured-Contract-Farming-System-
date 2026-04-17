@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class DashboardController {
@@ -43,6 +44,21 @@ public class DashboardController {
             if ("farmer".equals(role)) {
                 List<Crop> listedCrops = cropRepository.findByFarmerId(user.getId());
                 model.addAttribute("listedCrops", listedCrops);
+
+                List<Long> cropIds = listedCrops.stream().map(Crop::getId).collect(Collectors.toList());
+                List<Contract> contracts = cropIds.isEmpty() ? new ArrayList<>() : contractRepository.findByCropIdIn(cropIds);
+                
+                long pendingContractsCount = contracts.stream()
+                        .filter(c -> "Pending".equalsIgnoreCase(c.getContractStatus()))
+                        .count();
+                
+                double walletBalance = contracts.stream()
+                        .filter(c -> "Completed".equalsIgnoreCase(c.getContractStatus()) || "Paid".equalsIgnoreCase(c.getPaymentStatus()))
+                        .mapToDouble(c -> c.getFinalPrice() != null ? c.getFinalPrice() : 0.0)
+                        .sum();
+
+                model.addAttribute("pendingContractsCount", pendingContractsCount);
+                model.addAttribute("walletBalance", String.format("%.2f", walletBalance));
             } else if ("buyer".equals(role)) {
                 List<Contract> contracts = contractRepository.findByBuyerId(user.getId());
                 List<Long> cropIds = new ArrayList<>();

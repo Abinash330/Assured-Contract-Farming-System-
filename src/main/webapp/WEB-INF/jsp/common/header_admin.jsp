@@ -23,6 +23,9 @@
         <a href="/admin/users" class="admin-nav-link ${pageContext.request.requestURI.endsWith('manage_users.jsp') ? 'active' : ''}">
             <i class="bi bi-people-fill"></i> Identity & KYC
         </a>
+        <a href="/admin/crops" class="admin-nav-link ${pageContext.request.requestURI.endsWith('manage_crops.jsp') ? 'active' : ''}">
+            <i class="bi bi-basket-fill"></i> Crops Directory
+        </a>
         <a href="/admin/contracts" class="admin-nav-link ${pageContext.request.requestURI.endsWith('manage_contracts.jsp') ? 'active' : ''}">
             <i class="bi bi-file-earmark-check-fill"></i> Escrow Ledger
         </a>

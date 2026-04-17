@@ -12,137 +12,96 @@
     </head>
 
     <body class="d-flex align-items-center py-4">
-        <main class="w-100 min-vh-100 d-flex align-items-center bg-light">
-            <div class="container-fluid p-0 h-100">
-                <div class="row g-0 h-100 align-items-center">
-                    
-                    <!-- Left Promo Column -->
-                    <div class="col-lg-6 d-none d-lg-flex flex-column justify-content-between text-white position-relative min-vh-100 p-5 overflow-hidden" style="background: linear-gradient(135deg, rgba(16,185,129,0.85) 0%, rgba(6,78,59,0.95) 100%), url('/images/growing-organic-ecological-plants-fields-background.jpg') center/cover no-repeat;">
-                        <!-- Decorative Circles -->
-                        <div class="position-absolute bg-white rounded-circle opacity-10" style="width: 500px; height: 500px; top: -150px; left: -100px; filter: blur(60px);"></div>
-                        <div class="position-absolute bg-black rounded-circle opacity-25" style="width: 400px; height: 400px; bottom: -50px; right: -150px; filter: blur(50px);"></div>
-                        
-                        <div class="position-relative z-1 mb-5">
-                            <h2 class="fw-bold fs-3 d-flex align-items-center">
-                                <i class="bi bi-bezier2 me-2 fs-2"></i> Agri<span class="text-white opacity-75">Trust</span>
-                            </h2>
-                        </div>
-                        
-                        <div class="position-relative z-1 my-auto">
-                            <span class="badge bg-white bg-opacity-25 text-white border border-white border-opacity-50 px-3 py-2 rounded-pill mb-4 d-inline-flex align-items-center shadow-sm">
-                                <i class="bi bi-shield-lock-fill me-2 text-warning"></i> Secure Trading Network
-                            </span>
-                            <h1 class="display-4 fw-bold mb-4 let-spacing-tight">Welcome to the Future of Contract Farming.</h1>
-                            <p class="fs-5 text-white opacity-75 mb-5 lh-base w-75">Connect directly with verified corporate buyers and establish rigid, legally bound, digitally escrowed agricultural contracts.</p>
-                            
-                            <div class="d-flex gap-4">
-                                <div class="d-flex align-items-center text-white">
-                                    <div class="bg-white bg-opacity-10 p-3 rounded-circle me-3 border border-white border-opacity-25">
-                                        <i class="bi bi-graph-up-arrow fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="mb-0 fw-bold">100%</h4>
-                                        <small class="opacity-75">Price Assurance</small>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center text-white">
-                                    <div class="bg-white bg-opacity-10 p-3 rounded-circle me-3 border border-white border-opacity-25">
-                                        <i class="bi bi-wallet2 fs-4"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="mb-0 fw-bold">Zero</h4>
-                                        <small class="opacity-75">Middlemen</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="position-relative z-1 mt-5 pt-5 border-top border-white border-opacity-25 d-flex justify-content-between align-items-center">
-                            <p class="small mb-0 opacity-75">&copy; 2026 Assured Contract Farming Platform</p>
-                            <div class="d-flex gap-3">
-                                <span class="bg-dark bg-opacity-25 px-2 py-1 rounded small border border-secondary shadow-sm text-white" style="transform: scale(0.9); transform-origin: left center;">
-                                    <div id="google_translate_element"></div>
-                                </span>
-                                <a href="#" class="text-white opacity-75 hover-white mt-1"><i class="bi bi-twitter-x"></i></a>
-                                <a href="#" class="text-white opacity-75 hover-white mt-1"><i class="bi bi-linkedin"></i></a>
-                            </div>
-                        </div>
-                    </div>
+        <main class="w-100 min-vh-100 d-flex align-items-center justify-content-center position-relative" style="background: url('https://images.unsplash.com/photo-1592982537447-6f23f03bdf81?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat; overflow: hidden;">
+            <!-- Dark Overlay -->
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0, 0, 0, 0.45); z-index: 1;"></div>
+            
+            <!-- Animated Glowing Elements -->
+            <div class="position-absolute bg-warning rounded-circle opacity-25 pulse" style="width: 50vh; height: 50vh; top: 10%; right: 15%; filter: blur(100px); z-index: 1;"></div>
+            <div class="position-absolute bg-success rounded-circle opacity-50 pulse" style="width: 60vh; height: 60vh; bottom: 5%; left: 10%; filter: blur(120px); animation-delay: 2s; z-index: 1;"></div>
 
-                    <!-- Right Form Column -->
-                    <div class="col-lg-6 d-flex align-items-center justify-content-center p-4 p-md-5">
-                        <div class="w-100" style="max-width: 480px;">
-                            
-                            <!-- Mobile Logo -->
-                            <div class="text-center d-lg-none mb-5">
-                                <div class="d-inline-flex bg-success bg-opacity-10 p-3 rounded-circle mb-3 border border-success border-opacity-25 shadow-sm">
-                                    <i class="bi bi-bezier2 text-success" style="font-size: 2.5rem;"></i>
-                                </div>
-                            </div>
+            <!-- Floating Logo -->
+            <div class="position-absolute" style="top: 2rem; left: 2rem; mix-blend-mode: screen; opacity: 0.85; z-index: 5; animation: float 6s ease-in-out infinite;">
+                <img src="/images/agritrust_logo.png" alt="AgriTrust System" style="width: 250px; filter: drop-shadow(0 0 15px rgba(16,185,129,0.5));">
+            </div>
 
-                            <div class="mb-5">
-                                <h2 class="fw-bold text-dark mb-2 display-6">Sign In</h2>
-                                <p class="text-muted fs-5">Access your decentralized agricultural portoflio.</p>
-                            </div>
-
-                            <% if (request.getAttribute("error") !=null) { %>
-                                <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm px-4 py-3 bg-danger bg-opacity-10 text-danger" role="alert">
-                                    <i class="bi bi-exclamation-octagon-fill me-2"></i>
-                                    <span class="fw-bold"><%= request.getAttribute("error") %></span>
-                                    <button type="button" class="btn-close mt-1" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            <% } %>
-
-                            <% if (request.getAttribute("message") !=null) { %>
-                                <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm px-4 py-3 bg-success bg-opacity-10 text-success" role="alert">
-                                    <i class="bi bi-check-circle-fill me-2"></i>
-                                    <span class="fw-bold"><%= request.getAttribute("message") %></span>
-                                    <button type="button" class="btn-close mt-1" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            <% } %>
-
-                            <form action="/login" method="post" class="mt-4">
-                                <div class="mb-4">
-                                    <label for="floatingInput" class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Account Endpoint</label>
-                                    <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
-                                        <span class="input-group-text bg-white border-end-0 px-4 text-secondary"><i class="bi bi-envelope"></i></span>
-                                        <input type="email" class="form-control form-control-lg border-start-0 bg-white focus-ring-success py-3" id="floatingInput" name="email" placeholder="name@domain.com" required>
-                                    </div>
-                                </div>
-                                
-                                <div class="mb-4">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <label for="floatingPassword" class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1 mb-0">Cryptographic Key</label>
-                                        <a href="/forgot_password" class="text-decoration-none text-success small fw-bold hover-dark transition">Forgot Key?</a>
-                                    </div>
-                                    <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
-                                        <span class="input-group-text bg-white border-end-0 px-4 text-secondary"><i class="bi bi-key"></i></span>
-                                        <input type="password" class="form-control form-control-lg border-start-0 bg-white focus-ring-success py-3" id="floatingPassword" name="password" placeholder="••••••••" required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-4 d-flex align-items-center ms-1">
-                                    <input type="checkbox" class="form-check-input border-secondary border-opacity-50 mt-0 me-2 cursor-pointer shadow-sm" id="rememberMe">
-                                    <label class="form-check-label text-muted small cursor-pointer" for="rememberMe">Maintain authorized session</label>
-                                </div>
-
-                                <button class="btn btn-premium w-100 py-3 mb-4 rounded-pill fs-5 shadow-lg group hover-elevate transition" type="submit">
-                                    Authenticate Node <i class="bi bi-arrow-right-short ms-1 transition group-hover-translate-x fs-4 vertical-align-middle"></i>
-                                </button>
-
-                                <div class="text-center mt-4">
-                                    <p class="text-muted mb-3">Don't have a network identity?</p>
-                                    <a href="/register" class="btn btn-outline-dark w-100 rounded-pill py-3 fw-bold transition hover-bg-light">Create Trading Account</a>
-                                </div>
-
-                                <div class="text-center mt-5">
-                                    <a href="/" class="text-muted text-decoration-none small hover-success transition"><i class="bi bi-arrow-left me-1"></i> Return to Public Sector</a>
-                                </div>
-                            </form>
-                        </div>
+            <!-- Login Glass Card -->
+            <div class="position-relative z-2 w-100" style="max-width: 500px; margin: 0 1.5rem;">
+                <!-- Decorative Top Icon Avatar -->
+                <div class="text-center mb-4 position-relative z-3" style="margin-top: -50px;">
+                    <div class="d-inline-flex border border-4 border-success border-opacity-50 shadow-lg rounded-circle overflow-hidden bg-black align-items-center justify-content-center" style="animation: pulse 3s infinite; width: 110px; height: 110px;">
+                        <img src="/images/premium_circle_icon.png" alt="System Avatar" style="width: 140%; height: 140%; object-fit: cover; object-position: center;">
                     </div>
                 </div>
+
+                <div class="p-4 p-md-5 w-100 position-relative" style="backdrop-filter: blur(20px) saturate(200%); -webkit-backdrop-filter: blur(20px) saturate(200%); background-color: rgba(255, 255, 255, 0.9); border-radius: 28px; border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bolder text-dark mb-2 display-6 tracking-tight">Welcome Back</h2>
+                        <p class="text-secondary fs-6">Access your decentralized agriculture portfolio.</p>
+                    </div>
+
+                    <% if (request.getAttribute("error") !=null) { %>
+                        <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm px-4 py-3 bg-danger bg-opacity-10 text-danger" role="alert">
+                            <i class="bi bi-exclamation-octagon-fill me-2"></i>
+                            <span class="fw-bold"><%= request.getAttribute("error") %></span>
+                            <button type="button" class="btn-close mt-1" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
+                    <% if (request.getAttribute("message") !=null) { %>
+                        <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm px-4 py-3 bg-success bg-opacity-10 text-success" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <span class="fw-bold"><%= request.getAttribute("message") %></span>
+                            <button type="button" class="btn-close mt-1" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
+                    <form action="/login" method="post" class="mt-4">
+                        <div class="mb-4 form-floating">
+                            <input type="email" class="form-control form-control-lg border border-light-subtle shadow-sm bg-white focus-ring-success rounded-4 fw-medium" id="floatingInput" name="email" placeholder="name@domain.com" required style="padding-left: 3.5rem;">
+                            <label for="floatingInput" class="fw-bold text-muted small" style="margin-left: 2.2rem; margin-top: -2px;">Email / Account Endpoint</label>
+                            <i class="bi bi-envelope-at-fill position-absolute text-success fs-5 opacity-75" style="top: 15px; left: 20px;"></i>
+                        </div>
+                        
+                        <div class="mb-4 form-floating position-relative">
+                            <input type="password" class="form-control form-control-lg border border-light-subtle shadow-sm bg-white focus-ring-success rounded-4 fw-medium" id="floatingPassword" name="password" placeholder="Password" required style="padding-left: 3.5rem;">
+                            <label for="floatingPassword" class="fw-bold text-muted small" style="margin-left: 2.2rem; margin-top: -2px;">Cryptographic Password</label>
+                            <i class="bi bi-shield-lock-fill position-absolute text-success fs-5 opacity-75" style="top: 15px; left: 20px;"></i>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-2 mb-4 px-2">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input border-secondary border-opacity-50 mt-1 me-2 cursor-pointer shadow-sm" id="rememberMe">
+                                <label class="form-check-label text-muted small fw-bold cursor-pointer" for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="/forgot_password" class="text-decoration-none text-success small fw-bold hover-dark transition"><i class="bi bi-question-circle me-1"></i> Forgot Password?</a>
+                        </div>
+
+                        <button class="btn btn-success w-100 py-3 mb-4 rounded-pill fs-5 shadow-lg group hover-elevate transition fw-bold d-flex justify-content-center align-items-center border-0" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);" type="submit">
+                            Sign In securely <i class="bi bi-arrow-right-circle-fill ms-2 fs-4 transition group-hover-translate-x"></i>
+                        </button>
+
+                        <div class="text-center mt-4">
+                            <p class="text-muted small mb-2">Don't have a network identity?</p>
+                            <a href="/register" class="btn btn-outline-dark w-100 rounded-pill py-3 fw-bold transition hover-bg-light shadow-sm">Create Trading Account</a>
+                        </div>
+
+                        <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
+                            <a href="/" class="text-muted text-decoration-none small hover-success transition"><i class="bi bi-arrow-left me-1"></i> Return</a>
+                            <span class="bg-light px-2 py-1 rounded small border border-secondary border-opacity-25 shadow-sm text-dark d-inline-block" style="transform: scale(0.85); transform-origin: right center;">
+                                <div id="google_translate_element"></div>
+                            </span>
+                        </div>
+                    </form>
+                </div>
             </div>
+            <style>
+                @keyframes float {
+                    0% { transform: translateY(0px); }
+                    50% { transform: translateY(-15px); }
+                    100% { transform: translateY(0px); }
+                }
+            </style>
         </main>
         <script type="text/javascript">
             function googleTranslateElementInit() {

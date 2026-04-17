@@ -10,9 +10,23 @@
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <title>Browse Marketplace - Assured Contract Farming</title>
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
                 <link rel="stylesheet" href="/global-theme.css">
+                <style>
+                    /* Custom Leaflet pulse marker */
+                    .custom-map-marker { background: transparent; border: none; }
+                    .pulse-marker {
+                        width: 20px; height: 20px;
+                        background: #10b981;
+                        border-radius: 50%;
+                        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+                        animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 0, 1);
+                    }
+                    @keyframes pulse-ring {
+                        to { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+                    }
+                </style>
             </head>
 
             <body class="pb-5">
@@ -105,9 +119,18 @@
                                     </select>
                                     <div class="d-none d-md-flex bg-light rounded-pill p-1 border">
                                         <button class="btn btn-sm btn-white rounded-circle shadow-sm text-primary"><i class="bi bi-grid-fill"></i></button>
-                                        <button class="btn btn-sm btn-transparent rounded-circle text-muted"><i class="bi bi-list-ul"></i></button>
+                                        <button class="btn btn-sm btn-transparent rounded-circle text-muted" onclick="document.getElementById('interactiveMarketMap').scrollIntoView({behavior:'smooth'})"><i class="bi bi-geo-alt-fill"></i></button>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <!-- Leaflet Interactive Map Panel -->
+                            <div class="glass-card mb-4 border-0 shadow-sm rounded-4 overflow-hidden position-relative">
+                                <div class="bg-primary bg-opacity-10 py-2 px-3 border-bottom d-flex align-items-center">
+                                    <i class="bi bi-broadcast text-danger pulse me-2"></i>
+                                    <span class="text-primary fw-bold small text-uppercase" style="letter-spacing: 1px;">Live Network Satellite Telemetry</span>
+                                </div>
+                                <div id="interactiveMarketMap" style="width: 100%; height: 350px; z-index: 1;"></div>
                             </div>
 
                             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
@@ -255,6 +278,57 @@
 
                 <jsp:include page="/WEB-INF/jsp/common/footer_buyer.jsp" />
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Initialize Map centered on India Region
+                        var map = L.map('interactiveMarketMap', {scrollWheelZoom: false}).setView([21.1458, 79.0882], 4);
+                        
+                        // Use a sleek, premium, light-themed map style (CartoDB Positron)
+                        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                            attribution: '&copy; OpenStreetMap contributors',
+                            maxZoom: 18
+                        }).addTo(map);
+
+                        var customIcon = L.divIcon({ className: 'custom-map-marker', html: '<div class="pulse-marker"></div>' });
+
+                        // Simple geocoding dictionary for Demo
+                        const geoDict = {
+                            'punjab': [31.1471, 75.3412],
+                            'maharashtra': [19.7515, 75.7139],
+                            'gujarat': [22.2587, 71.1924],
+                            'karnataka': [15.3173, 75.7139],
+                            'haryana': [29.0588, 76.0856],
+                            'uttar pradesh': [26.8467, 80.9462],
+                            'madhya pradesh': [22.9734, 78.6569]
+                        };
+
+                        // Render JSTL markers via JS dynamically
+                        <c:forEach var="mapCrop" items="${crops}">
+                            (function() {
+                                var locStr = '${mapCrop.location}'.toLowerCase().trim();
+                                var coords = geoDict[locStr];
+                                if (!coords) {
+                                    // If unknown, fuzz around central India for visual pop
+                                    coords = [21.0 + (Math.random() * 6 - 3), 79.0 + (Math.random() * 8 - 4)];
+                                } else {
+                                    // Fuzz slightly to prevent exact overlaps for same state
+                                    coords = [coords[0] + (Math.random() * 0.5 - 0.25), coords[1] + (Math.random() * 0.5 - 0.25)];
+                                }
+                                
+                                var popupHtml = '<div class="p-2 border-0">' +
+                                    '<span class="badge bg-success mb-2">${mapCrop.productCategory}</span>' +
+                                    '<h6 class="fw-bold mb-0">${mapCrop.cropName}</h6>' +
+                                    '<p class="text-muted small mb-2"><i class="bi bi-geo-alt-fill text-danger me-1"></i> ${mapCrop.location}</p>' +
+                                    '<b class="d-block text-primary">${mapCrop.quantity} MT @ ₹${mapCrop.pricePerUnit}</b>' +
+                                    '<button class="btn btn-sm btn-outline-primary rounded-pill w-100 mt-3" data-bs-toggle="modal" data-bs-target="#contractModal" onclick="document.getElementById(\\\'modalCropId\\\').value=\\\'${mapCrop.id}\\\'; document.getElementById(\\\'modalCropName\\\').innerText=\\\'${mapCrop.cropName}\\\';">Select Node</button>' +
+                                    '</div>';
+                                    
+                                L.marker(coords, {icon: customIcon}).addTo(map).bindPopup(popupHtml, {className: 'custom-popup rounded-4'});
+                            })();
+                        </c:forEach>
+                    });
+                </script>
             </body>
 
             </html>

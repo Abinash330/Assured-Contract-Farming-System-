@@ -12,154 +12,162 @@
     </head>
 
     <body class="py-5">
-        <main class="w-100 min-vh-100 d-flex bg-light">
-            <div class="container-fluid p-0 h-100">
-                <div class="row g-0 align-items-stretch min-vh-100">
-                    
-                    <!-- Left Promo Column -->
-                    <div class="col-lg-5 col-xl-4 d-none d-lg-flex flex-column justify-content-between text-white position-relative p-5 overflow-hidden position-fixed h-100" style="background: linear-gradient(135deg, rgba(16,185,129,0.85) 0%, rgba(6,78,59,0.95) 100%), url('/images/hero-bg.png') center/cover no-repeat;">
-                        <!-- Decorative Shapes -->
-                        <div class="position-absolute bg-white rounded-circle opacity-10" style="width: 400px; height: 400px; top: -100px; right: -150px; filter: blur(50px);"></div>
-                        
-                        <div class="position-relative z-1 mb-5">
-                            <h2 class="fw-bold fs-3 d-flex align-items-center">
-                                <i class="bi bi-bezier2 me-2 fs-2"></i> Agri<span class="text-white opacity-75">Trust</span>
-                            </h2>
+        <main class="w-100 min-vh-100 d-flex align-items-center justify-content-center py-5 position-relative" style="background: url('https://images.unsplash.com/photo-1592982537447-6f23f03bdf81?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat; overflow-x: hidden;">
+            <!-- Dark Overlay -->
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0, 0, 0, 0.45); z-index: 1;"></div>
+            
+            <!-- Animated Glowing Elements -->
+            <div class="position-absolute bg-warning rounded-circle opacity-25 pulse" style="width: 50vh; height: 50vh; top: 5%; left: 15%; filter: blur(100px); z-index: 1;"></div>
+            <div class="position-absolute bg-success rounded-circle opacity-50 pulse" style="width: 60vh; height: 60vh; bottom: 5%; right: 10%; filter: blur(120px); animation-delay: 2s; z-index: 1;"></div>
+
+            <!-- Floating Logo -->
+            <div class="position-absolute d-none d-xl-block" style="top: 3rem; right: 4rem; mix-blend-mode: screen; opacity: 0.85; z-index: 5; animation: float 6s ease-in-out infinite;">
+                <img src="/images/agritrust_logo.png" alt="AgriTrust System" style="width: 320px; filter: drop-shadow(0 0 15px rgba(16,185,129,0.5));">
+            </div>
+
+            <!-- Glass Registration Card -->
+            <div class="position-relative z-2 w-100 mt-4 mt-lg-0" style="max-width: 850px; margin: 0 1.5rem;">
+                
+                <!-- Decorative Top Icon Avatar -->
+                <div class="text-center mb-4 position-relative z-3" style="margin-top: -50px;">
+                    <div class="d-inline-flex border border-4 border-success border-opacity-50 shadow-lg rounded-circle overflow-hidden bg-black align-items-center justify-content-center" style="animation: pulse 3s infinite; width: 110px; height: 110px;">
+                        <img src="/images/premium_circle_icon.png" alt="Registration Avatar" style="width: 140%; height: 140%; object-fit: cover; object-position: center;">
+                    </div>
+                </div>
+
+                <div class="p-4 p-md-5 w-100 position-relative" style="backdrop-filter: blur(20px) saturate(200%); -webkit-backdrop-filter: blur(20px) saturate(200%); background-color: rgba(255, 255, 255, 0.9); border-radius: 28px; border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bolder text-dark mb-2 display-6 tracking-tight">Node Registration</h2>
+                        <p class="text-secondary fs-6">Initialize your secure marketplace identity.</p>
+                    </div>
+
+                    <% if (request.getAttribute("error") !=null) { %>
+                        <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm px-4 py-3 bg-danger bg-opacity-10 text-danger mb-4" role="alert">
+                            <i class="bi bi-exclamation-octagon-fill me-2"></i>
+                            <span class="fw-bold"><%= request.getAttribute("error") %></span>
+                            <button type="button" class="btn-close mt-1" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+                    <% } %>
+
+                    <form action="/register" method="post">
+                        <h5 class="fw-bold text-dark mb-4 border-bottom border-secondary border-opacity-25 pb-3">
+                            <span class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;"><i class="bi bi-person-lines-fill"></i></span> 
+                            Core Identity
+                        </h5>
                         
-                        <div class="position-relative z-1 my-auto">
-                            <span class="badge bg-white bg-opacity-25 text-white border border-white border-opacity-50 px-3 py-2 rounded-pill mb-4 d-inline-flex align-items-center shadow-sm">
-                                <i class="bi bi-person-badge-fill me-2 text-warning"></i> Identity Verification
-                            </span>
-                            <h1 class="display-5 fw-bold mb-4 let-spacing-tight">Join the Network</h1>
-                            <p class="fs-6 text-white opacity-75 mb-4 lh-base">Establish your on-chain identity to participate in zero-trust agricultural trading.</p>
-                            
-                            <ul class="list-unstyled text-white opacity-75 mb-0 fs-6">
-                                <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success bg-white rounded-circle me-3 fs-5"></i> 100% Verified Corporate Buyers</li>
-                                <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success bg-white rounded-circle me-3 fs-5"></i> Decentralized Escrow Protection</li>
-                                <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success bg-white rounded-circle me-3 fs-5"></i> Institutional KYC/AML Audits</li>
-                            </ul>
+                        <div class="row g-4 mb-5">
+                            <div class="col-sm-6">
+                                <div class="form-floating position-relative">
+                                    <input type="text" class="form-control form-control-lg border border-light-subtle shadow-sm bg-white focus-ring-success rounded-4 fw-medium" id="regDisplay" name="username" placeholder="Company Name" required style="padding-left: 3.5rem;">
+                                    <label for="regDisplay" class="fw-bold text-muted small" style="margin-left: 2.2rem; margin-top: -2px;">Public Display Name</label>
+                                    <i class="bi bi-person-fill position-absolute text-success fs-5 opacity-75" style="top: 15px; left: 20px;"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating position-relative">
+                                    <input type="email" class="form-control form-control-lg border border-light-subtle shadow-sm bg-white focus-ring-success rounded-4 fw-medium" id="regEmail" name="email" placeholder="Email Address" required style="padding-left: 3.5rem;">
+                                    <label for="regEmail" class="fw-bold text-muted small" style="margin-left: 2.2rem; margin-top: -2px;">Email Address</label>
+                                    <i class="bi bi-envelope-fill position-absolute text-success fs-5 opacity-75" style="top: 15px; left: 20px;"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating position-relative">
+                                    <input type="password" class="form-control form-control-lg border border-light-subtle shadow-sm bg-white focus-ring-success rounded-4 fw-medium" id="regKey" name="password" placeholder="Key" required style="padding-left: 3.5rem;">
+                                    <label for="regKey" class="fw-bold text-muted small" style="margin-left: 2.2rem; margin-top: -2px;">Cryptographic Key</label>
+                                    <i class="bi bi-key-fill position-absolute text-success fs-5 opacity-75" style="top: 15px; left: 20px;"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating position-relative">
+                                    <input type="text" class="form-control form-control-lg border border-light-subtle shadow-sm bg-white focus-ring-success rounded-4 fw-medium" id="regGeo" name="address" placeholder="Physical Address" required style="padding-left: 3.5rem;">
+                                    <label for="regGeo" class="fw-bold text-muted small" style="margin-left: 2.2rem; margin-top: -2px;">Geographical Node</label>
+                                    <i class="bi bi-geo-alt-fill position-absolute text-success fs-5 opacity-75" style="top: 15px; left: 20px;"></i>
+                                </div>
+                            </div>
                         </div>
+
+                        <h5 class="fw-bold text-dark mb-4 border-bottom border-secondary border-opacity-25 pb-3">
+                            <span class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;"><i class="bi bi-shield-lock"></i></span> 
+                            Institutional KYC
+                        </h5>
                         
-                        <div class="position-relative z-1 mt-5">
-                            <p class="small mb-2 opacity-50">&copy; 2026 Core Infrastructure</p>
-                            <span class="bg-dark bg-opacity-25 px-2 py-1 rounded small border border-secondary shadow-sm text-white d-inline-block" style="transform: scale(0.9); transform-origin: left center;">
+                        <div class="row g-4 mb-5">
+                            <div class="col-sm-6">
+                                <div class="form-floating position-relative">
+                                    <input type="text" class="form-control form-control-lg border border-success border-opacity-50 shadow-sm bg-success bg-opacity-10 text-dark fw-bold font-monospace focus-ring-success rounded-4" id="regAadhaar" name="aadhaarNumber" placeholder="Aadhaar" required style="padding-left: 3.5rem;">
+                                    <label for="regAadhaar" class="fw-bold text-success small" style="margin-left: 2.2rem; margin-top: -2px;">Aadhaar Hash</label>
+                                    <i class="bi bi-fingerprint position-absolute text-success fs-5" style="top: 15px; left: 20px;"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating position-relative">
+                                    <input type="text" class="form-control form-control-lg border border-success border-opacity-50 shadow-sm bg-success bg-opacity-10 text-dark fw-bold font-monospace focus-ring-success rounded-4 text-uppercase" id="regPan" name="panNumber" placeholder="PAN" required style="padding-left: 3.5rem;">
+                                    <label for="regPan" class="fw-bold text-success small" style="margin-left: 2.2rem; margin-top: -2px;">Taxation PAN</label>
+                                    <i class="bi bi-calculator position-absolute text-success fs-5" style="top: 15px; left: 20px;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-4 border-bottom border-secondary border-opacity-25 pb-3">
+                            <span class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;"><i class="bi bi-diagram-3"></i></span> 
+                            Network Role Assignment
+                        </h5>
+                        
+                        <div class="mb-5">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <input type="radio" class="btn-check" name="role" id="roleFarmer" value="farmer" required>
+                                    <label class="btn btn-outline-success w-100 py-4 rounded-4 d-flex flex-column align-items-center justify-content-center h-100 gap-3 border-2 shadow-sm transition hover-elevate bg-white" for="roleFarmer">
+                                        <i class="bi bi-tractor-fill display-5"></i>
+                                        <span class="fw-bolder tracking-wide">Farmer Node</span>
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="radio" class="btn-check" name="role" id="roleBuyer" value="buyer" required>
+                                    <label class="btn btn-outline-primary w-100 py-4 rounded-4 d-flex flex-column align-items-center justify-content-center h-100 gap-3 border-2 shadow-sm transition hover-elevate bg-white" for="roleBuyer">
+                                        <i class="bi bi-buildings-fill display-5"></i>
+                                        <span class="fw-bolder tracking-wide">Corporate Buyer</span>
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="radio" class="btn-check" name="role" id="roleInspector" value="inspector" required>
+                                    <label class="btn btn-outline-dark w-100 py-4 rounded-4 d-flex flex-column align-items-center justify-content-center h-100 gap-3 border-2 shadow-sm transition hover-elevate bg-white" for="roleInspector">
+                                        <i class="bi bi-clipboard2-data-fill display-5"></i>
+                                        <span class="fw-bolder tracking-wide">Inspector Node</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success w-100 py-3 mt-4 rounded-pill fs-5 shadow group hover-elevate transition fw-bolder d-flex justify-content-center align-items-center border-0" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);" type="submit">
+                            Finalize Registration <i class="bi bi-arrow-right-circle-fill ms-2 fs-4 transition group-hover-translate-x"></i>
+                        </button>
+                        
+                        <div class="text-center mt-5 pt-3 border-top border-secondary border-opacity-10 d-flex justify-content-between align-items-center">
+                            <span class="text-muted fw-medium small">Already deployed? <a href="/login" class="text-success text-decoration-none fw-bold ms-1 hover-dark transition">Authenticate Here</a></span>
+                            <span class="bg-light px-2 py-1 rounded small border border-secondary border-opacity-25 shadow-sm text-dark d-inline-block" style="transform: scale(0.85); transform-origin: right center;">
                                 <div id="google_translate_element"></div>
                             </span>
                         </div>
-                    </div>
-
-                    <!-- Right Form Column -->
-                    <div class="col-lg-7 col-xl-8 offset-lg-5 offset-xl-4 d-flex align-items-center justify-content-center p-4 p-md-5 py-lg-5" style="min-height: 100vh;">
-                        <div class="w-100" style="max-width: 700px;">
-                            
-                            <!-- Mobile Logo -->
-                            <div class="text-center d-lg-none mb-4">
-                                <div class="d-inline-flex bg-success bg-opacity-10 p-3 rounded-circle mb-2 border border-success border-opacity-25 shadow-sm">
-                                    <i class="bi bi-bezier2 text-success" style="font-size: 2rem;"></i>
-                                </div>
-                            </div>
-
-                            <div class="mb-5 text-center text-lg-start">
-                                <h2 class="fw-bold text-dark mb-2 display-6">Node Registration</h2>
-                                <p class="text-muted fs-5">Initialize your secure marketplace identity.</p>
-                            </div>
-
-                            <% if (request.getAttribute("error") !=null) { %>
-                                <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm px-4 py-3 bg-danger bg-opacity-10 text-danger mb-4" role="alert">
-                                    <i class="bi bi-exclamation-octagon-fill me-2"></i>
-                                    <span class="fw-bold"><%= request.getAttribute("error") %></span>
-                                    <button type="button" class="btn-close mt-1" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            <% } %>
-
-                            <form action="/register" method="post" class="bg-white p-4 p-md-5 rounded-4 border shadow-sm">
-                                <h5 class="fw-bold text-dark mb-4 border-bottom pb-3"><i class="bi bi-1-circle text-primary me-2"></i> Core Identity</h5>
-                                
-                                <div class="row g-4 mb-5">
-                                    <div class="col-sm-6">
-                                        <label class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Public Display Name</label>
-                                        <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
-                                            <span class="input-group-text bg-light border-0 px-3 text-secondary"><i class="bi bi-person"></i></span>
-                                            <input type="text" class="form-control form-control-lg border-0 bg-light focus-ring-success" name="username" placeholder="e.g. AgriCorp Ltd" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Communication Channel</label>
-                                        <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
-                                            <span class="input-group-text bg-light border-0 px-3 text-secondary"><i class="bi bi-envelope"></i></span>
-                                            <input type="email" class="form-control form-control-lg border-0 bg-light focus-ring-success" name="email" placeholder="Email Address" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Cryptographic Key</label>
-                                        <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
-                                            <span class="input-group-text bg-light border-0 px-3 text-secondary"><i class="bi bi-key"></i></span>
-                                            <input type="password" class="form-control form-control-lg border-0 bg-light focus-ring-success" name="password" placeholder="Strong Password" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label fw-bold small text-muted text-uppercase tracking-wider ms-1">Geographical Node</label>
-                                        <div class="input-group shadow-sm" style="border-radius: 1rem; overflow:hidden;">
-                                            <span class="input-group-text bg-light border-0 px-3 text-secondary"><i class="bi bi-geo-alt"></i></span>
-                                            <input type="text" class="form-control form-control-lg border-0 bg-light focus-ring-success" name="address" placeholder="Physical Address" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <h5 class="fw-bold text-dark mb-4 border-bottom pb-3"><i class="bi bi-2-circle text-primary me-2"></i> Institutional KYC</h5>
-                                
-                                <div class="row g-4 mb-5">
-                                    <div class="col-sm-6">
-                                        <label class="form-label fw-bold small text-success text-uppercase tracking-wider ms-1"><i class="bi bi-shield-check me-1"></i> Aadhaar Hash</label>
-                                        <input type="text" class="form-control form-control-lg border border-success border-opacity-25 bg-success bg-opacity-10 text-dark fw-bold font-monospace focus-ring-success" style="border-radius: 0.75rem;" name="aadhaarNumber" placeholder="xxxx-xxxx-xxxx" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label fw-bold small text-success text-uppercase tracking-wider ms-1"><i class="bi bi-shield-check me-1"></i> Taxation PAN</label>
-                                        <input type="text" class="form-control form-control-lg border border-success border-opacity-25 bg-success bg-opacity-10 text-dark fw-bold font-monospace focus-ring-success text-uppercase" style="border-radius: 0.75rem;" name="panNumber" placeholder="ABCDE1234F" required>
-                                    </div>
-                                </div>
-
-                                <h5 class="fw-bold text-dark mb-4 border-bottom pb-3"><i class="bi bi-3-circle text-primary me-2"></i> Network Role Assignment</h5>
-                                
-                                <div class="mb-5">
-                                    <div class="row g-3">
-                                        <div class="col-sm-4">
-                                            <input type="radio" class="btn-check" name="role" id="roleFarmer" value="farmer" required>
-                                            <label class="btn btn-outline-success w-100 py-3 rounded-4 d-flex flex-column align-items-center justify-content-center h-100 gap-2 border-2" for="roleFarmer">
-                                                <i class="bi bi-tractor display-6"></i>
-                                                <span class="fw-bold">Farmer Node</span>
-                                            </label>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <input type="radio" class="btn-check" name="role" id="roleBuyer" value="buyer" required>
-                                            <label class="btn btn-outline-primary w-100 py-3 rounded-4 d-flex flex-column align-items-center justify-content-center h-100 gap-2 border-2" for="roleBuyer">
-                                                <i class="bi bi-building display-6"></i>
-                                                <span class="fw-bold">Corporate Buyer</span>
-                                            </label>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <input type="radio" class="btn-check" name="role" id="roleInspector" value="inspector" required>
-                                            <label class="btn btn-outline-dark w-100 py-3 rounded-4 d-flex flex-column align-items-center justify-content-center h-100 gap-2 border-2" for="roleInspector">
-                                                <i class="bi bi-clipboard-check display-6"></i>
-                                                <span class="fw-bold">Inspector Node</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button class="btn btn-premium w-100 py-3 mt-2 rounded-pill shadow-lg fw-bold fs-5 group hover-elevate transition" type="submit">
-                                    Finalize Registration <i class="bi bi-patch-check-fill ms-2 transition group-hover-translate-x fs-5 vertical-align-middle"></i>
-                                </button>
-                            </form>
-                            
-                            <div class="text-center mt-5 mb-4">
-                                <p class="text-muted fw-medium">Already deployed on network? <a href="/login" class="text-success text-decoration-none fw-bold ms-1 hover-dark transition">Authenticate Here</a></p>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
+            <style>
+                @keyframes float {
+                    0% { transform: translateY(0px) rotate(0deg); }
+                    50% { transform: translateY(-15px) rotate(2deg); }
+                    100% { transform: translateY(0px) rotate(0deg); }
+                }
+                
+                /* Custom styles to prevent zoom-in overflow on small screens */
+                @media (max-width: 768px) {
+                    main {
+                        padding-top: 2rem !important;
+                        padding-bottom: 2rem !important;
+                        height: auto !important;
+                    }
+                }
+            </style>
         </main>
         <script type="text/javascript">
             function googleTranslateElementInit() {
