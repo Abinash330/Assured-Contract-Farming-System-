@@ -1,0 +1,8 @@
+target/
+.git/
+.mvn/
+*.log
+*.docx
+*.pdf
+tomcat-tmp/
+img/
