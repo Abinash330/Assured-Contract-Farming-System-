@@ -31,6 +31,31 @@
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
+        /* AgriBot Chat Widget */
+        .agribot-widget {
+            position: fixed; bottom: 30px; right: 30px; z-index: 1050;
+        }
+        .agribot-toggle {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white; border: none; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+            cursor: pointer; transition: transform 0.3s;
+        }
+        .agribot-toggle:hover { transform: scale(1.1); }
+        .agribot-panel {
+            position: absolute; bottom: 80px; right: 0; width: 350px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px);
+            border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.5); overflow: hidden;
+            display: none; flex-direction: column; opacity: 0; transition: opacity 0.3s;
+        }
+        .agribot-panel.active { display: flex; opacity: 1; }
+        .agribot-header { background: #0f172a; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .agribot-body { height: 350px; overflow-y: auto; padding: 15px; font-size: 0.9rem; }
+        .agribot-input-area { padding: 15px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; }
+        .bot-msg { background: #f1f5f9; padding: 10px 15px; border-radius: 15px 15px 15px 0; margin-bottom: 15px; display: inline-block; max-width: 85%; color: #334155; }
+        .user-msg { background: #10b981; color: white; padding: 10px 15px; border-radius: 15px 15px 0 15px; margin-bottom: 15px; display: inline-block; max-width: 85%; align-self: flex-end; margin-left: auto; }
     </style>
 </head>
 <body class="bg-light">
@@ -147,6 +172,24 @@
     <!-- Premium Farmer Footer -->
     <jsp:include page="/WEB-INF/jsp/common/footer_farmer.jsp" />
 
+    <!-- AgriBot AI Widget -->
+    <div class="agribot-widget">
+        <div class="agribot-panel" id="agriBotPanel">
+            <div class="agribot-header">
+                <div class="d-flex align-items-center"><i class="bi bi-robot fs-4 me-2 text-success"></i> <span class="fw-bold">AgriBot Intelligence</span></div>
+                <button class="btn btn-sm btn-link text-white p-0" onclick="document.getElementById('agriBotPanel').classList.remove('active')"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <div class="agribot-body d-flex flex-column" id="agriBotBody">
+                <div class="bot-msg shadow-sm"><i class="bi bi-stars text-warning me-1"></i> Hello! I am your AI Market Assistant. I can predict crop prices and suggest optimal harvest logic. Ask me anything!</div>
+            </div>
+            <div class="agribot-input-area">
+                <input type="text" id="agriBotInput" class="form-control rounded-pill border-0 shadow-sm me-2" placeholder="Type a market query..." onkeypress="if(event.key === 'Enter') sendAgriBotMsg()">
+                <button class="btn btn-success rounded-circle shadow-sm" style="width: 40px; height: 40px;" onclick="sendAgriBotMsg()"><i class="bi bi-send-fill"></i></button>
+            </div>
+        </div>
+        <button class="agribot-toggle pulse" onclick="document.getElementById('agriBotPanel').classList.toggle('active')"><i class="bi bi-chat-dots-fill"></i></button>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -174,6 +217,49 @@
                 });
             }
         });
+
+        // AgriBot Logic
+        function sendAgriBotMsg() {
+            const inputField = document.getElementById('agriBotInput');
+            const msg = inputField.value.trim();
+            if(!msg) return;
+            
+            const chatBody = document.getElementById('agriBotBody');
+            
+            // Add User message
+            const userDiv = document.createElement('div');
+            userDiv.className = 'user-msg shadow-sm';
+            userDiv.textContent = msg;
+            chatBody.appendChild(userDiv);
+            
+            inputField.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            // Simulate AI Processing & Response
+            setTimeout(() => {
+                const botDiv = document.createElement('div');
+                botDiv.className = 'bot-msg shadow-sm';
+                botDiv.innerHTML = '<span class="spinner-grow spinner-grow-sm text-success" role="status"></span> Thinking...';
+                chatBody.appendChild(botDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+                
+                setTimeout(() => {
+                    const responses = [
+                        "Based on global commodity data, wheat prices are projected to surge by 4% next quarter. I recommend initiating escrow negotiations now.",
+                        "Soil telemetrics indicate a 30% reduction in nitrogen. You may suffer a yield penalty if you don't adjust fertilizer schedules before the deadline.",
+                        "Your current average asking price is 4.5% higher than the regional median. Consider lowering it to 1,950/MT to increase Buyer volume.",
+                        "I've scanned the blockchain. Organic certifications are trending. Applying for USDA Organic status could increase your premium by 35%."
+                    ];
+                    // Pick random response or contextual
+                    let finalRes = responses[Math.floor(Math.random() * responses.length)];
+                    if(msg.toLowerCase().includes("price") || msg.toLowerCase().includes("money")) finalRes = responses[2];
+                    if(msg.toLowerCase().includes("wheat") || msg.toLowerCase().includes("paddy")) finalRes = responses[0];
+                    
+                    botDiv.innerHTML = '<i class="bi bi-robot text-success me-1"></i> ' + finalRes;
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }, 1500);
+            }, 500);
+        }
     </script>
 </body>
 </html>

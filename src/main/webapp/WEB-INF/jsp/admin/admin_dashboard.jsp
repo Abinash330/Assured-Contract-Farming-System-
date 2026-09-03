@@ -130,35 +130,17 @@
                     </div>
                 </div>
 
-                <!-- Activity Timeline Base -->
-                <div class="glass-card p-4 border-0 shadow-sm bg-white">
-                    <h5 class="fw-bold text-dark mb-4"><i class="bi bi-clock-history text-secondary me-2"></i> Live Ecosystem Feed</h5>
-                    <div class="position-relative ms-3 border-start border-2 border-primary border-opacity-25 py-2">
-                        <!-- Timeline Items -->
-                        <div class="position-relative ps-4 mb-4">
-                            <span class="position-absolute top-0 start-0 translate-middle bg-primary rounded-circle shadow border border-white border-2" style="width: 16px; height: 16px;"></span>
-                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                <h6 class="fw-bold text-dark mb-0">New Contract Generated</h6>
-                                <span class="badge bg-light text-muted border">2 mins ago</span>
-                            </div>
-                            <p class="text-secondary small mb-0">Contract <span class="fw-bold">#CNT-8911</span> initiated between Farmer <i>Ramesh</i> and Buyer <i>AgriCorp</i> for 50MT Wheat.</p>
+                <!-- Live Global Command Feed (Admin Terminal) -->
+                <div class="glass-card p-4 border-0 shadow-sm" style="background: #0f172a; border-radius: 20px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom border-secondary border-opacity-50 pb-2">
+                        <h5 class="fw-bold text-white mb-0"><i class="bi bi-terminal-fill text-success me-2"></i> Live Ecosystem Feed</h5>
+                        <div class="d-flex align-items-center">
+                            <span class="spinner-grow spinner-grow-sm text-danger me-2" role="status"></span>
+                            <span class="text-danger small fw-bold tracking-widest text-uppercase">Live Connection</span>
                         </div>
-                        <div class="position-relative ps-4 mb-4">
-                            <span class="position-absolute top-0 start-0 translate-middle bg-warning rounded-circle shadow border border-white border-2" style="width: 16px; height: 16px;"></span>
-                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                <h6 class="fw-bold text-dark mb-0">KYC Verification Pending</h6>
-                                <span class="badge bg-light text-muted border">15 mins ago</span>
-                            </div>
-                            <p class="text-secondary small mb-0">Inspector <span class="fw-bold">INSP-04</span> uploaded field documents for farm plot in Punjab.</p>
-                        </div>
-                        <div class="position-relative ps-4">
-                            <span class="position-absolute top-0 start-0 translate-middle bg-success rounded-circle shadow border border-white border-2" style="width: 16px; height: 16px;"></span>
-                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                <h6 class="fw-bold text-dark mb-0">Escrow Milestone Released</h6>
-                                <span class="badge bg-light text-muted border">1 hour ago</span>
-                            </div>
-                            <p class="text-secondary small mb-0">Milestone 2 payment of ₹2.5M authorized for Contract <span class="fw-bold">#CNT-7720</span>.</p>
-                        </div>
+                    </div>
+                    <div id="adminTerminal" class="position-relative ms-2 py-2" style="height: 350px; overflow-y: hidden; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem;">
+                        <!-- JS injects nodes here -->
                     </div>
                 </div>
 
@@ -218,13 +200,56 @@
                             },
                             options: {
                                 responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: { position: 'bottom' }
-                                }
+                                maintainAspectRatio: false
                             }
                         });
                     }
+
+                    // Live Terminal Feed Logic
+                    const terminal = document.getElementById('adminTerminal');
+                    const systemEvents = [
+                        { msg: "Node 'Corp Buyer Inc.' locked ₹1,500,000 into Escrow #882", color: "text-info" },
+                        { msg: "Farmer 'Ramesh' deployed Smart Contract for 50MT Wheat", color: "text-success" },
+                        { msg: "Inspector authenticated soil biometrics. Contract #711 cleared.", color: "text-warning" },
+                        { msg: "Logistics geofence breach: Transport truck TR-49 deviation detected.", color: "text-danger" },
+                        { msg: "Funds released from Escrow #320 to Farmer 'Prakash'. Txn Confirmed.", color: "text-success" },
+                        { msg: "New KYC document uploaded by Buyer 'AgriTech Ltd'. Awaiting OCR.", color: "text-secondary" },
+                        { msg: "Blockchain node synced successfully. 42 blocks appended.", color: "text-primary" }
+                    ];
+
+                    function addTerminalLog() {
+                        const evt = systemEvents[Math.floor(Math.random() * systemEvents.length)];
+                        const now = new Date();
+                        const timeString = "[" + String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0') + ":" + String(now.getSeconds()).padStart(2, '0') + "]";
+                        
+                        const logDiv = document.createElement('div');
+                        logDiv.className = "mb-2 " + evt.color;
+                        logDiv.style.opacity = '0';
+                        logDiv.style.transform = 'translateY(10px)';
+                        logDiv.style.transition = 'all 0.3s ease';
+                        logDiv.innerHTML = "<span class='text-secondary'>" + timeString + "</span> <i class='bi bi-caret-right-fill mx-1'></i>" + evt.msg;
+                        
+                        terminal.prepend(logDiv);
+                        
+                        // Trigger reflow for animation
+                        setTimeout(() => {
+                            logDiv.style.opacity = '1';
+                            logDiv.style.transform = 'translateY(0)';
+                        }, 50);
+
+                        // Keep only last 10 logs to prevent overflow
+                        if (terminal.children.length > 10) {
+                            terminal.removeChild(terminal.lastChild);
+                        }
+                    }
+
+                    // Initialize with a few logs
+                    addTerminalLog();
+                    addTerminalLog();
+                    
+                    // Push new log every 3 seconds
+                    setInterval(addTerminalLog, 3500);
+
                 });
             </script>
             <jsp:include page="../common/footer.jsp" />

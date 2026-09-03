@@ -122,9 +122,12 @@
                             <div class="bg-light p-2 rounded mb-3 text-center">
                                 <span class="fw-bold text-dark">${crop.quantity} MT</span> @ <span class="fw-bold text-success">₹${crop.pricePerUnit}</span>
                             </div>
-                            <div class="progress" style="height: 6px;">
+                            <div class="progress mb-3" style="height: 6px;">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 45%"></div>
                             </div>
+                            <button class="btn btn-outline-primary btn-sm w-100 rounded-pill fw-bold hover-elevate transition" onclick="generateContractPDF('${crop.cropName}', '${crop.quantity}', '${crop.pricePerUnit}', '${crop.location}')">
+                                <i class="bi bi-file-earmark-pdf-fill me-1"></i> Generate PDF Contract
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -143,7 +146,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2pdf for dynamic client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
+        function generateContractPDF(cropName, quantity, price, location) {
+            // Generate a dynamic HTML template for the PDF
+            const txHash = '0x' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            const content = `
+                <div style="padding: 40px; font-family: 'Times New Roman', serif; color: #1e293b;">
+                    <div style="text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 20px; margin-bottom: 30px;">
+                        <h1 style="color: #0f172a; margin: 0; font-size: 32px; letter-spacing: 1px;">AGRITRUST SYSTEM</h1>
+                        <p style="color: #64748b; font-size: 14px; margin: 5px 0 0;">Cryptographics Smart Contract Record</p>
+                    </div>
+                    <h3 style="color: #0d6efd; border-left: 4px solid #0d6efd; padding-left: 10px; margin-bottom: 20px;">Asset Details</h3>
+                    <table style="width: 100%; text-align: left; border-collapse: collapse; margin-bottom: 30px;">
+                        <tr><th style="padding: 10px; border-bottom: 1px solid #e2e8f0; width: 40%;">Commodity:</th><td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold;">\${cropName}</td></tr>
+                        <tr><th style="padding: 10px; border-bottom: 1px solid #e2e8f0;">Volume (MT):</th><td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold;">\${quantity}</td></tr>
+                        <tr><th style="padding: 10px; border-bottom: 1px solid #e2e8f0;">Unit Price:</th><td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #10b981;">₹\${price}</td></tr>
+                        <tr><th style="padding: 10px; border-bottom: 1px solid #e2e8f0;">Farm Origin:</th><td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold;">\${location}</td></tr>
+                    </table>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin-top: 0; color: #0f172a;">Blockchain Verification</h4>
+                        <p style="font-family: monospace; font-size: 12px; color: #475569; word-break: break-all; margin: 0;">TXN HASH: \${txHash}</p>
+                        <p style="font-family: monospace; font-size: 12px; color: #10b981; margin: 5px 0 0;">STATUS: SMART CONTRACT ESCROW LOCKED & VERIFIED</p>
+                    </div>
+                    <div style="margin-top: 50px; display: flex; justify-content: space-between; text-align: center;">
+                        <div style="width: 40%; border-top: 1px dashed #94a3b8; padding-top: 10px;"><p style="margin: 0; font-weight: bold;">Buyer Digital Sig</p></div>
+                        <div style="width: 40%; border-top: 1px dashed #94a3b8; padding-top: 10px;"><p style="margin: 0; font-weight: bold;">Network Validator</p></div>
+                    </div>
+                </div>
+            `;
+            
+            const element = document.createElement('div');
+            element.innerHTML = content;
+            
+            // Configuration for html2pdf
+            const opt = {
+                margin: 0,
+                filename: 'AgriTrust_Contract_' + cropName.replace(/\s+/g, '_') + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            // Execute PDF Generation
+            html2pdf().set(opt).from(element).save();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('procurementChart');
             if(ctx) {

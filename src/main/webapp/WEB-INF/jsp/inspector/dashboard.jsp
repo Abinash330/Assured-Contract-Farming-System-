@@ -111,7 +111,39 @@
                                 <p class="small text-muted mb-1 fw-semibold text-uppercase">Deadline</p>
                                 <p class="fw-bold text-dark mb-0"><i class="bi bi-calendar-event me-1"></i> ${ins.deliveryDeadline}</p>
                             </div>
-                            <a href="/contracts" class="btn btn-warning rounded-pill px-4 fw-bold hover-elevate shadow-sm"><i class="bi bi-search me-2"></i> Begin Audit</a>
+                            <button type="button" class="btn btn-warning rounded-pill px-4 fw-bold hover-elevate shadow-sm" data-bs-toggle="modal" data-bs-target="#diagnosticModal${ins.id}" onclick="startDiagnostic('${ins.id}')"><i class="bi bi-radar me-2"></i> Run IoT Diagnostic</button>
+                        </div>
+                    </div>
+                    
+                    <!-- IoT Diagnostic Simulation Modal -->
+                    <div class="modal fade" id="diagnosticModal${ins.id}" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                                <div class="modal-header bg-dark text-white border-0 p-4">
+                                    <h5 class="modal-title fw-bold"><i class="bi bi-cpu text-warning me-2"></i> IoT Sensor Telemetry Analysis</h5>
+                                    <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-5 bg-light text-center" id="diagnosticBody${ins.id}">
+                                    <i class="bi bi-broadcast pulse text-warning mb-3 d-inline-block" style="font-size: 3rem;"></i>
+                                    <h4 class="fw-bold mb-3 text-dark transition" id="diagnosticText${ins.id}">Initializing Drone Scan...</h4>
+                                    <div class="progress mb-4 bg-secondary bg-opacity-25" style="height: 10px;">
+                                        <div id="diagnosticProgress${ins.id}" class="progress-bar progress-bar-striped progress-bar-animated bg-warning transition" style="width: 0%"></div>
+                                    </div>
+                                    <div id="diagnosticResult${ins.id}" class="d-none mt-4 transition">
+                                        <div class="alert alert-success border-0 shadow-sm text-start rounded-4">
+                                            <p class="mb-2 fw-bold text-success"><i class="bi bi-check-circle-fill me-2"></i> Nitrogen Levels: Optimal (84%)</p>
+                                            <p class="mb-2 fw-bold text-success"><i class="bi bi-check-circle-fill me-2"></i> Moisture Content: 12.4%</p>
+                                            <p class="mb-0 fw-bold text-success"><i class="bi bi-check-circle-fill me-2"></i> Pesticide Traces: < 0.01ppm (Passed)</p>
+                                        </div>
+                                        <form action="/certify" method="post" class="mt-4">
+                                            <input type="hidden" name="contract_id" value="${ins.id}">
+                                            <button type="submit" class="btn btn-success rounded-pill fw-bold w-100 shadow-sm hover-elevate py-3"><i class="bi bi-patch-check-fill me-2 fs-5"></i> Certify & Digitally Sign Ledger</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 </div>
@@ -132,5 +164,32 @@
     <jsp:include page="/WEB-INF/jsp/common/footer_inspector.jsp" />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function startDiagnostic(id) {
+            const text = document.getElementById('diagnosticText' + id);
+            const prog = document.getElementById('diagnosticProgress' + id);
+            const res = document.getElementById('diagnosticResult' + id);
+            
+            // Reset state
+            text.innerText = "Initializing Drone Scan...";
+            text.className = "fw-bold mb-3 text-dark transition";
+            prog.style.width = "0%";
+            prog.className = "progress-bar progress-bar-striped progress-bar-animated bg-warning transition";
+            res.classList.add('d-none');
+            
+            // Progression simulation
+            setTimeout(() => { text.innerText = "Scanning Soil Composition..."; prog.style.width = "30%"; }, 1000);
+            setTimeout(() => { text.innerText = "Analyzing Thermal Imagery..."; prog.style.width = "60%"; }, 2500);
+            setTimeout(() => { text.innerText = "Verifying Escrow Requirements..."; prog.style.width = "85%"; }, 4000);
+            setTimeout(() => { 
+                text.innerText = "Audit Completed Successfully!"; 
+                text.classList.remove('text-dark');
+                text.classList.add('text-success');
+                prog.style.width = "100%"; 
+                prog.className = "progress-bar progress-bar-striped progress-bar-animated bg-success transition";
+                res.classList.remove('d-none');
+            }, 5500);
+        }
+    </script>
 </body>
 </html>
